@@ -31,7 +31,7 @@ export const experience: Role[] = [
       "Evaluating state-of-the-art OCR and VLM systems including PaddleOCR, EasyOCR, TrOCR and multimodal transformer architectures.",
       "Running comparative analysis with CER and WER metrics on handwritten text datasets.",
     ],
-    stack: ["vlm", "ocr-eval", "python"],
+    stack: ["vlm", "ocr-eval"],
   },
   {
     id: "indhanpay",

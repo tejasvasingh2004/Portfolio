@@ -23,9 +23,9 @@ type Quality = "high" | "medium" | "low";
 function Lighting({ quality }: { quality: Quality }) {
   return (
     <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[7, 14, 9]} intensity={1.25} color="#fffaf4" />
-      <Environment resolution={quality === "high" ? 256 : 128} frames={1} environmentIntensity={0.9}>
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[7, 14, 9]} intensity={1.5} color="#fffaf4" />
+      <Environment resolution={quality === "high" ? 256 : 128} frames={1} environmentIntensity={1.15}>
         {/* Soft studio: big overhead key, a thin rim strip, warm low fill. */}
         <Lightformer form="rect" intensity={2.4} position={[-4, 8, 4]} rotation-x={Math.PI / 2} scale={[14, 10, 1]} />
         <Lightformer form="rect" intensity={1.6} position={[10, 3, 0]} rotation-y={-Math.PI / 2} scale={[2, 12, 1]} />
@@ -108,8 +108,8 @@ export default function Scene({ tier, panelOpen, phone }: { tier: Exclude<Tier, 
       camera={{ fov: 28, near: 0.5, far: 220, position: [16, 22, 26] }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       onCreated={({ gl }) => {
-        gl.toneMapping = THREE.AgXToneMapping;
-        gl.toneMappingExposure = 1.12;
+        gl.toneMapping = THREE.NeutralToneMapping;
+        gl.toneMappingExposure = 1.0;
       }}
       style={{ position: "absolute", inset: 0 }}
       aria-hidden="true"

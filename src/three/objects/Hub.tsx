@@ -34,10 +34,8 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
   const orange = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.35, emissive: COLORS.accent, emissiveIntensity: 0.25 }), []);
   const glass = useMemo(
     () =>
-      quality === "high"
-        ? new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.08, transmission: 1, thickness: 0.6, ior: 1.35, transparent: true })
-        : new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.1, transparent: true, opacity: 0.28, depthWrite: false }),
-    [quality],
+      new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.22, depthWrite: false }),
+    [],
   );
   const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#d9d9d4", transparent: true, opacity: 0.9 }), []);
   const cubeEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(1.5, 1.5, 1.5)), []);

@@ -45,28 +45,30 @@
   --ease-out-soft: var(--ease-out);
 }
 
-html {
-  background: var(--bg);
-  -webkit-text-size-adjust: 100%;
-}
+@layer base {
+  html {
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
 
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11";
-  text-rendering: optimizeLegibility;
-}
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+  }
 
-::selection {
-  background: var(--accent-soft);
-  color: var(--ink);
-}
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
 
-:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 2px;
-  border-radius: 6px;
+  :focus-visible {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
 }
 
 /* Mono label voice (a utility so it works with variants) */
@@ -86,6 +88,10 @@ html[data-mode="2d"] .only-3d {
 }
 html:not([data-mode="2d"]) .only-2d {
   display: none !important;
+}
+html[data-mode="2d"] .hero-wrap {
+  max-width: 760px;
+  margin-inline: auto;
 }
 
 /* ── Panel (desktop side panel / phone bottom sheet / 2D page) ─────────── */

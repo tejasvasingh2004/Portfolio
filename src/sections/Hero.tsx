@@ -8,9 +8,15 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-title"
-      className="pointer-events-none relative z-10 px-5 pt-[calc(var(--topbar-h)+20px)] sm:px-8 sm:pt-[calc(var(--topbar-h)+40px)] lg:px-12"
+      className="hero-wrap pointer-events-none relative z-10 px-5 pt-[calc(var(--topbar-h)+20px)] sm:px-8 sm:pt-[calc(var(--topbar-h)+40px)] lg:px-12"
     >
-      <div className="pointer-events-auto max-w-[520px] [&>*]:animate-[rise_640ms_var(--ease-out)_both]">
+      {/* Soft wash so the hero always reads over the 3D board behind it. */}
+      <div
+        aria-hidden
+        className="only-3d absolute -left-20 -top-10 h-[620px] w-[780px] max-w-[110vw]"
+        style={{ background: "radial-gradient(closest-side, rgb(244 244 242 / 0.94) 55%, rgb(244 244 242 / 0) 100%)" }}
+      />
+      <div className="pointer-events-auto relative max-w-[520px] [&>*]:animate-[rise_640ms_var(--ease-out)_both]">
         <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-surface/80 px-3 py-1 text-[12px] text-ink-2 ring-1 ring-line backdrop-blur">
           <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_0_3px_var(--accent-soft)]" />
           {profile.status}

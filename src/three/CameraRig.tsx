@@ -24,7 +24,7 @@ function poseFor(view: View): CameraPose {
     if (i >= 0) {
       const card = cardPosition(i);
       const target: V3 = [MONITOR_CENTER[0] * 0.7 + card[0] * 0.3, 1.35, zonePos.projects[2] - 0.4];
-      return { position: add(target, [0.9, 3.4, 7.2]), target, azimuthRange: 0.3, polarRange: 0.18 };
+      return { position: add(target, [1.6, 6.2, 12.8]), target, azimuthRange: 0.3, polarRange: 0.18 };
     }
   }
   if (view.zone === "ai" && view.item && view.node) {
@@ -32,7 +32,7 @@ function poseFor(view: View): CameraPose {
     if (s?.nodes.some((n) => n.id === view.node)) {
       const p = nodePosition(s, view.node);
       const target: V3 = [p[0], 0.3, p[2]];
-      return { position: add(target, [1.2, 4.6, 4.6]), target, azimuthRange: 0.3, polarRange: 0.2 };
+      return { position: add(target, [1.6, 7.8, 8.2]), target, azimuthRange: 0.3, polarRange: 0.2 };
     }
   }
   return zonePoses[view.zone];
@@ -104,7 +104,9 @@ export function CameraRig({ panelOpen }: { panelOpen: boolean }) {
   // Panel-aware framing: shift the projection so the focus sits in the visible area.
   useFrame((_, dt) => {
     const o = offset.current;
-    const tx = panelOpen && !phone ? (panelW + 16) / 2 : 0;
+    // Home on wide screens: nudge the board right so it clears the hero text.
+    const heroShift = !panelOpen && size.width >= 1024 ? -Math.min(230, size.width * 0.14) : 0;
+    const tx = panelOpen && !phone ? (panelW + 16) / 2 : heroShift;
     const ty = panelOpen && phone ? size.height * 0.2 : 0;
     const st = reduced ? 0.0001 : 0.35;
     let moving = easing.damp(o, "x", tx, st, Math.min(dt, 0.05));

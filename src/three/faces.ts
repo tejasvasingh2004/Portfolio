@@ -167,7 +167,9 @@ export async function experienceCardFace(r: Role) {
   ctx.textAlign = "left";
 
   ctx.textBaseline = "alphabetic";
-  ctx.font = sans(650, 42);
+  let orgSize = 42;
+  ctx.font = sans(650, orgSize);
+  while (ctx.measureText(r.org).width > W - 80 && orgSize > 26) ctx.font = sans(650, (orgSize -= 2));
   ctx.fillStyle = C.ink;
   ctx.fillText(r.org, 40, 212);
   ctx.font = sans(500, 25);
@@ -260,7 +262,7 @@ export async function contactCardFace(photo: string, name: string, status: strin
   ctx.fillText(email, 44, H - 44);
   ctx.textAlign = "right";
   ctx.fillStyle = "#c2410c";
-  ctx.fillText(status.split(" ").slice(0, 2).join(" ").toUpperCase(), W - 44, H - 44);
+  ctx.fillText(status.toLowerCase().includes("intern") ? "OPEN TO INTERNSHIPS" : "AVAILABLE", W - 44, H - 44);
   ctx.textAlign = "left";
   return c;
 }
@@ -305,7 +307,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
     ctx.fillText("PROJECTS · OVERVIEW", X, 120);
     ctx.font = sans(650, 56);
     ctx.fillStyle = C.ink;
-    ctx.fillText(`${projects.length} systems built`, X, 186);
+    ctx.fillText(`${projects.length} projects built`, X, 186);
 
     // rows
     projects.forEach((p, i) => {

@@ -24,8 +24,13 @@ export type AiEdge = {
   to: string;
   label?: string;
   loop?: boolean;
-  /** Orthogonal routing style between rows: horizontal-first (default) or vertical-first. */
-  route?: "hvh" | "vhv";
+  /**
+   * Orthogonal routing: horizontal-first (default), vertical-first, or a bypass lane
+   * above/below the row for edges that skip over nodes in between.
+   */
+  route?: "hvh" | "vhv" | "over" | "under";
+  /** Lane position (in rows) for over/under/vhv routes. */
+  lane?: number;
 };
 
 export type AiState = {
@@ -86,14 +91,14 @@ export const aiSystems: AiSystem[] = [
       e("preprocess", "features"),
       e("features", "classifier"),
       e("classifier", "manager"),
-      e("manager", "planner", { label: "policy", route: "vhv" }),
+      e("manager", "planner", { label: "policy", route: "vhv", lane: 1 }),
       e("query", "planner"),
       e("planner", "solver"),
       e("solver", "verifier"),
       e("verifier", "solver", { loop: true, label: "retry" }),
       e("verifier", "final"),
-      e("verifier", "response"),
-      e("solver", "response"),
+      e("verifier", "response", { route: "over", lane: 1.55 }),
+      e("solver", "response", { route: "under", lane: 2.5 }),
       e("final", "response"),
       e("ollama", "solver", { label: "LLM" }),
       e("response", "dashboard"),

@@ -101,7 +101,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
   ];
 
   const switchZ = A[2] + AI_SWITCH_Z;
-  const keyW = 1.62;
+  const keyW = 1.42;
 
   return (
     <group>
@@ -199,12 +199,12 @@ export function AiLab({ smoothness }: { smoothness: number }) {
       {system.states && (
         <group>
           {system.states.map((st, i) => {
-            const x = A[0] + AI_PLATE.w / 2 - 0.5 - 0.42 - (system.states!.length - 1 - i) * 0.96;
+            const x = A[0] + AI_PLATE.w / 2 - 0.45 - 0.39 - (system.states!.length - 1 - i) * 0.88;
             return (
               <Tile
                 key={st.id}
                 position={[x, AI_PLATE.h, switchZ]}
-                size={[0.84, 0.16, 0.62]}
+                size={[0.78, 0.16, 0.62]}
                 radius={0.07}
                 smoothness={smoothness}
                 dimmed={dimmed}

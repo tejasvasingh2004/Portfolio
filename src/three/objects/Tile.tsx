@@ -130,7 +130,7 @@ export function Tile({
     const tLift = reduced ? 0 : active ? 0.14 : hovered ? 0.08 : 0;
     const tScale = reduced ? 1 : active ? 1.04 : hovered ? 1.03 : 1;
     const tTint = active || lit ? 1 : hovered ? 0.45 : 0;
-    const tGlow = active ? 0.85 : hovered ? 0.45 : lit ? 0.28 : 0;
+    const tGlow = active ? 0.85 : hovered ? 0.45 : lit ? 0.14 : 0;
     const tDim = dimmed ? 1 : 0;
 
     let moving = false;
@@ -149,7 +149,7 @@ export function Tile({
     g.position.set(a.x, a.y + a.lift + a.rise, a.z);
     g.rotation.y = a.ry;
     if (glow.current) {
-      glow.current.position.set(a.x, 0.002, a.z);
+      glow.current.position.set(a.x, a.y + 0.003, a.z);
       glow.current.rotation.y = a.ry;
     }
     g.scale.setScalar(a.scale);

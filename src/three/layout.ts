@@ -80,13 +80,13 @@ export const hubTraces: Record<Exclude<ZoneId, "about">, [number, number][]> = {
 /** Camera framing per zone: position offset from the zone centre and look-at offset. */
 export type CameraPose = { position: V3; target: V3; azimuthRange?: number; polarRange?: number };
 
-export const homePose: CameraPose = { position: [13.5, 17.5, 20.5], target: [-0.6, 0, 0.6], azimuthRange: 0.6, polarRange: 0.32 };
+export const homePose: CameraPose = { position: [21.5, 27.5, 31.5], target: [0.6, 0, 0.4], azimuthRange: 0.6, polarRange: 0.32 };
 
 export const zonePoses: Record<ZoneId, CameraPose> = {
-  about: { position: [3.2, 5.0, 6.6], target: [0, 1.0, 0] },
-  projects: { position: [-4.6, 5.6, 4.6], target: [-6.4, 1.6, -4.0] },
-  ai: { position: [8.4, 10.4, 5.2], target: [7.0, 0, -3.6] },
-  skills: { position: [-6.2, 8.4, 10.6], target: [-8.6, 0.2, 3.2] },
-  experience: { position: [-0.6, 6.6, 12.8], target: [-1.9, 0.3, 6.8] },
-  contact: { position: [7.4, 5.4, 11.6], target: [5.6, 0.4, 6.4] },
+  about: { position: [5.4, 7.8, 11.2], target: [0, 1.0, 0] },
+  projects: { position: [-3.6, 8.6, 10.6], target: [-6.4, 1.7, -3.3] },
+  ai: { position: [8.6, 11.8, 6.4], target: [7.0, 0, -3.6] },
+  skills: { position: [-5.6, 10.4, 12.6], target: [-8.6, 0.2, 3.2] },
+  experience: { position: [0.1, 10.8, 17.4], target: [-1.9, 0.3, 6.8] },
+  contact: { position: [8.8, 9.4, 15.8], target: [5.6, 0.4, 6.6] },
 };

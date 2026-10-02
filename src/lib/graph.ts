@@ -15,15 +15,26 @@ export function routeEdge(system: AiSystem, edge: AiEdge, hw: number, hh: number
   const dx = Math.sign(bx - ax) || 1;
   const dy = Math.sign(by - ay) || 1;
 
+  if (edge.route === "over" || edge.route === "under") {
+    const s = edge.route === "over" ? -1 : 1;
+    const lane = edge.lane ?? ay + s * 0.5;
+    return [
+      [ax + 0.2, ay + s * hh],
+      [ax + 0.2, lane],
+      [bx - 0.2, lane],
+      [bx - 0.2, by + s * hh],
+    ];
+  }
+
   if (edge.loop) {
     if (ay === by) {
-      // Return arc below the row.
-      const y = ay + hh + 0.32;
+      // Return arc above the row, between the two nodes.
+      const y = ay - hh - 0.2;
       return [
-        [ax - 0.12, ay + hh],
+        [ax - 0.12, ay - hh],
         [ax - 0.12, y],
         [bx + 0.12, y],
-        [bx + 0.12, by + hh],
+        [bx + 0.12, by - hh],
       ];
     }
     // Feedback path through the gap between rows, offset from the forward edges.
@@ -40,7 +51,7 @@ export function routeEdge(system: AiSystem, edge: AiEdge, hw: number, hh: number
   if (ax === bx) return [[ax, ay + dy * hh], [bx, by - dy * hh]];
 
   if (edge.route === "vhv") {
-    const gy = by - dy * 0.5;
+    const gy = edge.lane ?? by - dy * 0.5;
     return [
       [ax, ay + dy * hh],
       [ax, gy],
