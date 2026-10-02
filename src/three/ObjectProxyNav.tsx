@@ -39,7 +39,7 @@ export function ObjectProxyNav() {
   return (
     <nav
       aria-label="Workspace objects"
-      className="pointer-events-none fixed bottom-4 left-4 z-30 [&:not(:focus-within)]:sr-only"
+      className="pointer-events-none fixed bottom-24 left-4 z-30 [&:not(:focus-within)]:sr-only"
     >
       <p className="label-mono mb-2 rounded-md bg-surface/90 px-2 py-1 ring-1 ring-line">3D workspace — Tab through, Enter to open</p>
       <ul className="flex max-w-[60vw] flex-wrap gap-1.5">

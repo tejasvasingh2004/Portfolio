@@ -1,7 +1,8 @@
 import {
   Activity, Brain, Briefcase, CheckCheck, Cpu, Database, Eye, FileCode, FileDown, Filter, Gauge,
   GitBranch, Keyboard, Layers, LayoutDashboard, ListChecks, Mail, MessageSquare, Network, ScanText,
-  Send, ShieldCheck, Sparkles, Terminal, User, Utensils, Waves, Check, FolderOpen, type IconNode,
+  Send, ShieldCheck, Sparkles, Terminal, User, Utensils, Waves, Check, FolderOpen, Rotate3d, LocateFixed, Search,
+  type IconNode,
 } from "lucide";
 import { siGithub, siLeetcode } from "simple-icons";
 
@@ -24,6 +25,9 @@ const stroke = {
   keyboard: Keyboard,
   layers: Layers,
   layout: LayoutDashboard,
+  locate: LocateFixed,
+  "rotate-3d": Rotate3d,
+  search: Search,
   "list-checks": ListChecks,
   mail: Mail,
   message: MessageSquare,

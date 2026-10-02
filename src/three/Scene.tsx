@@ -2,7 +2,9 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from "@react-three/drei";
-import { Suspense, useEffect, useState } from "react";
+import { Bloom, EffectComposer, N8AO, SMAA, TiltShift2, ToneMapping } from "@react-three/postprocessing";
+import { ToneMappingMode } from "postprocessing";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import { useView, type Tier } from "@/store/viewStore";
 import { CameraRig } from "./CameraRig";
@@ -14,25 +16,64 @@ import { AiLab } from "./objects/AiLab";
 import { SkillsZone } from "./objects/SkillsZone";
 import { ExperienceZone } from "./objects/ExperienceZone";
 import { ContactZone } from "./objects/ContactZone";
-import { MobileScene } from "./mobile/MobileScene";
+import { Decor } from "./objects/Decor";
 import { useAtlas } from "./useAtlas";
 import { tooltipElement } from "./Tooltip";
+import { ZoneLabelTracker } from "./ZoneLabels";
 
 type Quality = "high" | "medium" | "low";
+
+export const BG = "#f4f4f2";
 
 function Lighting({ quality }: { quality: Quality }) {
   return (
     <>
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[7, 14, 9]} intensity={1.5} color="#fffaf4" />
-      <Environment resolution={quality === "high" ? 256 : 128} frames={1} environmentIntensity={1.15}>
-        {/* Soft studio: big overhead key, a thin rim strip, warm low fill. */}
-        <Lightformer form="rect" intensity={2.4} position={[-4, 8, 4]} rotation-x={Math.PI / 2} scale={[14, 10, 1]} />
-        <Lightformer form="rect" intensity={1.6} position={[10, 3, 0]} rotation-y={-Math.PI / 2} scale={[2, 12, 1]} />
-        <Lightformer form="rect" intensity={0.6} color="#ffe2cc" position={[0, 1, 12]} scale={[16, 3, 1]} />
-        <Lightformer form="rect" intensity={0.8} position={[-10, 4, -6]} rotation-y={Math.PI / 2} scale={[10, 6, 1]} />
+      <ambientLight intensity={0.55} />
+      <directionalLight position={[6, 16, 5]} intensity={1.35} color="#fffaf4" />
+      {/* Studio light from every side, so the board reads well from any orbit angle. */}
+      <Environment resolution={quality === "high" ? 256 : 128} frames={1} environmentIntensity={1.1}>
+        <Lightformer form="rect" intensity={2.6} position={[0, 10, 0]} rotation-x={Math.PI / 2} scale={[18, 18, 1]} />
+        <Lightformer form="rect" intensity={1.2} position={[12, 3, 0]} rotation-y={-Math.PI / 2} scale={[3, 14, 1]} />
+        <Lightformer form="rect" intensity={1.2} position={[-12, 3, 0]} rotation-y={Math.PI / 2} scale={[3, 14, 1]} />
+        <Lightformer form="rect" intensity={0.7} color="#ffe2cc" position={[0, 2, 12]} scale={[18, 3, 1]} />
+        <Lightformer form="rect" intensity={0.7} position={[0, 2, -12]} rotation-y={Math.PI} scale={[18, 3, 1]} />
       </Environment>
     </>
+  );
+}
+
+/** Post-processing tuned for a white product render: soft AO in the crevices, bloom only on HDR orange. */
+function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
+  const effects = useMemo(() => {
+    // Debug: ?fx=ao,bloom,tilt limits the stack (for tuning); default is everything the tier allows.
+    const fx = new URLSearchParams(window.location.search).get("fx");
+    const want = (k: string) => !fx || fx.split(",").includes(k);
+    const list = [];
+    if (aoOn && want("ao")) {
+      list.push(
+        <N8AO
+          key="ao"
+          halfRes
+          quality={quality === "high" ? "medium" : "performance"}
+          aoRadius={1.2}
+          distanceFalloff={0.8}
+          intensity={2.4}
+          color="#3a3028"
+        />,
+      );
+    }
+    // Threshold sits above lit white surfaces, so only the HDR orange accents bloom.
+    if (want("bloom")) list.push(<Bloom key="bloom" mipmapBlur luminanceThreshold={2.4} luminanceSmoothing={0.05} intensity={0.75} radius={0.65} />);
+    if (quality === "high" && want("tilt")) list.push(<TiltShift2 key="tilt" blur={0.012} taper={0.5} />);
+    list.push(<ToneMapping key="tm" mode={ToneMappingMode.NEUTRAL} />);
+    list.push(<SMAA key="smaa" />);
+    return list;
+  }, [quality, aoOn]);
+  if (quality === "low") return null;
+  return (
+    <EffectComposer multisampling={0} enableNormalPass={false}>
+      {effects}
+    </EffectComposer>
   );
 }
 
@@ -49,12 +90,7 @@ function Ready() {
         invalidate();
       }
     };
-    // compileAsync lets the browser compile programs without blocking the main thread.
-    if ("compileAsync" in gl) gl.compileAsync(scene, camera).then(finish, finish);
-    else {
-      (gl as THREE.WebGLRenderer).compile(scene, camera);
-      finish();
-    }
+    gl.compileAsync(scene, camera).then(finish, finish);
     return () => {
       cancelled = true;
     };
@@ -73,7 +109,7 @@ function Built() {
 function TooltipTracker() {
   const camera = useThree((s) => s.camera);
   const size = useThree((s) => s.size);
-  const v = new THREE.Vector3();
+  const v = useMemo(() => new THREE.Vector3(), []);
   useFrame(() => {
     const el = tooltipElement.current;
     const tip = useView.getState().tooltip;
@@ -86,67 +122,74 @@ function TooltipTracker() {
   return null;
 }
 
-/** Re-render once when the tooltip target changes so the tracker positions it immediately. */
-function TooltipInvalidator() {
+/** Re-render when hover/route state changes so DOM overlays are positioned immediately. */
+function OverlayInvalidator() {
   const invalidate = useThree((s) => s.invalidate);
   const tip = useView((s) => s.tooltip);
+  const zone = useView((s) => s.view.zone);
   useEffect(() => {
     invalidate();
-  }, [tip, invalidate]);
+  }, [tip, zone, invalidate]);
   return null;
 }
 
-export default function Scene({ tier, panelOpen, phone }: { tier: Exclude<Tier, "none">; panelOpen: boolean; phone: boolean }) {
+export default function Scene({ tier, panelOpen }: { tier: Exclude<Tier, "none">; panelOpen: boolean }) {
   const quality: Quality = tier;
   const [dprMax, setDprMax] = useState(quality === "high" ? 2 : 1.5);
+  const [aoOn, setAoOn] = useState(quality !== "low");
   const smoothness = quality === "low" ? 2 : 4;
 
   return (
     <Canvas
       frameloop="demand"
       dpr={[1, quality === "low" ? 1 : dprMax]}
-      camera={{ fov: 28, near: 0.5, far: 220, position: [16, 22, 26] }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      onCreated={({ gl }) => {
+      camera={{ fov: 30, near: 0.5, far: 260, position: [0, 24, 34] }}
+      gl={{ antialias: quality === "low", alpha: false, powerPreference: "high-performance", stencil: false }}
+      onCreated={({ gl, scene }) => {
         gl.toneMapping = THREE.NeutralToneMapping;
         gl.toneMappingExposure = 1.0;
+        scene.background = new THREE.Color(BG);
       }}
       style={{ position: "absolute", inset: 0 }}
       aria-hidden="true"
     >
-      <PerformanceMonitor onDecline={() => setDprMax(1)} flipflops={2} />
+      <PerformanceMonitor
+        flipflops={2}
+        onDecline={() => {
+          // Degrade gracefully: drop resolution first, then ambient occlusion.
+          if (dprMax > 1) setDprMax(1);
+          else setAoOn(false);
+        }}
+      />
       <Lighting quality={quality} />
       <Floor />
       <Suspense fallback={null}>
         <Built />
-        {phone ? (
-          <MobileScene smoothness={smoothness} />
-        ) : (
-          <>
-            <Hub quality={quality} />
-            <HubTraces />
-            <ProjectsZone smoothness={smoothness} />
-            <AiLab smoothness={smoothness} />
-            <SkillsZone smoothness={smoothness} />
-            <ExperienceZone smoothness={smoothness} />
-            <ContactZone smoothness={smoothness} />
-          </>
-        )}
+        <Hub quality={quality} />
+        <HubTraces />
+        <ProjectsZone smoothness={smoothness} />
+        <AiLab smoothness={smoothness} />
+        <SkillsZone smoothness={smoothness} />
+        <ExperienceZone smoothness={smoothness} />
+        <ContactZone smoothness={smoothness} />
+        <Decor />
         <ContactShadows
           position={[0, 0.004, 0]}
-          scale={phone ? 18 : 34}
+          scale={40}
           resolution={quality === "high" ? 1024 : 512}
-          blur={2.4}
-          opacity={0.42}
-          far={4.5}
+          blur={2.6}
+          opacity={0.38}
+          far={5}
           color="#2a2420"
           frames={quality === "low" ? 1 : Infinity}
         />
         <Ready />
       </Suspense>
-      {!phone && <CameraRig panelOpen={panelOpen} />}
+      <CameraRig panelOpen={panelOpen} />
       <TooltipTracker />
-      <TooltipInvalidator />
+      <ZoneLabelTracker />
+      <OverlayInvalidator />
+      <Effects quality={quality} aoOn={aoOn} />
     </Canvas>
   );
 }

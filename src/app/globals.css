@@ -22,7 +22,7 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
 
-  --topbar-h: 64px;
+  --topbar-h: 68px;
   --panel-w: 440px;
 
   color-scheme: light;
@@ -93,6 +93,9 @@ html[data-mode="2d"] .hero-wrap {
   max-width: 760px;
   margin-inline: auto;
 }
+html[data-mode="2d"] .hero-card {
+  max-width: none;
+}
 
 /* ── Panel (desktop side panel / phone bottom sheet / 2D page) ─────────── */
 .panel {
@@ -112,7 +115,7 @@ html[data-mode="2d"] .hero-wrap {
     right: 16px;
     bottom: 16px;
     width: var(--panel-w);
-    border-radius: var(--radius-panel);
+    border-radius: 24px;
     animation: panel-in 420ms var(--ease-out) both;
   }
 }

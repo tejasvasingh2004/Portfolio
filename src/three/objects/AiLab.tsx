@@ -11,10 +11,12 @@ import { activeEdges, gridExtent, routeEdge } from "@/lib/graph";
 import { Tile, COLORS } from "./Tile";
 import { Trace } from "./Trace";
 import { useInteractive, useZoneState } from "../interactions";
-import { AI_CELL, AI_GRAPH_OFFSET, AI_NODE, AI_PLATE, AI_SWITCH_Z, zonePos, type V3 } from "../layout";
+import { AI_CELL, AI_GRAPH_OFFSET, AI_NODE, AI_PLATE, AI_SWITCH_Z, toWorld as moduleToWorld, type V3 } from "../layout";
+import { ModuleFrame } from "./ModuleFrame";
 import { useAtlas } from "../useAtlas";
 
-const A = zonePos.ai;
+/** Module-local origin; the ModuleFrame places the lab on the ring. */
+const A: V3 = [0, 0, 0];
 
 /** World position of a node of the given system. */
 export function nodePosition(system: AiSystem, id: string): V3 {
@@ -26,6 +28,9 @@ export function nodePosition(system: AiSystem, id: string): V3 {
     A[2] + AI_GRAPH_OFFSET[2] + (n.at[1] - (rows - 1) / 2) * AI_CELL,
   ];
 }
+
+/** World position of a node (for camera targeting). */
+export const nodeWorld = (system: AiSystem, id: string): V3 => moduleToWorld("ai", nodePosition(system, id));
 
 /** BFS depth of each node along the active edges — used to sequence pulses. */
 function depths(system: AiSystem, active: Set<string>) {
@@ -101,10 +106,10 @@ export function AiLab({ smoothness }: { smoothness: number }) {
   ];
 
   const switchZ = A[2] + AI_SWITCH_Z;
-  const keyW = 1.42;
+  const keyW = 1.25;
 
   return (
-    <group>
+    <ModuleFrame id="ai">
       {/* Raised sub-board */}
       <group ref={plateRef} {...zone.handlers}>
         <RoundedBox
@@ -127,7 +132,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
               points={pts}
               lit={on && (focused || zone.hovered || !dimmed)}
               dimmed={dimmed}
-              radius={0.035}
+              radius={0.045}
               caps="none"
               dashed={e.loop}
               pulse={on && focused ? pulseKey : 0}
@@ -155,7 +160,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
             enterFrom={-0.4 - i * 0.04}
             decals={[
               { key: `icon:${n.icon}`, height: 0.4, offset: [0, -0.12] },
-              { key: `text:${n.label}`, height: 0.13, offset: [0, 0.29], tone: "ink" },
+              { key: `text:${n.label}`, height: 0.15, offset: [0, 0.27], tone: "ink" },
             ]}
             interactive={{
               id: `node:${system.id}:${n.id}`,
@@ -182,7 +187,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
             dimmed={dimmed}
             active={focused && s.id === system.id}
             lit={!focused && s.id === system.id}
-            decals={[{ key: `text:${s.title}`, height: 0.16, tone: "ink" }]}
+            decals={[{ key: `text:${s.title}`, height: 0.19, tone: "ink" }]}
             interactive={{
               id: `system:${s.id}`,
               label: s.title,
@@ -210,7 +215,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
                 dimmed={dimmed}
                 active={workload === st.id && focused}
                 lit={workload === st.id && !focused}
-                decals={[{ key: `text:${st.label.toUpperCase()}`, height: 0.13, tone: "ink" }]}
+                decals={[{ key: `text:${st.label.toUpperCase()}`, height: 0.15, tone: "ink" }]}
                 interactive={{
                   id: `workload:${st.id}`,
                   label: `${st.label} workload`,
@@ -224,6 +229,6 @@ export function AiLab({ smoothness }: { smoothness: number }) {
           })}
         </group>
       )}
-    </group>
+    </ModuleFrame>
   );
 }

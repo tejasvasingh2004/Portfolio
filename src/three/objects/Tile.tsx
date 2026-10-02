@@ -14,10 +14,12 @@ import type { V3 } from "../layout";
 export const COLORS = {
   tile: new THREE.Color("#fafaf8"),
   bg: new THREE.Color("#f4f4f2"),
-  iconIdle: new THREE.Color("#9a9aa0"),
+  iconIdle: new THREE.Color("#7d7d84"),
   ink: new THREE.Color("#2a2a2e"),
   muted: new THREE.Color("#8a8a90"),
   accent: new THREE.Color("#ff6a13"),
+  /** HDR orange (>1) so bloom picks it up. */
+  accentHdr: new THREE.Color("#ff6a13").multiplyScalar(11),
 };
 
 export type Decal = {
@@ -96,6 +98,12 @@ export function Tile({
       }),
     [],
   );
+  // Thin glowing strip at the tile base (reference: orange underglow rim).
+  const rimMat = useMemo(
+    () => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr, transparent: true, opacity: 0, depthWrite: false, toneMapped: false }),
+    [],
+  );
+  const rim = useRef<THREE.Mesh>(null);
   const decalParts = useMemo(
     () =>
       decals
@@ -162,6 +170,8 @@ export function Tile({
     }
     glowMat.opacity = a.glow * (1 - a.dim);
     if (glow.current) glow.current.visible = glowMat.opacity > 0.01;
+    rimMat.opacity = Math.min(1, a.glow * 1.3) * (1 - a.dim);
+    if (rim.current) rim.current.visible = rimMat.opacity > 0.01;
 
     if (moving) invalidate();
   });
@@ -187,6 +197,9 @@ export function Tile({
           material={body}
           {...handlers}
         />
+        <mesh ref={rim} position={[0, 0.032, 0]} material={rimMat} visible={false} raycast={() => null}>
+          <boxGeometry args={[w - 0.035, 0.03, d - 0.035]} />
+        </mesh>
         {faceMat && (
           <mesh position={[0, h + 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} material={faceMat} raycast={() => null}>
             <planeGeometry args={[w - radius * 2, d - radius * 2]} />

@@ -1,92 +1,80 @@
+import * as THREE from "three";
 import type { Zone } from "@/lib/view";
 
-/** World layout of the Systems Board. Positions only — no content lives here. */
+/**
+ * Radial "Systems Board": the identity hub sits at the origin and every module sits on a
+ * ring around it, facing outward. Orbit 360° to see them all; clicking one swings the
+ * camera round to stand in front of it.
+ *
+ * Module contents are authored in LOCAL coordinates: origin at the module centre,
+ * +z = outward (towards the viewer standing in front of it), -z = towards the hub.
+ */
 
 export type V3 = [number, number, number];
 export type ZoneId = Exclude<Zone, "home">;
+export type ModuleId = Exclude<ZoneId, "about">;
 
-export const BOARD = { width: 26, depth: 19 };
-
-/** Hub sits at the origin; its base slab is HUB_SIZE wide. */
 export const HUB_SIZE = 3.0;
+/** Circular signal bus around the hub. */
+export const RING_RADIUS = 2.75;
 
-export const zonePos: Record<ZoneId, V3> = {
-  about: [0, 0, 0],
-  projects: [-6.4, 0, -4.4],
-  ai: [7.0, 0, -3.9],
-  skills: [-8.8, 0, 3.2],
-  experience: [-1.9, 0, 6.8],
-  contact: [5.6, 0, 5.9],
+const deg = (d: number) => (d * Math.PI) / 180;
+
+/** angle: azimuth from +z towards +x. radius: distance of the module centre from the hub. back: local z of its rear edge. */
+export const modules: Record<ModuleId, { angle: number; radius: number; back: number }> = {
+  ai: { angle: deg(38), radius: 8.0, back: -3.15 },
+  projects: { angle: deg(-38), radius: 7.6, back: -1.75 },
+  experience: { angle: deg(110), radius: 6.9, back: -1.35 },
+  skills: { angle: deg(-110), radius: 8.1, back: -2.85 },
+  contact: { angle: deg(180), radius: 6.6, back: -1.4 },
 };
 
-// ── Projects ───────────────────────────────────────────────────────────
-export const PROJECT_CARD = { w: 1.55, h: 0.16, d: 1.05, gap: 0.2, z: 1.9 };
-export const MONITOR = { w: 6.4, h: 3.9, depth: 0.2, tilt: -0.16, z: -0.85, y: 2.75 };
+export function moduleFrame(id: ModuleId): { position: V3; rotationY: number } {
+  const m = modules[id];
+  return { position: [Math.sin(m.angle) * m.radius, 0, Math.cos(m.angle) * m.radius], rotationY: m.angle };
+}
 
-// ── AI Lab ─────────────────────────────────────────────────────────────
-export const AI_PLATE = { w: 8.8, d: 7.4, h: 0.18 };
-export const AI_CELL = 1.3;
-export const AI_NODE = { w: 0.98, h: 0.26, d: 0.98 };
-/** Graph area centre relative to the plate (the front strip holds the switches). */
-export const AI_GRAPH_OFFSET: V3 = [0, 0, -0.55];
-export const AI_SWITCH_Z = 3.0;
+const _v = new THREE.Vector3();
+const _up = new THREE.Vector3(0, 1, 0);
+/** Local module coordinates → world. */
+export function toWorld(id: ModuleId, local: V3): V3 {
+  const { position, rotationY } = moduleFrame(id);
+  _v.set(...local).applyAxisAngle(_up, rotationY);
+  return [_v.x + position[0], _v.y + position[1], _v.z + position[2]];
+}
 
-// ── Skills ─────────────────────────────────────────────────────────────
-export const KEY = { w: 0.6, h: 0.2, d: 0.6, pitch: 0.7 };
+/** Spoke from the hub ring to a module's rear edge, as [x, z] world points. */
+export function spoke(id: ModuleId): [number, number][] {
+  const m = modules[id];
+  const a: [number, number] = [Math.sin(m.angle) * RING_RADIUS, Math.cos(m.angle) * RING_RADIUS];
+  const end = toWorld(id, [0, 0, m.back - 0.05]);
+  return [a, [end[0], end[2]]];
+}
 
-// ── Experience ─────────────────────────────────────────────────────────
-export const EXP_CARD = { w: 2.3, h: 0.14, d: 1.5 };
+// ── Module internals (local units) ─────────────────────────────────────
+export const PROJECT_CARD = { w: 1.5, h: 0.22, d: 1.02, gap: 0.18, z: 1.55 };
+export const MONITOR = { w: 5.6, h: 3.4, depth: 0.24, tilt: -0.12, z: -0.95, y: 2.45 };
+export const AI_PLATE = { w: 7.6, d: 6.3, h: 0.22 };
+export const AI_CELL = 1.12;
+export const AI_NODE = { w: 0.86, h: 0.3, d: 0.86 };
+export const AI_GRAPH_OFFSET: V3 = [0, 0, -0.45];
+export const AI_SWITCH_Z = 2.55;
+export const EXP_CARD = { w: 2.2, h: 0.18, d: 1.45 };
+export const CONTACT_CARD = { w: 3.2, h: 0.26, d: 2.1 };
 
-// ── Contact ────────────────────────────────────────────────────────────
-export const CONTACT_CARD = { w: 3.4, h: 0.22, d: 2.2 };
+// ── Camera ─────────────────────────────────────────────────────────────
+export type CameraPose = { position: V3; target: V3 };
 
-/**
- * Trace routes from the hub to each zone, as [x, z] waypoints on the board.
- * Corners are rounded when the tube is built.
- */
-export const hubTraces: Record<Exclude<ZoneId, "about">, [number, number][]> = {
-  projects: [
-    [-1.5, -0.55],
-    [-3.2, -0.55],
-    [-3.2, -1.43],
-    [-6.4, -1.43],
-  ],
-  ai: [
-    [1.5, -0.55],
-    [2.5, -0.55],
-    [2.5, -3.9],
-    [2.6, -3.9],
-  ],
-  skills: [
-    [-1.5, 0.55],
-    [-3.7, 0.55],
-    [-3.7, 3.2],
-    [-4.62, 3.2],
-  ],
-  experience: [
-    [-0.45, 1.5],
-    [-0.45, 3.6],
-    [-1.9, 3.6],
-    [-1.9, 5.85],
-  ],
-  contact: [
-    [0.45, 1.5],
-    [0.45, 3.6],
-    [5.6, 3.6],
-    [5.6, 4.7],
-  ],
+/** Overview: a close three-quarter view that invites dragging round to see the rest. */
+export const homePose: CameraPose = { position: [0, 21, 25.5], target: [0, 0.4, 0.8] };
+
+/** Zone poses in LOCAL module space: camera stands outside the module, looking in. */
+export const localZonePoses: Record<ModuleId, CameraPose> = {
+  projects: { position: [0.7, 7.15, 11.1], target: [0, 1.4, -0.2] },
+  ai: { position: [0.5, 10.3, 10.5], target: [0, 0, 0.2] },
+  skills: { position: [0.55, 8.3, 9.2], target: [0, 0.2, 0.3] },
+  experience: { position: [0.45, 7.2, 10.3], target: [0, 0.3, 0.2] },
+  contact: { position: [0.45, 6.6, 9.6], target: [0, 0.4, 0.6] },
 };
 
-/** Camera framing per zone: position offset from the zone centre and look-at offset. */
-export type CameraPose = { position: V3; target: V3; azimuthRange?: number; polarRange?: number };
-
-export const homePose: CameraPose = { position: [21.5, 27.5, 31.5], target: [0.6, 0, 0.4], azimuthRange: 0.6, polarRange: 0.32 };
-
-export const zonePoses: Record<ZoneId, CameraPose> = {
-  about: { position: [5.4, 7.8, 11.2], target: [0, 1.0, 0] },
-  projects: { position: [-3.6, 8.6, 10.6], target: [-6.4, 1.7, -3.3] },
-  ai: { position: [8.6, 11.8, 6.4], target: [7.0, 0, -3.6] },
-  skills: { position: [-5.6, 10.4, 12.6], target: [-8.6, 0.2, 3.2] },
-  experience: { position: [0.1, 10.8, 17.4], target: [-1.9, 0.3, 6.8] },
-  contact: { position: [8.8, 9.4, 15.8], target: [5.6, 0.4, 6.6] },
-};
+export const aboutPose: CameraPose = { position: [4.2, 6.2, 8.6], target: [0, 1.2, 0] };

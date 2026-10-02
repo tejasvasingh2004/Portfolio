@@ -45,7 +45,8 @@ src/
 
 ## Behaviour notes
 
+- **360° workspace.** Modules sit on a ring around the identity hub, each facing outward. Mouse: drag to orbit, right-drag to pan, scroll to zoom. Touch: drag to orbit, two fingers to pan or pinch. After a drag, **Recenter** in the dock returns to the view's framing. The overview slowly turntables after 7 s idle (off with reduced motion).
 - **Routes drive the camera.** `/projects/hybrid-db`, `/ai/neuroflow?node=verifier` and so on are shareable and work with the back button.
 - **Keyboard:** `1`–`6` jump to zones, `Esc` goes up a level, `←/→` cycle items, `⌘K`/`Ctrl+K` opens the palette. Tab reaches a proxy list of the 3D objects.
 - **2D mode** is used automatically without WebGL, or via the top bar toggle. Reduced motion follows the OS setting or the top bar toggle.
-- **Device tiers** come from a local heuristic (`src/lib/deviceTier.ts`). For testing, force one with `?tier=high|medium|low`.
+- **Device tiers** come from a local heuristic (`src/lib/deviceTier.ts`). For testing, force one with `?tier=high|medium|low`, and limit post-processing with `?fx=ao,bloom,tilt` (any subset).

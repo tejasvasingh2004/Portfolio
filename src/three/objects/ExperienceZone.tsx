@@ -9,10 +9,11 @@ import { Tile } from "./Tile";
 import { Trace } from "./Trace";
 import { experienceCardFace, toTexture } from "../faces";
 import { useInteractive, useZoneState } from "../interactions";
-import { EXP_CARD, zonePos, type V3 } from "../layout";
+import { EXP_CARD, type V3 } from "../layout";
+import { ModuleFrame } from "./ModuleFrame";
 import { useAtlas } from "../useAtlas";
 
-const E = zonePos.experience;
+const E: V3 = [0, 0, 0]; // module-local origin
 const n = experience.length;
 
 /** Stacked (home) or dealt into a left→right timeline (zone focused). Index 0 = newest. */
@@ -59,7 +60,7 @@ export function ExperienceZone({ smoothness }: { smoothness: number }) {
   const hit = useMemo(() => new THREE.MeshBasicMaterial({ visible: false }), []);
 
   return (
-    <group>
+    <ModuleFrame id="experience">
       {!focused && (
         <group ref={stackRef} {...zone.handlers}>
           <mesh position={[E[0], 0.35, E[2]]} material={hit}>
@@ -105,6 +106,6 @@ export function ExperienceZone({ smoothness }: { smoothness: number }) {
           />
         );
       })}
-    </group>
+    </ModuleFrame>
   );
 }

@@ -10,10 +10,11 @@ import { useView } from "@/store/viewStore";
 import { usageCount } from "@/lib/usage";
 import { Tile, COLORS } from "./Tile";
 import { useInteractive, useZoneState } from "../interactions";
-import { zonePos } from "../layout";
+import { ModuleFrame } from "./ModuleFrame";
+import type { V3 } from "../layout";
 import { useAtlas } from "../useAtlas";
 
-const S = zonePos.skills;
+const S: V3 = [0, 0, 0]; // module-local origin
 const KEY = { w: 0.84, h: 0.18, d: 0.48, px: 0.92, pz: 0.56 };
 const PLATE_PAD = 0.16;
 const LABEL_STRIP = 0.42;
@@ -78,7 +79,7 @@ export function SkillsZone({ smoothness }: { smoothness: number }) {
   });
 
   return (
-    <group>
+    <ModuleFrame id="skills">
       <group ref={zoneRef} {...zone.handlers}>
         {skillsLayout.plates.map((p) => (
           <RoundedBox
@@ -115,7 +116,7 @@ export function SkillsZone({ smoothness }: { smoothness: number }) {
                   dimmed={dimmed}
                   active={focused && skillFocus === s.id}
                   lit={isOn && !focused}
-                  decals={[{ key: `text:${s.label}`, height: 0.12, tone: "ink" }]}
+                  decals={[{ key: `text:${s.label}`, height: 0.135, tone: "ink" }]}
                   interactive={{
                     id: `skill:${s.id}`,
                     label: s.label,
@@ -130,7 +131,7 @@ export function SkillsZone({ smoothness }: { smoothness: number }) {
           </group>
         );
       })}
-    </group>
+    </ModuleFrame>
   );
 }
 

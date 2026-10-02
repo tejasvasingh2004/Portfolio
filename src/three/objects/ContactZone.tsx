@@ -9,10 +9,11 @@ import { Tile } from "./Tile";
 import { Trace } from "./Trace";
 import { contactCardFace, toTexture } from "../faces";
 import { useZoneState } from "../interactions";
-import { CONTACT_CARD, zonePos } from "../layout";
+import { CONTACT_CARD, type V3 } from "../layout";
+import { ModuleFrame } from "./ModuleFrame";
 import { useAtlas } from "../useAtlas";
 
-const K = zonePos.contact;
+const K: V3 = [0, 0, 0]; // module-local origin
 
 export const contactLinks: { id: string; icon: IconName; label: string; detail: string; href: string }[] = [
   { id: "mail", icon: "mail", label: "Email", detail: links.email, href: `mailto:${links.email}` },
@@ -50,7 +51,7 @@ export function ContactZone({ smoothness }: { smoothness: number }) {
   }, [invalidate]);
 
   return (
-    <group>
+    <ModuleFrame id="contact">
       <Trace
         points={[
           [linkTileX(0), ROW_Z - TILE / 2 - 0.3],
@@ -89,6 +90,6 @@ export function ContactZone({ smoothness }: { smoothness: number }) {
           interactive={{ id: `link:${l.id}`, label: l.label, detail: l.detail, href: l.href, anchorY: 0.5 }}
         />
       ))}
-    </group>
+    </ModuleFrame>
   );
 }

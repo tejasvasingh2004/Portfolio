@@ -4,49 +4,44 @@ import { aiSystems } from "@/data/aiSystems";
 import { experience } from "@/data/experience";
 import { ButtonLink } from "@/components/ui/primitives";
 
+/**
+ * Overview intro. In 3D mode it's a compact floating card (the workspace is the hero);
+ * in the 2D fallback it's the page header.
+ */
 export function Hero() {
   return (
     <section
       aria-labelledby="hero-title"
-      className="hero-wrap pointer-events-none relative z-10 px-5 pt-[calc(var(--topbar-h)+20px)] sm:px-8 sm:pt-[calc(var(--topbar-h)+40px)] lg:px-12"
+      className="hero-wrap pointer-events-none relative z-10 px-3 pt-[76px] sm:px-5 sm:pt-[88px]"
     >
-      {/* Soft wash so the hero always reads over the 3D board behind it. */}
-      <div
-        aria-hidden
-        className="only-3d absolute -left-20 -top-10 h-[620px] w-[780px] max-w-[110vw]"
-        style={{ background: "radial-gradient(closest-side, rgb(244 244 242 / 0.94) 55%, rgb(244 244 242 / 0) 100%)" }}
-      />
-      <div className="pointer-events-auto relative max-w-[520px] [&>*]:animate-[rise_640ms_var(--ease-out)_both]">
-        <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-surface/80 px-3 py-1 text-[12px] text-ink-2 ring-1 ring-line backdrop-blur">
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_0_3px_var(--accent-soft)]" />
+      <div className="hero-card pointer-events-auto w-full max-w-[400px] animate-[rise_700ms_var(--ease-out)_both] rounded-[22px] bg-surface/85 p-5 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_44px_-18px_rgb(0_0_0/0.22)] ring-1 ring-line backdrop-blur-xl sm:p-6">
+        <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent-soft px-2.5 py-1 text-[11.5px] font-medium text-accent-ink">
+          <span aria-hidden className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:hidden" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+          </span>
           {profile.status}
         </p>
-        <h1 id="hero-title" className="text-[40px] font-semibold leading-[1.02] tracking-[-0.035em] text-ink [animation-delay:60ms] sm:text-[56px]">
+        <h1 id="hero-title" className="text-[30px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink sm:text-[36px]">
           {profile.name}
         </h1>
-        <p className="mt-3 text-[17px] font-medium text-ink [animation-delay:120ms] sm:text-[19px]">{profile.title}</p>
-        <p className="mt-2 max-w-[440px] text-[15px] leading-relaxed text-ink-2 [animation-delay:160ms] sm:text-[16px]">
-          {profile.tagline}
-        </p>
-        <div className="mt-6 flex flex-wrap gap-2 [animation-delay:220ms]">
+        <p className="mt-2 text-[15px] font-medium text-ink">{profile.title}</p>
+        <p className="mt-1.5 text-[14px] leading-relaxed text-ink-2">{profile.tagline}</p>
+
+        <dl className="mt-4 hidden grid-cols-3 divide-x sm:grid divide-line rounded-xl bg-surface-2 ring-1 ring-line">
+          <Stat k="Projects" v={projects.length} />
+          <Stat k="AI systems" v={aiSystems.length} />
+          <Stat k="Roles" v={experience.length} />
+        </dl>
+
+        <div className="mt-4 flex flex-wrap gap-2">
           <ButtonLink href="/ai" variant="primary" icon="network">
             Explore the AI Lab
           </ButtonLink>
           <ButtonLink href="/projects" icon="folder">
             Projects
           </ButtonLink>
-          <ButtonLink href={profile.resume} icon="file-down" variant="ghost" download>
-            Résumé
-          </ButtonLink>
         </div>
-        <p className="only-3d mt-6 hidden font-mono text-[11px] uppercase tracking-[0.08em] text-ink-3 [animation-delay:300ms] lg:block">
-          Drag to orbit · Scroll to zoom · Click any module · <kbd className="font-mono">⌘K</kbd> to jump
-        </p>
-        <dl className="only-2d mt-8 grid max-w-[420px] grid-cols-3 gap-2">
-          <Stat k="Projects" v={projects.length} />
-          <Stat k="AI systems" v={aiSystems.length} />
-          <Stat k="Roles" v={experience.length} />
-        </dl>
       </div>
     </section>
   );
@@ -54,9 +49,9 @@ export function Hero() {
 
 function Stat({ k, v }: { k: string; v: number }) {
   return (
-    <div className="rounded-xl bg-surface px-3 py-2.5 ring-1 ring-line">
-      <dd className="text-[22px] font-semibold tracking-[-0.02em]">{v}</dd>
-      <dt className="text-[12px] text-ink-3">{k}</dt>
+    <div className="flex flex-col-reverse px-3 py-2">
+      <dt className="text-[11.5px] text-ink-3">{k}</dt>
+      <dd className="text-[19px] font-semibold tracking-[-0.02em] text-ink">{v}</dd>
     </div>
   );
 }

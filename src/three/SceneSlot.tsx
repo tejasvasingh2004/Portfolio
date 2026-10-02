@@ -2,10 +2,11 @@
 
 import dynamic from "next/dynamic";
 import { useView } from "@/store/viewStore";
-import { useMediaQuery, useMode } from "@/hooks/useMode";
+import { useMode } from "@/hooks/useMode";
 import { Tooltip } from "./Tooltip";
 import { ObjectProxyNav } from "./ObjectProxyNav";
 import { BootLog } from "./BootLog";
+import { ZoneLabels } from "./ZoneLabels";
 
 // The 3D chunk (three + r3f + scene) loads only on the client, after the HTML paints.
 const Scene = dynamic(() => import("./Scene"), { ssr: false, loading: () => null });
@@ -16,7 +17,6 @@ export function SceneSlot() {
   const tier = useView((s) => s.tier);
   const zone = useView((s) => s.view.zone);
   const ready = useView((s) => s.sceneReady);
-  const phone = useMediaQuery("(max-width: 639px)");
 
   const show3d = mode === "3d" && tier !== null && tier !== "none";
 
@@ -36,8 +36,9 @@ export function SceneSlot() {
             role="img"
             aria-label="Interactive 3D workspace: an identity hub wired to modules for projects, AI systems, experience, skills and contact. Everything here is also available through the navigation and panels."
           >
-            <Scene tier={tier} panelOpen={zone !== "home"} phone={phone} />
+            <Scene tier={tier} panelOpen={zone !== "home"} />
           </div>
+          <ZoneLabels />
           <Tooltip />
           <BootLog />
           <ObjectProxyNav />

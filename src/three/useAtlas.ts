@@ -18,8 +18,6 @@ function labels(): string[] {
     ...clusters.map((c) => c.label.toUpperCase()),
     ...aiSystems.flatMap((s) => [s.title, ...s.nodes.map((n) => n.label), ...(s.states ?? []).map((st) => st.label.toUpperCase())]),
     "WORKLOAD",
-    // Phone keycaps
-    "Projects", "AI Lab", "Experience", "Skills", "Contact", "Résumé",
   ];
 }
 

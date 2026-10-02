@@ -29,6 +29,10 @@ type ViewStore = {
   /** Skill being inspected (drives skill → project traces). */
   skillFocus: string | null;
   paletteOpen: boolean;
+  /** The visitor has orbited/panned away from the route's framing. */
+  cameraDirty: boolean;
+  /** Increment to fly back to the current route's framing. */
+  recenterTick: number;
 
   setView: (view: View) => void;
   setNavigate: (fn: (href: string) => void) => void;
@@ -40,6 +44,8 @@ type ViewStore = {
   setWorkload: (w: string) => void;
   setSkillFocus: (id: string | null) => void;
   setPaletteOpen: (v: boolean) => void;
+  setCameraDirty: (v: boolean) => void;
+  recenter: () => void;
 };
 
 export const useView = create<ViewStore>((set) => ({
@@ -54,6 +60,8 @@ export const useView = create<ViewStore>((set) => ({
   workload: "MEDIUM",
   skillFocus: null,
   paletteOpen: false,
+  cameraDirty: false,
+  recenterTick: 0,
 
   setView: (view) => set({ view }),
   setNavigate: (navigate) => set({ navigate }),
@@ -65,4 +73,6 @@ export const useView = create<ViewStore>((set) => ({
   setWorkload: (workload) => set({ workload }),
   setSkillFocus: (skillFocus) => set({ skillFocus }),
   setPaletteOpen: (paletteOpen) => set({ paletteOpen }),
+  setCameraDirty: (cameraDirty) => set((s) => (s.cameraDirty === cameraDirty ? s : { cameraDirty })),
+  recenter: () => set((s) => ({ recenterTick: s.recenterTick + 1 })),
 }));

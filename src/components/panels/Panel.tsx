@@ -1,9 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode, type PointerEvent } from "react";
 import { cn } from "@/components/ui/primitives";
+import { Icon } from "@/components/ui/Icon";
+import type { IconName } from "@/lib/icons";
+import { parseView, type Zone } from "@/lib/view";
+
+const zoneIcon: Record<Zone, IconName> = {
+  home: "layout",
+  about: "user",
+  projects: "folder",
+  ai: "network",
+  experience: "briefcase",
+  skills: "keyboard",
+  contact: "mail",
+};
 
 type PagerLink = { href: string; label: string };
 
@@ -22,6 +35,7 @@ type Props = {
  */
 export function Panel({ kicker, title, subtitle, back, pager, children }: Props) {
   const router = useRouter();
+  const zone = parseView(usePathname()).zone;
   const headingRef = useRef<HTMLHeadingElement>(null);
   const panelRef = useRef<HTMLElement>(null);
   const [sheet, setSheet] = useState<"peek" | "full">("peek");
@@ -130,7 +144,12 @@ export function Panel({ kicker, title, subtitle, back, pager, children }: Props)
       <div className={cn("scroll-quiet min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-10 pt-5")}>
         <div key={title} className="stagger space-y-6">
           <div>
-            <p className="label-mono mb-2 !text-accent-ink">{kicker}</p>
+            <div className="mb-3 flex items-center gap-2.5">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-surface text-accent shadow-[0_1px_2px_rgb(0_0_0/0.06),0_6px_16px_-6px_rgb(0_0_0/0.18)] ring-1 ring-line">
+                <Icon name={zoneIcon[zone]} size={17} />
+              </span>
+              <p className="label-mono !text-accent-ink">{kicker}</p>
+            </div>
             <h1
               id="panel-title"
               ref={headingRef}

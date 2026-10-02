@@ -7,6 +7,7 @@ import { bootScript } from "@/lib/prefs";
 import { TopBar } from "@/components/navigation/TopBar";
 import { AppShell } from "@/components/navigation/AppShell";
 import { CommandPalette } from "@/components/navigation/CommandPalette";
+import { Dock } from "@/components/navigation/Dock";
 import { SceneSlot } from "@/three/SceneSlot";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="content">{children}</main>
         {/* After main in DOM order so keyboard users reach the nav and content first. */}
         <SceneSlot />
+        <Dock />
         <Suspense>
           <AppShell />
         </Suspense>
