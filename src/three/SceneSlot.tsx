@@ -4,12 +4,12 @@ import dynamic from "next/dynamic";
 import { useView } from "@/store/viewStore";
 import { useMode } from "@/hooks/useMode";
 import { Tooltip } from "./Tooltip";
-import { ObjectProxyNav } from "./ObjectProxyNav";
 import { BootLog } from "./BootLog";
-import { ZoneLabels } from "./ZoneLabels";
 
-// The 3D chunk (three + r3f + scene) loads only on the client, after the HTML paints.
+// The 3D chunk (three + r3f + scene) and its layout-aware overlays load only on the client,
+// after the HTML paints — none of three.js ships in the initial bundle.
 const Scene = dynamic(() => import("./Scene"), { ssr: false, loading: () => null });
+const Overlays = dynamic(() => import("./Overlays"), { ssr: false, loading: () => null });
 
 /** Fixed full-viewport stage behind the HTML. Renders nothing in 2D mode. */
 export function SceneSlot() {
@@ -38,10 +38,9 @@ export function SceneSlot() {
           >
             <Scene tier={tier} panelOpen={zone !== "home"} />
           </div>
-          <ZoneLabels />
+          {ready && <Overlays />}
           <Tooltip />
           <BootLog />
-          <ObjectProxyNav />
         </>
       )}
     </div>

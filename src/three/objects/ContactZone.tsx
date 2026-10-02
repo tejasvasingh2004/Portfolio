@@ -23,9 +23,11 @@ export const contactLinks: { id: string; icon: IconName; label: string; detail: 
   { id: "resume", icon: "file-down", label: "Résumé", detail: "Download PDF", href: profile.resume },
 ];
 
-const TILE = 0.74;
+export const LINK_TILE = 0.74;
+const TILE = LINK_TILE;
 const TILE_GAP = 0.18;
-const ROW_Z = K[2] + CONTACT_CARD.d / 2 + 0.95;
+export const LINK_ROW_Z = K[2] + CONTACT_CARD.d / 2 + 0.95;
+const ROW_Z = LINK_ROW_Z;
 
 export function linkTileX(i: number) {
   const span = contactLinks.length * TILE + (contactLinks.length - 1) * TILE_GAP;
@@ -40,7 +42,7 @@ export function ContactZone({ smoothness }: { smoothness: number }) {
 
   useEffect(() => {
     let alive = true;
-    contactCardFace(profile.photo, profile.name, profile.status, links.email).then((c) => {
+    contactCardFace(profile.photo).then((c) => {
       if (!alive) return;
       setFace(toTexture(c));
       invalidate();

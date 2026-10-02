@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from "@react-three/drei";
-import { Bloom, EffectComposer, N8AO, SMAA, TiltShift2, ToneMapping } from "@react-three/postprocessing";
+import { Bloom, EffectComposer, N8AO, SMAA, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
@@ -20,6 +20,7 @@ import { Decor } from "./objects/Decor";
 import { useAtlas } from "./useAtlas";
 import { tooltipElement } from "./Tooltip";
 import { ZoneLabelTracker } from "./ZoneLabels";
+import { ItemLabelTracker } from "./ItemLabels";
 
 type Quality = "high" | "medium" | "low";
 
@@ -45,7 +46,7 @@ function Lighting({ quality }: { quality: Quality }) {
 /** Post-processing tuned for a white product render: soft AO in the crevices, bloom only on HDR orange. */
 function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
   const effects = useMemo(() => {
-    // Debug: ?fx=ao,bloom,tilt limits the stack (for tuning); default is everything the tier allows.
+    // Debug: ?fx=ao,bloom limits the stack (for tuning); default is everything the tier allows.
     const fx = new URLSearchParams(window.location.search).get("fx");
     const want = (k: string) => !fx || fx.split(",").includes(k);
     const list = [];
@@ -64,7 +65,7 @@ function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
     }
     // Threshold sits above lit white surfaces, so only the HDR orange accents bloom.
     if (want("bloom")) list.push(<Bloom key="bloom" mipmapBlur luminanceThreshold={2.4} luminanceSmoothing={0.05} intensity={0.75} radius={0.65} />);
-    if (quality === "high" && want("tilt")) list.push(<TiltShift2 key="tilt" blur={0.012} taper={0.5} />);
+    // No tilt-shift / depth-of-field: they blur text, and legibility wins.
     list.push(<ToneMapping key="tm" mode={ToneMappingMode.NEUTRAL} />);
     list.push(<SMAA key="smaa" />);
     return list;
@@ -126,10 +127,15 @@ function TooltipTracker() {
 function OverlayInvalidator() {
   const invalidate = useThree((s) => s.invalidate);
   const tip = useView((s) => s.tooltip);
-  const zone = useView((s) => s.view.zone);
+  const view = useView((s) => s.view);
+  const workload = useView((s) => s.workload);
+  const skillFocus = useView((s) => s.skillFocus);
+  const ready = useView((s) => s.sceneReady);
   useEffect(() => {
-    invalidate();
-  }, [tip, zone, invalidate]);
+    // Next frame, once the DOM labels for the new state exist.
+    const id = requestAnimationFrame(() => invalidate());
+    return () => cancelAnimationFrame(id);
+  }, [tip, view, workload, skillFocus, ready, invalidate]);
   return null;
 }
 
@@ -188,6 +194,7 @@ export default function Scene({ tier, panelOpen }: { tier: Exclude<Tier, "none">
       <CameraRig panelOpen={panelOpen} />
       <TooltipTracker />
       <ZoneLabelTracker />
+      <ItemLabelTracker />
       <OverlayInvalidator />
       <Effects quality={quality} aoOn={aoOn} />
     </Canvas>

@@ -34,7 +34,7 @@ export function ProjectsZone({ smoothness }: { smoothness: number }) {
   const { focused, dimmed } = useZoneState("projects");
   const selected = focused ? projects.find((p) => p.slug === view.item) : undefined;
 
-  const faces = useMemo(() => projects.map((p, i) => toTexture(projectCardFace(p, i))), []);
+  const faces = useMemo(() => projects.map((p) => toTexture(projectCardFace(p))), []);
   const screen = useMemo(() => toTexture(monitorScreen(projects)), []);
   const invalidate = useThree((s) => s.invalidate);
   const hoveredCard = projects.find((p) => hovered === `project:${p.slug}`);

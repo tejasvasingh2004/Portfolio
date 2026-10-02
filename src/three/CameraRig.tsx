@@ -29,8 +29,9 @@ function poseFor(view: View): CameraPose {
     const i = projects.findIndex((p) => p.slug === view.item);
     if (i >= 0) {
       const card = cardPosition(i);
-      const target: V3 = [card[0] * 0.35, 1.25, (MONITOR_LOCAL[2] + card[2]) / 2];
-      return worldPose("projects", { position: add(target, [card[0] * 0.25, 6.0, 10.2]), target });
+      // Favour the cards (readable labels) while keeping the monitor in frame.
+      const target: V3 = [card[0] * 0.3, 0.9, MONITOR_LOCAL[2] * 0.3 + card[2] * 0.7];
+      return worldPose("projects", { position: add(target, [card[0] * 0.2, 6.2, 7.4]), target });
     }
   }
   if (view.zone === "ai" && view.item && view.node) {

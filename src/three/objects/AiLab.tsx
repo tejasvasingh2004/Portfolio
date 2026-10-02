@@ -29,6 +29,14 @@ export function nodePosition(system: AiSystem, id: string): V3 {
   ];
 }
 
+/** Height of a node tile (inputs/outputs sit a little lower). */
+export const nodeHeight = (kind: string) => (kind === "input" || kind === "output" ? AI_NODE.h * 0.8 : AI_NODE.h);
+
+/** Front switch strip: system keys on the left, workload keys on the right (local x). */
+export const KEY_W = 1.25;
+export const systemKeyX = (i: number) => A[0] - AI_PLATE.w / 2 + 0.5 + KEY_W / 2 + i * (KEY_W + 0.12);
+export const workloadKeyX = (i: number, n: number) => A[0] + AI_PLATE.w / 2 - 0.45 - 0.39 - (n - 1 - i) * 0.88;
+
 /** World position of a node (for camera targeting). */
 export const nodeWorld = (system: AiSystem, id: string): V3 => moduleToWorld("ai", nodePosition(system, id));
 
@@ -106,7 +114,6 @@ export function AiLab({ smoothness }: { smoothness: number }) {
   ];
 
   const switchZ = A[2] + AI_SWITCH_Z;
-  const keyW = 1.25;
 
   return (
     <ModuleFrame id="ai">
@@ -145,7 +152,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
       {/* Graph nodes */}
       {system.nodes.map((n, i) => {
         const p = nodePosition(system, n.id);
-        const h = n.kind === "input" || n.kind === "output" ? AI_NODE.h * 0.8 : AI_NODE.h;
+        const h = nodeHeight(n.kind);
         return (
           <Tile
             key={`${system.id}:${n.id}`}
@@ -158,10 +165,8 @@ export function AiLab({ smoothness }: { smoothness: number }) {
             lit={hot.has(n.id) && !dimmed}
             active={selectedNode === n.id}
             enterFrom={-0.4 - i * 0.04}
-            decals={[
-              { key: `icon:${n.icon}`, height: 0.4, offset: [0, -0.12] },
-              { key: `text:${n.label}`, height: 0.15, offset: [0, 0.27], tone: "ink" },
-            ]}
+            // Icon only — the name is a crisp HTML label (see ItemLabels).
+            decals={[{ key: `icon:${n.icon}`, height: 0.42, offset: [0, -0.1] }]}
             interactive={{
               id: `node:${system.id}:${n.id}`,
               label: n.label,
@@ -176,18 +181,16 @@ export function AiLab({ smoothness }: { smoothness: number }) {
 
       {/* System switch keys (front-left of the plate) */}
       {aiSystems.map((s, i) => {
-        const x = A[0] - AI_PLATE.w / 2 + 0.5 + keyW / 2 + i * (keyW + 0.12);
         return (
           <Tile
             key={s.id}
-            position={[x, AI_PLATE.h, switchZ]}
-            size={[keyW, 0.16, 0.62]}
+            position={[systemKeyX(i), AI_PLATE.h, switchZ]}
+            size={[KEY_W, 0.16, 0.62]}
             radius={0.07}
             smoothness={smoothness}
             dimmed={dimmed}
             active={focused && s.id === system.id}
             lit={!focused && s.id === system.id}
-            decals={[{ key: `text:${s.title}`, height: 0.19, tone: "ink" }]}
             interactive={{
               id: `system:${s.id}`,
               label: s.title,
@@ -204,18 +207,16 @@ export function AiLab({ smoothness }: { smoothness: number }) {
       {system.states && (
         <group>
           {system.states.map((st, i) => {
-            const x = A[0] + AI_PLATE.w / 2 - 0.45 - 0.39 - (system.states!.length - 1 - i) * 0.88;
             return (
               <Tile
                 key={st.id}
-                position={[x, AI_PLATE.h, switchZ]}
+                position={[workloadKeyX(i, system.states!.length), AI_PLATE.h, switchZ]}
                 size={[0.78, 0.16, 0.62]}
                 radius={0.07}
                 smoothness={smoothness}
                 dimmed={dimmed}
                 active={workload === st.id && focused}
                 lit={workload === st.id && !focused}
-                decals={[{ key: `text:${st.label.toUpperCase()}`, height: 0.15, tone: "ink" }]}
                 interactive={{
                   id: `workload:${st.id}`,
                   label: `${st.label} workload`,

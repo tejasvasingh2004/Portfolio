@@ -70,11 +70,12 @@ export const homePose: CameraPose = { position: [0, 21, 25.5], target: [0, 0.4, 
 
 /** Zone poses in LOCAL module space: camera stands outside the module, looking in. */
 export const localZonePoses: Record<ModuleId, CameraPose> = {
-  projects: { position: [0.7, 7.15, 11.1], target: [0, 1.4, -0.2] },
-  ai: { position: [0.5, 10.3, 10.5], target: [0, 0, 0.2] },
-  skills: { position: [0.55, 8.3, 9.2], target: [0, 0.2, 0.3] },
-  experience: { position: [0.45, 7.2, 10.3], target: [0, 0.3, 0.2] },
-  contact: { position: [0.45, 6.6, 9.6], target: [0, 0.4, 0.6] },
+  // Fairly steep angles so tile tops (and their labels) face the viewer.
+  projects: { position: [0.6, 7.6, 10.6], target: [0, 1.2, 0.1] },
+  ai: { position: [0.4, 11.6, 7.4], target: [0, 0, 0.4] },
+  skills: { position: [0.4, 10.4, 6.6], target: [0, 0.2, 0.5] },
+  experience: { position: [0.4, 8.4, 7.2], target: [0, 0.2, 0.3] },
+  contact: { position: [0.4, 8.0, 7.0], target: [0, 0.3, 0.9] },
 };
 
 export const aboutPose: CameraPose = { position: [4.2, 6.2, 8.6], target: [0, 1.2, 0] };

@@ -37,7 +37,11 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 export async function buildAtlas(icons: IconName[], labels: string[]): Promise<Atlas> {
   const family = fontFamily();
   try {
-    await Promise.all([document.fonts.load(`600 60px ${family}`), document.fonts.load(`500 60px ${family}`)]);
+    // Every weight the atlas and canvas faces use, or the canvas silently falls back to another font.
+    const mono = monoFamily();
+    await Promise.all(
+      [`500 60px ${family}`, `600 60px ${family}`, `700 60px ${family}`, `600 30px ${mono}`, `700 30px ${mono}`].map((f) => document.fonts.load(f)),
+    );
   } catch {
     /* fall back to whatever is available */
   }

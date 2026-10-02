@@ -9,8 +9,8 @@ import { fontFamily, monoFamily } from "./atlas";
 export const C = {
   face: "#fafaf8",
   ink: "#121214",
-  ink2: "#5c5c63",
-  ink3: "#9a9aa0",
+  ink2: "#4a4a52",
+  ink3: "#85858c",
   line: "#e6e6e2",
   surface2: "#f1f1ee",
   accent: "#ff6a13",
@@ -32,7 +32,7 @@ export function toTexture(c: HTMLCanvasElement, existing?: THREE.CanvasTexture) 
   }
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
-  t.anisotropy = 8;
+  t.anisotropy = 16; // clamped to the GPU maximum; keeps text sharp at grazing angles
   return t;
 }
 
@@ -66,48 +66,18 @@ const sans = (weight: number, px: number) => `${weight} ${px}px ${fontFamily()}`
 const mono = (weight: number, px: number) => `${weight} ${px}px ${monoFamily()}`;
 
 // ── Project card ───────────────────────────────────────────────────────
-export function projectCardFace(p: Project, index: number) {
+// Drawn at 2× with few, large, bold elements so it stays legible at oblique angles.
+export function projectCardFace(p: Project) {
   const W = 620;
   const H = 420;
-  const { c, ctx } = canvas(W, H);
+  const { c, ctx } = canvas(W * 2, H * 2);
+  ctx.scale(2, 2);
   ctx.fillStyle = C.face;
   ctx.fillRect(0, 0, W, H);
-
-  // category pill
-  ctx.font = mono(600, 20);
-  const tag = p.category.toUpperCase();
-  const tw = ctx.measureText(tag).width + 28;
-  rr(ctx, 40, 38, tw, 36, 10);
-  ctx.fillStyle = C.accentSoft;
-  ctx.fill();
-  ctx.fillStyle = "#c2410c";
-  ctx.textBaseline = "middle";
-  ctx.fillText(tag, 54, 57);
-
-  ctx.font = mono(500, 20);
-  ctx.fillStyle = C.ink3;
-  ctx.textAlign = "right";
-  ctx.fillText(`${String(index + 1).padStart(2, "0")} · ${p.year}`, W - 40, 57);
-  ctx.textAlign = "left";
-
-  ctx.font = sans(650, 58);
-  ctx.fillStyle = C.ink;
-  ctx.textBaseline = "alphabetic";
-  ctx.fillText(p.title, 38, 160);
-
-  ctx.font = sans(500, 26);
-  ctx.fillStyle = C.ink2;
-  wrap(ctx, p.subtitle, W - 80, 2).forEach((l, i) => ctx.fillText(l, 40, 206 + i * 34));
-
-  // stack line
-  ctx.font = mono(500, 19);
-  ctx.fillStyle = C.ink3;
-  const stack = p.stack.slice(0, 4).map((s) => skillById[s]?.label).join("  ·  ");
-  ctx.fillText(stack, 40, H - 48);
-
-  // accent bar
-  rr(ctx, 40, H - 30, 64, 6, 3);
-  ctx.fillStyle = C.accent;
+  // Title, subtitle and category are crisp HTML labels (see ItemLabels); the face stays quiet.
+  ctx.beginPath();
+  ctx.arc(54, 54, 11, 0, Math.PI * 2);
+  ctx.fillStyle = p.featured ? C.accent : C.line;
   ctx.fill();
   return c;
 }
@@ -116,12 +86,12 @@ export function projectCardFace(p: Project, index: number) {
 export async function experienceCardFace(r: Role) {
   const W = 620;
   const H = 404;
-  const { c, ctx } = canvas(W, H);
+  const { c, ctx } = canvas(W * 2, H * 2);
+  ctx.scale(2, 2);
   ctx.fillStyle = C.face;
   ctx.fillRect(0, 0, W, H);
 
-  // logo / monogram tile
-  rr(ctx, 40, 40, 96, 96, 22);
+  rr(ctx, 40, 38, 104, 104, 24);
   ctx.fillStyle = "#fff";
   ctx.fill();
   ctx.strokeStyle = C.line;
@@ -130,62 +100,49 @@ export async function experienceCardFace(r: Role) {
   let drew = false;
   if (r.logo) {
     try {
-      const img = await new Promise<HTMLImageElement>((res, rej) => {
-        const i = new Image();
-        i.onload = () => res(i);
-        i.onerror = rej;
-        i.src = r.logo!;
-      });
-      ctx.drawImage(img, 52, 52, 72, 72);
+      const img = await loadImg(r.logo);
+      ctx.drawImage(img, 52, 50, 80, 80);
       drew = true;
     } catch {
       /* fall back to monogram */
     }
   }
   if (!drew) {
-    ctx.font = mono(650, 30);
+    ctx.font = mono(700, 34);
     ctx.fillStyle = C.ink2;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(r.orgShort, 88, 90);
+    ctx.fillText(r.orgShort, 92, 91);
     ctx.textAlign = "left";
   }
 
-  // period
-  ctx.textBaseline = "middle";
-  ctx.font = mono(600, 20);
-  ctx.textAlign = "right";
-  ctx.fillStyle = r.current ? "#c2410c" : C.ink3;
-  ctx.fillText(r.period.toUpperCase(), W - 40, 66);
+  // "Present" marker: a single orange dot (dates live in the HTML label/panel).
   if (r.current) {
-    const tw = ctx.measureText(r.period.toUpperCase()).width;
     ctx.beginPath();
-    ctx.arc(W - 40 - tw - 16, 66, 6, 0, Math.PI * 2);
+    ctx.arc(W - 52, 64, 11, 0, Math.PI * 2);
     ctx.fillStyle = C.accent;
     ctx.fill();
   }
-  ctx.textAlign = "left";
 
-  ctx.textBaseline = "alphabetic";
-  let orgSize = 42;
-  ctx.font = sans(650, orgSize);
-  while (ctx.measureText(r.org).width > W - 80 && orgSize > 26) ctx.font = sans(650, (orgSize -= 2));
-  ctx.fillStyle = C.ink;
-  ctx.fillText(r.org, 40, 212);
-  ctx.font = sans(500, 25);
-  ctx.fillStyle = C.ink2;
-  wrap(ctx, r.title, W - 80, 2).forEach((l, i) => ctx.fillText(l, 40, 256 + i * 33));
-  ctx.font = mono(500, 19);
-  ctx.fillStyle = C.ink3;
-  ctx.fillText(r.mode.length > 44 ? "Research · IIT Bombay guidance" : r.mode, 40, H - 40);
+  // Organisation and role are crisp HTML labels pinned to the card (see ItemLabels).
   return c;
 }
 
+function loadImg(src: string) {
+  return new Promise<HTMLImageElement>((res, rej) => {
+    const i = new Image();
+    i.onload = () => res(i);
+    i.onerror = rej;
+    i.src = src;
+  });
+}
+
 // ── Contact card ───────────────────────────────────────────────────────
-export async function contactCardFace(photo: string, name: string, status: string, email: string) {
+export async function contactCardFace(photo: string) {
   const W = 680;
   const H = 440;
-  const { c, ctx } = canvas(W, H);
+  const { c, ctx } = canvas(W * 2, H * 2);
+  ctx.scale(2, 2);
   ctx.fillStyle = C.face;
   ctx.fillRect(0, 0, W, H);
 
@@ -214,12 +171,7 @@ export async function contactCardFace(photo: string, name: string, status: strin
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  ctx.font = sans(650, 36);
-  ctx.fillStyle = C.ink;
-  ctx.fillText(name, 196, 104);
-  ctx.font = sans(500, 24);
-  ctx.fillStyle = C.ink2;
-  ctx.fillText("Let's build something", 196, 144);
+  // Name and email are crisp HTML labels pinned to the card (see ItemLabels).
 
   // step dots → orange check (reference image language)
   const y = 288;
@@ -257,13 +209,6 @@ export async function contactCardFace(photo: string, name: string, status: strin
   ctx.lineTo(487, y - 10);
   ctx.stroke();
 
-  ctx.font = mono(500, 21);
-  ctx.fillStyle = C.ink3;
-  ctx.fillText(email, 44, H - 44);
-  ctx.textAlign = "right";
-  ctx.fillStyle = "#c2410c";
-  ctx.fillText(status.toLowerCase().includes("intern") ? "OPEN TO INTERNSHIPS" : "AVAILABLE", W - 44, H - 44);
-  ctx.textAlign = "left";
   return c;
 }
 

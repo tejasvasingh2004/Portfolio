@@ -59,8 +59,8 @@ export function ZoneLabels() {
             >
               <Icon name={l.icon} size={13} />
             </span>
-            <span className="text-[12.5px] font-semibold text-ink">{l.label}</span>
-            <span className="hidden text-[11.5px] text-ink-3 sm:inline">{l.meta}</span>
+            <span className="text-[13.5px] font-semibold text-ink">{l.label}</span>
+            <span className="hidden text-[12px] font-medium text-ink-2 sm:inline">{l.meta}</span>
           </Link>
         );
       })}
@@ -86,9 +86,8 @@ export function ZoneLabelTracker() {
       const visible = v.z < 1 && Math.abs(v.x) < 1.15 && Math.abs(v.y) < 1.15;
       const x = (v.x * 0.5 + 0.5) * size.width;
       const y = (-v.y * 0.5 + 0.5) * size.height;
-      // Nearer modules read stronger; the far side of the ring recedes.
-      const fade = THREE.MathUtils.clamp(1.9 - dist / 22, 0.35, 1);
-      el.style.opacity = visible ? String(fade) : "0";
+      // Always fully legible; depth is conveyed by stacking order instead of fading.
+      el.style.opacity = visible ? "1" : "0";
       el.style.pointerEvents = visible ? "auto" : "none";
       el.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0) translate(-50%, -100%)`;
       el.style.zIndex = String(1000 - Math.round(dist * 10));
