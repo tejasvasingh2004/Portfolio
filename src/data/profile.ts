@@ -40,4 +40,11 @@ export const education = {
   ],
 } as const;
 
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+/**
+ * Public site URL. Set NEXT_PUBLIC_SITE_URL for a custom domain; on Vercel the production
+ * deployment URL is picked up automatically at build time.
+ */
+export const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000")
+).replace(/\/$/, "");

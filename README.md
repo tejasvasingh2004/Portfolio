@@ -10,7 +10,22 @@ npm run dev        # http://localhost:3000
 npm run build && npm start
 ```
 
-Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.dev`) in your hosting environment so canonical URLs, the sitemap and social share images point to the real domain.
+Requires Node.js 20.9 or newer.
+
+## Deploy (free)
+
+Every route is pre-rendered static HTML, with no server code, database or secrets, so it runs on any free static host.
+
+**Vercel (recommended)**
+1. Push this repo to GitHub. Vercel deploys the **default branch** (`master`) to production.
+2. On [vercel.com](https://vercel.com), sign in with GitHub and click **Add New → Project → Import** this repo. Keep the defaults (framework *Next.js*, build `next build`).
+3. Optional: in *Settings → Environment Variables*, set `NEXT_PUBLIC_SITE_URL` to your custom domain. Without it, the production `*.vercel.app` URL is used automatically for canonical URLs, the sitemap and social cards.
+
+Every push to `master` redeploys. Pushes to other branches get preview URLs.
+
+**Netlify / Cloudflare Pages** also work. Use the Next.js preset; the build command is `npm run build`.
+
+See `.env.example` for the only environment variable.
 
 ## Updating content
 

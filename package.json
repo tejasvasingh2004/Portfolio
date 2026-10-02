@@ -1,12 +1,18 @@
 {
-  "name": "app",
-  "version": "0.1.0",
+  "name": "tejasva-portfolio",
+  "version": "1.0.0",
   "private": true,
+  "description": "Interactive 3D portfolio of Tejasva Singh Chouhan — Next.js + React Three Fiber",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "optimize-images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

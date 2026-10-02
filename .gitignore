@@ -12,6 +12,9 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 # next.js
 /.next/
@@ -22,7 +25,10 @@
 
 # misc
 .DS_Store
+Thumbs.db
+desktop.ini
 *.pem
+*.log
 
 # debug
 npm-debug.log*
@@ -30,12 +36,25 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (secrets never go in git) — the example file is the exception
 .env*
+!.env.example
 
-# vercel
+# vercel / netlify
 .vercel
+.netlify
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editors & local tooling
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.claude/
+
+# raw, unprocessed uploads (personal originals and third-party design references).
+# Run `node scripts/optimize-images.mjs` to produce the web-ready files in /public.
+/intake/
