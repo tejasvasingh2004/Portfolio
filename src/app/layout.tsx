@@ -68,9 +68,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <SceneSlot />
         <TopBar />
         <main id="content">{children}</main>
+        {/* After main in DOM order so keyboard users reach the nav and content first. */}
+        <SceneSlot />
         <Suspense>
           <AppShell />
         </Suspense>

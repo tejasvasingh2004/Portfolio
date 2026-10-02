@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
     title: `${p.title} — ${p.subtitle}`,
     description: p.tagline,
     alternates: { canonical: `/projects/${p.slug}` },
-    openGraph: { title: p.title, description: p.tagline },
+    // Overriding openGraph drops the inherited file-based image, so restate it.
+    openGraph: { title: p.title, description: p.tagline, images: ["/opengraph-image.png"] },
   };
 }
 

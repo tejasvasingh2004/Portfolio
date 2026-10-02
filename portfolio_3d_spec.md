@@ -1,6 +1,6 @@
 # portfolio_3d_spec.md — Tejasva Singh Chouhan · 3D Portfolio
 
-Status: **DRAFT v1 — awaiting approval.** No application code will be written until this is approved.
+Status: **Approved and implemented** (branch `feat/3d-portfolio`). See "Implementation notes" at the end for where the build differs from this draft.
 Legend: `TBD` = content still needed from Tejasva · `ASSUMED` = my inference, please confirm · `DRAFT` = copy I wrote, please edit.
 
 ---
@@ -808,3 +808,15 @@ A recruiter who never touches the 3D can still get everything from the top bar a
 8. Reduced motion, accessibility pass (keyboard-only + screen reader run-through)
 9. Performance pass (budgets above, Lighthouse, real-phone test), loading sequence
 10. QA across Chrome / Safari / Firefox / iOS / Android, then deploy to Vercel
+
+---
+
+## Implementation notes (deviations from the draft)
+
+- **NeuroFlow states:** The repo's `workload.py` uses **LOW / MEDIUM / HIGH**, decoded from EEG by an SVM. The résumé's four states are now legacy aliases. The AI Lab shows the real policies: 0/1/2 verifier loops, 70/80/95% thresholds, and a Final Verification agent at HIGH.
+- **Project names:** "AI Code-Gen CLI" uses its repo name, **Traycer-mini**. Hybrid-DB = the custom B+ Tree database engine. Dinesphere details come from `Dinesphere_backend`.
+- **Device tiers:** A local heuristic replaces `detect-gpu`, which downloads its benchmark data from a CDN at runtime. drei's `PerformanceMonitor` still lowers DPR if frame rate drops.
+- **Tone mapping:** Neutral instead of AgX. AgX rendered the white tiles grey.
+- **Glass cube:** A clear coated material on every tier instead of transmission. Transmission doubled the figure and costs an extra render pass.
+- **Not built yet:** Hybrid-DB's 3D B+ tree (planned as phase 2), selective bloom/AO post-processing (the glow is faked with gradient planes), and a strict CSP (it needs nonces for the inline boot and JSON-LD scripts; the other security headers are set).
+- **Poster:** A real scene capture is used as the Open Graph / Twitter image. While loading, the page shows a matching backdrop and fades the canvas in.

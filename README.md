@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tejasva Singh Chouhan — 3D Portfolio
 
-## Getting Started
+An interactive "Systems Board": an identity hub wired to Projects, an AI Lab of explorable agent graphs, Experience, Skills and Contact. Built with Next.js 16, React Three Fiber and Tailwind CSS v4. The full design spec is in [`portfolio_3d_spec.md`](portfolio_3d_spec.md).
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.dev`) in your hosting environment so canonical URLs, the sitemap and social share images point to the real domain.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Updating content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All content lives in `src/data/`. The 3D scene, panels, 2D fallback, command palette, sitemap and SEO metadata all read from it, so you never edit 3D components to change copy.
 
-## Learn More
+| File | What it holds |
+|---|---|
+| `profile.ts` | Name, title, tagline, bio, status, links, education |
+| `projects.ts` | Projects (problem, solution, decisions, stack, links, facts) |
+| `aiSystems.ts` | AI Lab graphs: nodes (with grid positions), edges, adaptive states |
+| `experience.ts` | Roles, newest first |
+| `skills.ts` | Skills and clusters. "Where I used it" is derived from project/role stacks |
 
-To learn more about Next.js, take a look at the following resources:
+Adding a project means adding an entry to `projects.ts`. Its card, monitor screen, route `/projects/<slug>`, palette entry and sitemap entry appear automatically. With more than ~5 projects, widen `PROJECT_CARD` spacing in `src/three/layout.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Images
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Put originals in `intake/` and run `node scripts/optimize-images.mjs` (edit the job list at the top) to produce WebP/AVIF files in `public/assets/`. To show a screenshot in a project panel, add its path to that project's `media` field.
 
-## Deploy on Vercel
+## Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/            routes (every view is a real, statically generated URL)
+├── components/     UI primitives, top bar, command palette, panels
+├── sections/       content views — used by panels and by the 2D fallback
+├── three/          the scene: Scene, CameraRig, layout, atlas, faces, objects/, mobile/
+├── data/           all content
+├── lib/            routing ↔ view state, graph routing, icons, device tier, prefs
+└── store/          zustand view store shared by DOM and canvas
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Behaviour notes
+
+- **Routes drive the camera.** `/projects/hybrid-db`, `/ai/neuroflow?node=verifier` and so on are shareable and work with the back button.
+- **Keyboard:** `1`–`6` jump to zones, `Esc` goes up a level, `←/→` cycle items, `⌘K`/`Ctrl+K` opens the palette. Tab reaches a proxy list of the 3D objects.
+- **2D mode** is used automatically without WebGL, or via the top bar toggle. Reduced motion follows the OS setting or the top bar toggle.
+- **Device tiers** come from a local heuristic (`src/lib/deviceTier.ts`). For testing, force one with `?tier=high|medium|low`.
