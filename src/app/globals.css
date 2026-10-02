@@ -1,26 +1,213 @@
 @import "tailwindcss";
 
+/* ── Design tokens (spec §13) ─────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f4f4f2;
+  --surface: #ffffff;
+  --surface-2: #f8f8f6;
+  --line: #e6e6e2;
+  --line-strong: #d6d6d1;
+  --ink: #121214;
+  --ink-2: #5c5c63;
+  --ink-3: #9a9aa0;
+  --accent: #ff6a13;
+  --accent-ink: #c2410c;
+  --accent-soft: #ffede1;
+
+  --radius-panel: 20px;
+  --radius-card: 12px;
+  --radius-chip: 8px;
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -8px rgb(0 0 0 / 0.1);
+  --shadow-float: 0 1px 2px rgb(0 0 0 / 0.05), 0 20px 48px -12px rgb(0 0 0 / 0.16);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  --topbar-h: 64px;
+  --panel-w: 440px;
+
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --ease-out-soft: var(--ease-out);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Mono label voice (a utility so it works with variants) */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ── 3D / 2D mode switching ───────────────────────────────────────────── */
+/* data-mode is set before first paint by an inline script in layout.tsx. */
+html[data-mode="2d"] .only-3d {
+  display: none !important;
+}
+html:not([data-mode="2d"]) .only-2d {
+  display: none !important;
+}
+
+/* ── Panel (desktop side panel / phone bottom sheet / 2D page) ─────────── */
+.panel {
+  position: fixed;
+  z-index: 40;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-float);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .panel {
+    top: calc(var(--topbar-h) + 8px);
+    right: 16px;
+    bottom: 16px;
+    width: var(--panel-w);
+    border-radius: var(--radius-panel);
+    animation: panel-in 420ms var(--ease-out) both;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root {
+    --panel-w: 380px;
+  }
+}
+
+@media (max-width: 639px) {
+  .panel {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 88dvh;
+    border-radius: 22px 22px 0 0;
+    border-bottom: 0;
+    transform: translateY(var(--sheet-offset, 48%));
+    transition: transform 380ms var(--ease-out);
+    animation: sheet-in 420ms var(--ease-out) both;
+  }
+  .panel[data-sheet="full"] {
+    --sheet-offset: 0%;
+  }
+  .panel[data-dragging="true"] {
+    transition: none;
+  }
+}
+
+html[data-mode="2d"] .panel {
+  position: relative;
+  inset: auto;
+  width: auto;
+  height: auto;
+  max-width: 760px;
+  margin: calc(var(--topbar-h) + 24px) auto 48px;
+  transform: none;
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+  animation: none;
+  overflow: visible;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+/* Staggered content entrance */
+.stagger > * {
+  animation: rise 520ms var(--ease-out) both;
+}
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Thin, quiet scrollbars inside panels */
+.scroll-quiet {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* ── Reduced motion (system preference or manual toggle) ──────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 1ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 1ms !important;
 }
