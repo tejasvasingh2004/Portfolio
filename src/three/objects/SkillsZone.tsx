@@ -13,6 +13,7 @@ import { useInteractive, useZoneState } from "../interactions";
 import { ModuleFrame } from "./ModuleFrame";
 import type { V3 } from "../layout";
 import { useAtlas } from "../useAtlas";
+import { SurfaceText } from "../TileText";
 
 const S: V3 = [0, 0, 0]; // module-local origin
 const KEY = { w: 0.84, h: 0.18, d: 0.48, px: 0.92, pz: 0.56 };
@@ -136,20 +137,5 @@ export function SkillsZone({ smoothness }: { smoothness: number }) {
 }
 
 function ClusterLabel({ text, x, z, dimmed }: { text: string; x: number; z: number; dimmed: boolean }) {
-  const atlas = useAtlas();
-  const g = atlas.geometryFor(`text:${text}`, 0.17);
-  if (!g) return null;
-  return (
-    <mesh geometry={g.geometry} position={[x + g.width / 2, 0.123, z]} raycast={() => null}>
-      <meshBasicMaterial
-        map={atlas.texture}
-        color={COLORS.muted}
-        transparent
-        premultipliedAlpha
-        depthWrite={false}
-        toneMapped={false}
-        opacity={dimmed ? 0.4 : 1}
-      />
-    </mesh>
-  );
+  return <SurfaceText text={text} position={[x, 0.124, z]} size={0.1} tracking={0.08} opacity={dimmed ? 0.4 : 1} />;
 }

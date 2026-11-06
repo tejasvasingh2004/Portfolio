@@ -51,6 +51,44 @@ export function TileText({ label, top, tone }: { label: TileLabel; top: number; 
   );
 }
 
+const INK_MUTED = new THREE.Color("#7f8f84");
+
+/** Static one-line text printed flat on a surface (plates, the board), reading towards the viewer. */
+export function SurfaceText({
+  text,
+  position,
+  size,
+  opacity = 1,
+  tracking = 0,
+}: {
+  text: string;
+  /** Left end of the line, vertically centred, in the parent's units. */
+  position: [number, number, number];
+  size: number;
+  opacity?: number;
+  /** Letter spacing in ems. */
+  tracking?: number;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <group position={position} rotation={[-Math.PI / 2, 0, 0]}>
+        <Text
+          font={FONT_TITLE}
+          fontSize={size}
+          anchorX="left"
+          anchorY="middle"
+          letterSpacing={tracking}
+          color={INK_MUTED}
+          fillOpacity={opacity}
+          raycast={() => null}
+        >
+          {text}
+        </Text>
+      </group>
+    </Suspense>
+  );
+}
+
 function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone: RefObject<LabelTone> }) {
   const invalidate = useThree((s) => s.invalidate);
   const title = useRef<TroikaText>(null);
