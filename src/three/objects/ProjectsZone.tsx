@@ -113,6 +113,14 @@ export function ProjectsZone({ smoothness }: { smoothness: number }) {
             dimmed={dimmed && !related}
             lit={related}
             active={selected?.slug === p.slug}
+            label={{
+              text: p.title,
+              sub: `${p.category} · ${p.subtitle}`,
+              width: PROJECT_CARD.w * 0.86,
+              size: 0.14,
+              at: [0, PROJECT_CARD.d * 0.12],
+              align: "left",
+            }}
             interactive={{
               id: `project:${p.slug}`,
               label: p.title,

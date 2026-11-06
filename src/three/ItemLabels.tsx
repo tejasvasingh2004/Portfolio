@@ -4,7 +4,6 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo } from "react";
 import * as THREE from "three";
 import { useView } from "@/store/viewStore";
-import { projects } from "@/data/projects";
 import { experience } from "@/data/experience";
 import { links, profile } from "@/data/profile";
 import type { View } from "@/lib/view";
@@ -12,13 +11,11 @@ import { cn } from "@/components/ui/primitives";
 import {
   CONTACT_CARD,
   EXP_CARD,
-  PROJECT_CARD,
   moduleFrame,
   toWorld,
   type ModuleId,
   type V3,
 } from "./layout";
-import { cardPosition } from "./objects/ProjectsZone";
 import { expCardPose } from "./objects/ExperienceZone";
 import { contactLinks, linkTileX, LINK_ROW_Z, LINK_TILE } from "./objects/ContactZone";
 
@@ -47,22 +44,6 @@ type ItemLabel = {
 
 export function itemLabelsFor(view: View): ItemLabel[] {
   const out: ItemLabel[] = [];
-
-  // Projects — cards (lower two-thirds of the face; the tag sits above)
-  projects.forEach((p, i) => {
-    const c = cardPosition(i);
-    out.push({
-      id: `project:${p.slug}`,
-      text: p.title,
-      sub: `${p.category} · ${p.subtitle}`,
-      module: "projects",
-      local: [c[0], c[1] + PROJECT_CARD.h + 0.01, c[2] + PROJECT_CARD.d * 0.12],
-      width: PROJECT_CARD.w * 0.86,
-      kind: "card",
-      target: `project:${p.slug}`,
-      current: view.zone === "projects" && view.item === p.slug,
-    });
-  });
 
   // Experience — cards (dealt into a timeline when the module is open)
   experience.forEach((r, i) => {
