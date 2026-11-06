@@ -258,6 +258,41 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "edutrack",
+    title: "EduTrack",
+    subtitle: "Placement and career tracking for an education programme",
+    tagline:
+      "Tracks students from application to employment — and checks back with placed students every six months over WhatsApp.",
+    category: "Backend",
+    year: 2026,
+    featured: false,
+    problem:
+      "An education programme needs to know what happens to students after placement, but following up by hand with every graduate doesn't scale, and the records go stale.",
+    solution:
+      "A Next.js app with admin, mentor and student portals and a public application form, on PostgreSQL. A scheduled job looks up placed students' LinkedIn profiles every six months; when something has changed it confirms with the student over WhatsApp, and an LLM turns the free-text reply into a structured employment record.",
+    role: "Built with a teammate in two days; I wrote most of the app (10 of its 13 commits).",
+    features: [
+      "Admin, mentor and student portals plus a public application form",
+      "JWT sessions in HTTP-only cookies with role-based access control",
+      "Zod validation on every API route",
+      "Six-monthly check-ins: LinkedIn lookup (Apify), WhatsApp confirmation (Twilio) and reply parsing with an LLM (Groq)",
+      "Mentor assignment, skill progress, employment records and a question-answering chatbot",
+    ],
+    decisions: [
+      "When the scraped profile hasn't changed, no message is sent — the attempt is only logged.",
+      "Students can reply in their own words; an LLM turns the reply into structured JSON instead of forcing a form.",
+      "Frontend and API live in one Next.js codebase, with authentication, roles and validation as shared middleware.",
+    ],
+    stack: ["typescript", "nextjs", "postgresql", "jwt", "joi", "llm-apis", "rest", "tailwind"],
+    links: { github: "https://github.com/nachiketkale24-png/EduTrack" },
+    media: {},
+    facts: [
+      { label: "Portals", value: "3" },
+      { label: "API routes", value: "16" },
+      { label: "Check-in cycle", value: "6 mo" },
+    ],
+  },
+  {
     slug: "dinesphere",
     title: "Dinesphere",
     subtitle: "Restaurant management & booking API",
