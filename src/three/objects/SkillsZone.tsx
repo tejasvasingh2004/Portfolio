@@ -54,21 +54,6 @@ function computeLayout() {
 
 export const skillsLayout = computeLayout();
 
-/** Local centre of every keycap's top face (used for crisp HTML labels). */
-export function keycapPositions(): { id: string; label: string; pos: V3 }[] {
-  return skillsLayout.plates.flatMap((p) => {
-    const x0 = p.x - p.w / 2 + PLATE_PAD + KEY.w / 2;
-    const z0 = p.z - p.d / 2 + LABEL_STRIP + KEY.d / 2;
-    return skills
-      .filter((s) => s.cluster === p.id)
-      .map((s, i) => ({
-        id: s.id,
-        label: s.label,
-        pos: [x0 + (i % p.cols) * KEY.px, 0.12 + KEY.h, z0 + Math.floor(i / p.cols) * KEY.pz] as V3,
-      }));
-  });
-}
-
 export function SkillsZone({ smoothness }: { smoothness: number }) {
   useAtlas();
   const { focused, dimmed } = useZoneState("skills");
@@ -131,6 +116,7 @@ export function SkillsZone({ smoothness }: { smoothness: number }) {
                   dimmed={dimmed}
                   active={focused && skillFocus === s.id}
                   lit={isOn && !focused}
+                  label={{ text: s.label, width: KEY.w - 0.1, size: 0.105 }}
                   interactive={{
                     id: `skill:${s.id}`,
                     label: s.label,

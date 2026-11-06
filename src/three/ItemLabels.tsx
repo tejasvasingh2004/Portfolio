@@ -18,7 +18,6 @@ import {
   type ModuleId,
   type V3,
 } from "./layout";
-import { keycapPositions } from "./objects/SkillsZone";
 import { cardPosition } from "./objects/ProjectsZone";
 import { expCardPose } from "./objects/ExperienceZone";
 import { contactLinks, linkTileX, LINK_ROW_Z, LINK_TILE } from "./objects/ContactZone";
@@ -46,13 +45,8 @@ type ItemLabel = {
   current?: boolean;
 };
 
-export function itemLabelsFor(view: View, skillFocus: string | null): ItemLabel[] {
+export function itemLabelsFor(view: View): ItemLabel[] {
   const out: ItemLabel[] = [];
-
-  // Skills — keycaps
-  for (const k of keycapPositions()) {
-    out.push({ id: `skill:${k.id}`, text: k.label, module: "skills", local: k.pos, width: 0.84, kind: "tile", target: `skill:${k.id}`, current: skillFocus === k.id });
-  }
 
   // Projects — cards (lower two-thirds of the face; the tag sits above)
   projects.forEach((p, i) => {
@@ -116,9 +110,8 @@ export const itemLabelElements = new Map<string, HTMLElement>();
 
 export function ItemLabels() {
   const view = useView((s) => s.view);
-  const skillFocus = useView((s) => s.skillFocus);
   const hovered = useView((s) => s.hovered);
-  const labels = itemLabelsFor(view, skillFocus);
+  const labels = itemLabelsFor(view);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden" aria-hidden="true">
@@ -161,12 +154,12 @@ export function ItemLabelTracker() {
 
   useFrame(() => {
     if (itemLabelElements.size === 0) return;
-    const { view, skillFocus } = useView.getState();
+    const { view } = useView.getState();
     camera.getWorldPosition(cam);
     const sx = (p: THREE.Vector3) => (p.x * 0.5 + 0.5) * size.width;
     const sy = (p: THREE.Vector3) => (-p.y * 0.5 + 0.5) * size.height;
 
-    for (const l of itemLabelsFor(view, skillFocus)) {
+    for (const l of itemLabelsFor(view)) {
       const el = itemLabelElements.get(l.id);
       if (!el) continue;
 
