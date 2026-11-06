@@ -61,7 +61,7 @@ export const projects: Project[] = [
       "Scaling out without code changes: with 2 APIs and 2 workers behind nginx, the same load test went from 86% to 100% of runs admitted and run latency p95 from 34.8 s to 5.6 s.",
       "Cognitive Mode's classifier turns noisy 14-channel EEG windows into a stable three-class workload signal: band-pass, notch and common-average reference, then band powers, differential entropy and Hjorth parameters, reduced by PCA for an RBF-kernel SVM.",
     ],
-    stack: ["typescript", "nodejs", "fastify", "react", "vite", "tailwind", "postgresql", "redis", "bullmq", "sse", "docker", "opentelemetry", "playwright", "llm-apis", "multi-agent", "ollama", "python", "scikit-learn"],
+    stack: ["typescript", "nodejs", "fastify", "react", "vite", "tailwind", "postgresql", "redis", "bullmq", "sse", "docker", "opentelemetry", "playwright", "llm-apis", "multi-agent", "ollama", "python", "fastapi", "scikit-learn"],
     links: { github: "https://github.com/tejasvasingh2004/Tejasva_BCI_Cognitive-state-aware-multi-agent-system" },
     media: {},
     aiSystem: "neuroflow",
