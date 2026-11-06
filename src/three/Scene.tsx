@@ -159,6 +159,10 @@ export default function Scene({ tier, panelOpen }: { tier: Exclude<Tier, "none">
       onCreated={({ gl, scene }) => {
         gl.toneMapping = THREE.NeutralToneMapping;
         gl.toneMappingExposure = 1.0;
+        // The canvas is opaque, so three.js would clear every render target to opaque black, including the
+        // contact-shadow texture, which then darkens the whole board. Clear to transparent instead: the
+        // scene background still paints the canvas.
+        gl.setClearAlpha(0);
         scene.background = new THREE.Color(BG);
       }}
       style={{ position: "absolute", inset: 0 }}
