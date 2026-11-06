@@ -63,7 +63,7 @@ export const contributions: Contribution[] = [
     about: "Open-source desktop SQL workspace",
     pr: 1259,
     title: "docs(create-plugin): state the minimum just version in the generated README",
-    summary: "Generated driver-plugin READMEs now state the minimum `just` version their recipes need, checked by a scaffold test.",
+    summary: "Generated driver-plugin READMEs now state the minimum version of the just task runner their recipes need, checked by a scaffold test.",
     status: "merged",
     date: "Oct 2026",
     lang: "TypeScript",
