@@ -18,18 +18,17 @@ export type Role = {
 export const experience: Role[] = [
   {
     id: "nit-bhopal",
-    org: "NIT Bhopal (MANIT)",
+    org: "MANIT Bhopal (NIT Bhopal)",
     orgShort: "NIT",
-    title: "Research Intern — VLMs for Handwritten Text Recognition",
-    period: "Present",
-    current: true,
-    mode: "Under the guidance of a PhD scholar, IIT Bombay",
+    title: "Research Intern — BharatGen Vision-Language Models",
+    period: "May – Jul 2026",
+    mode: "Bhopal, India",
     summary:
-      "Researching vision-language models for handwritten text recognition on multilingual and Indian-language documents.",
+      "Multilingual image-text pipelines and OCR / VLM experiments for vision-language models across 21 Indian languages.",
     points: [
-      "Conducting research on Vision Language Models (VLMs) for handwritten text recognition, focused on multilingual and Indian-language documents.",
-      "Evaluating state-of-the-art OCR and VLM systems including PaddleOCR, EasyOCR, TrOCR and multimodal transformer architectures.",
-      "Running comparative analysis with CER and WER metrics on handwritten text datasets.",
+      "Engineered multilingual data pipelines combining OCR, image-text preprocessing and language-specific tokenization for 5,000+ image-text samples across 21 Indian languages.",
+      "Ran 20+ experiments across 4 preprocessing and model configurations, analysing output quality and error patterns to guide the design of multimodal VLM workflows.",
+      "Benchmarked OCR and VLM systems (PaddleOCR, EasyOCR, TrOCR and multimodal transformers) on handwritten text using CER and WER.",
     ],
     stack: ["vlm", "ocr-eval"],
   },
