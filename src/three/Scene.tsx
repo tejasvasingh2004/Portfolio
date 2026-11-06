@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from "@react-three/drei";
 import { Bloom, EffectComposer, N8AO, SMAA, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import { useView, type Tier } from "@/store/viewStore";
 import { CameraRig } from "./CameraRig";
@@ -20,6 +20,7 @@ import { Decor } from "./objects/Decor";
 import { useAtlas } from "./useAtlas";
 import { tooltipElement } from "./Tooltip";
 import { ZoneLabelTracker } from "./ZoneLabels";
+import { EDGE_GAMMA } from "./TileText";
 
 type Quality = "high" | "medium" | "low";
 
@@ -143,6 +144,11 @@ export default function Scene({ tier, panelOpen }: { tier: Exclude<Tier, "none">
   const [dprMax, setDprMax] = useState(quality === "high" ? 2 : 1.5);
   const [aoOn, setAoOn] = useState(quality !== "low");
   const smoothness = quality === "low" ? 2 : 4;
+
+  // Above the low tier the composer blends in linear light; printed text compensates (see TileText).
+  useLayoutEffect(() => {
+    EDGE_GAMMA.value = quality === "low" ? 1 : 3.2;
+  }, [quality]);
 
   return (
     <Canvas

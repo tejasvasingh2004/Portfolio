@@ -43,6 +43,35 @@ const height = (t: TroikaText | null) => {
   return b ? b[3] - b[1] : 0;
 };
 
+/**
+ * Edge-coverage gamma for glyph anti-aliasing. On the medium and high tiers the scene renders through
+ * the post-processing composer into a linear-light buffer, so a glyph's soft edge blends in linear
+ * light and turns pale after the final sRGB conversion: small text looks thin and washed out.
+ * Raising coverage to 1 - (1 - a)^γ restores the weight of dark text on light tiles: γ ≈ 2.2 undoes
+ * the sRGB encoding, and the Scene uses a little more to also offset the neutral tone-mapping pass.
+ * 1 leaves troika's output unchanged (the low tier draws straight to the sRGB canvas). Set by the Scene.
+ */
+export const EDGE_GAMMA = { value: 1 };
+
+type HookableMaterial = THREE.Material & { customProgramCacheKey: () => string };
+
+/** Patch a troika text material once so its edge alpha uses EDGE_GAMMA. */
+function correctEdges(mesh: TroikaText | null) {
+  const m = mesh?.material as HookableMaterial | HookableMaterial[] | undefined;
+  if (!m || Array.isArray(m) || m.userData.edgeGamma) return;
+  m.userData.edgeGamma = true;
+  // troika runs this after injecting its own shader code, so its edge-alpha line is present.
+  m.onBeforeCompile = (shader) => {
+    shader.uniforms.uTileEdgeGamma = EDGE_GAMMA;
+    shader.fragmentShader = shader.fragmentShader
+      .replace(/void main\s*\(\s*\)/, "uniform float uTileEdgeGamma;\n$&")
+      .replace("gl_FragColor.a *= edgeAlpha;", "gl_FragColor.a *= 1.0 - pow(1.0 - edgeAlpha, uTileEdgeGamma);");
+  };
+  const key = m.customProgramCacheKey.bind(m);
+  m.customProgramCacheKey = () => `${key()}|tile-edge-gamma`;
+  m.needsUpdate = true;
+}
+
 export function TileText({ label, top, tone }: { label: TileLabel; top: number; tone: RefObject<LabelTone> }) {
   return (
     <Suspense fallback={null}>
@@ -81,6 +110,7 @@ export function SurfaceText({
           color={INK_MUTED}
           fillOpacity={opacity}
           raycast={() => null}
+          onSync={correctEdges}
         >
           {text}
         </Text>
@@ -105,6 +135,8 @@ function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone
   // Centre title + sub as one block once both are laid out (their heights depend on wrapping).
   const layout = useCallback(() => {
     if (!title.current) return;
+    correctEdges(title.current);
+    correctEdges(sub.current);
     const ht = height(title.current);
     const hs = subText ? height(sub.current) : 0;
     const total = ht + (subText ? gap + hs : 0);
