@@ -5,9 +5,9 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useCallback, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 
-/** Geist, self-hosted (SIL Open Font License: public/fonts/Geist-OFL.txt). */
-const FONT_TITLE = "/fonts/Geist-SemiBold.ttf";
-const FONT_SUB = "/fonts/Geist-Medium.ttf";
+/** Geist, self-hosted (SIL Open Font License: public/fonts/Geist-OFL.txt). Bold titles stay legible as small SDF text seen at an angle. */
+const FONT_TITLE = "/fonts/Geist-Bold.ttf";
+const FONT_SUB = "/fonts/Geist-SemiBold.ttf";
 
 /** Text printed on a tile's top face. It moves, lifts, dims and is hidden with the tile, like ink on the block. */
 export type TileLabel = {
