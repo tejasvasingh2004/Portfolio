@@ -144,10 +144,11 @@ export const aiSystems: AiSystem[] = [
   {
     id: "htr-bench",
     title: "HTR Bench",
-    kicker: "Research · NIT Bhopal",
+    kicker: "Research · MANIT Bhopal",
     summary:
-      "Ongoing research on vision-language models for handwritten text recognition in multilingual and Indian-language documents — benchmarking OCR and VLM systems head-to-head.",
-    context: "Research internship at NIT Bhopal, under the guidance of a PhD scholar from IIT Bombay.",
+      "Research on vision-language models for handwritten and multilingual Indian-language documents — benchmarking OCR and VLM systems head-to-head on the same pages.",
+    context:
+      "Research internship at MANIT Bhopal (May – Jul 2026) on BharatGen vision-language models: image-text pipelines for 5,000+ samples in 21 Indian languages and 20+ experiments.",
     nodes: [
       { id: "doc", label: "Handwritten doc", kind: "input", icon: "scan-text", at: [0, 1.5], role: "Multilingual and Indian-language handwritten documents.", outputs: "Page / line images" },
       { id: "paddle", label: "PaddleOCR", kind: "model", icon: "scan-text", at: [1.5, 0], role: "Classical OCR pipeline baseline." },
