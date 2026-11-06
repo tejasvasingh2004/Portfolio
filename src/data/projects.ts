@@ -6,7 +6,7 @@ export type Project = {
   title: string;
   subtitle: string;
   tagline: string;
-  category: "AI" | "Backend" | "Systems" | "Tooling";
+  category: "AI" | "Backend" | "Systems" | "Frontend" | "Tooling";
   year: number;
   featured: boolean;
   problem: string;
@@ -290,6 +290,41 @@ export const projects: Project[] = [
       { label: "Portals", value: "3" },
       { label: "API routes", value: "16" },
       { label: "Check-in cycle", value: "6 mo" },
+    ],
+  },
+  {
+    slug: "portfolio",
+    title: "3D Portfolio",
+    subtitle: "This site: an orbitable 3D workspace",
+    tagline:
+      "A portfolio you can walk around: each module on a 3D board opens a part of my work, and everything you read is real, indexable HTML.",
+    category: "Frontend",
+    year: 2026,
+    featured: false,
+    problem:
+      "Most developer portfolios are a list. I wanted the shape of my work — projects, agent systems, experience, skills — to be something you can explore, without giving up accessibility, search indexing or speed.",
+    solution:
+      "A Next.js app with a React Three Fiber scene. Routes drive the camera: navigation is ordinary Next.js routing and the board animates to match, so deep links, history and crawlers all work. All content is typed data that generates the scene, the panels, the command palette, the sitemap and a 2D fallback.",
+    features: [
+      "360° board with modules on a ring and camera flights to any module or item",
+      "AI Lab: data-driven agent graphs whose route changes live with the selected state",
+      "Text printed on the 3D tiles as SDF text, so it turns with the board and stays sharp",
+      "Command palette, keyboard shortcuts and an accessible list of every 3D object",
+      "2D fallback, reduced-motion support and adaptive quality per device",
+      "Pre-rendered routes with per-page metadata, social cards and JSON-LD",
+    ],
+    decisions: [
+      "Routes drive the camera rather than the other way round, so every view has a shareable URL.",
+      "On-demand rendering: the GPU idles whenever nothing moves.",
+      "three.js is lazy-loaded and kept out of the initial bundle.",
+      "One typed data layer feeds the 3D scene, the HTML panels, the sitemap and the 2D page.",
+    ],
+    stack: ["typescript", "nextjs", "react", "threejs", "tailwind"],
+    links: { github: "https://github.com/tejasvasingh2004/Portfolio", live: "https://portfolio-iex3.vercel.app" },
+    media: {},
+    facts: [
+      { label: "Modules", value: "6" },
+      { label: "Agent graphs", value: "3" },
     ],
   },
   {
