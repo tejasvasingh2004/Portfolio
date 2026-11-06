@@ -58,7 +58,7 @@ const pulseGeo = new THREE.SphereGeometry(0.085, 16, 12);
 const pulseGlowGeo = new THREE.PlaneGeometry(0.9, 0.9).rotateX(-Math.PI / 2);
 
 /**
- * A raised white "light pipe". Lit, its emissive core turns orange above 1.0 so the
+ * A raised white "light pipe". Lit, its emissive core turns lime above 1.0 so the
  * bloom pass makes it glow (reference image 2); pulses are bright HDR beads.
  */
 export function Trace({

@@ -13,8 +13,8 @@ export const C = {
   ink3: "#7f8f84",
   line: "#d4e3d9",
   surface2: "#eef5f0",
-  accent: "#ff6a13",
-  accentSoft: "#ffede1",
+  accent: "#65a30d",
+  accentSoft: "#e6f4d0",
 };
 
 function canvas(w: number, h: number) {
@@ -116,7 +116,7 @@ export async function experienceCardFace(r: Role) {
     ctx.textAlign = "left";
   }
 
-  // "Present" marker: a single orange dot (dates live in the HTML label/panel).
+  // "Present" marker: a single lime dot (dates live in the HTML label/panel).
   if (r.current) {
     ctx.beginPath();
     ctx.arc(W - 52, 64, 11, 0, Math.PI * 2);
@@ -173,7 +173,7 @@ export async function contactCardFace(photo: string) {
 
   // Name and email are crisp HTML labels pinned to the card (see ItemLabels).
 
-  // step dots → orange check (reference image language)
+  // step dots → lime check (reference image language)
   const y = 288;
   const xs = [76, 196, 316];
   ctx.strokeStyle = C.line;
@@ -221,7 +221,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
   ctx.fillRect(0, 0, W, H);
 
   // window chrome dots
-  [C.accent, "#ffb38a", C.line].forEach((col, i) => {
+  [C.accent, "#b6dc85", C.line].forEach((col, i) => {
     ctx.beginPath();
     ctx.arc(44 + i * 26, 40, 8, 0, Math.PI * 2);
     ctx.fillStyle = col;
@@ -321,7 +321,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
       const a1 = a0 + (n / total) * Math.PI * 2;
       ctx.beginPath();
       ctx.arc(cx + 120, 565, 80, a0 + 0.04, a1 - 0.04);
-      ctx.strokeStyle = [C.accent, "#ffb38a", "#cfe0d4"][i];
+      ctx.strokeStyle = [C.accent, "#b6dc85", "#cfe0d4"][i];
       ctx.lineWidth = 26;
       ctx.lineCap = "round";
       ctx.stroke();
@@ -329,7 +329,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
     });
     ctx.lineCap = "butt";
     cats.forEach((k, i) => {
-      ctx.fillStyle = [C.accent, "#ffb38a", "#cfe0d4"][i];
+      ctx.fillStyle = [C.accent, "#b6dc85", "#cfe0d4"][i];
       ctx.beginPath();
       ctx.arc(cx + 250, 520 + i * 44, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -342,7 +342,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
 
   const p = selected;
   ctx.font = mono(600, 20);
-  ctx.fillStyle = "#c2410c";
+  ctx.fillStyle = "#3f6212";
   ctx.fillText(`${p.category.toUpperCase()} · ${p.year}`, X, 120);
   ctx.font = sans(650, 64);
   ctx.fillStyle = C.ink;

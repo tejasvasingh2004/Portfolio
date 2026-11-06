@@ -12,7 +12,7 @@ import { glowTexture } from "../faces";
 import { useInteractive, useZoneState } from "../interactions";
 import { HUB_SIZE } from "../layout";
 
-/** Identity Hub — stacked slabs, glass cube, orange figure (reference image 1). Opens About. */
+/** Identity Hub — stacked slabs, glass cube, lime figure (reference image 1). Opens About. */
 export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
   const invalidate = useThree((s) => s.invalidate);
   const reduced = useView((s) => s.reducedMotion);
@@ -31,7 +31,7 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
 
   const slab = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.tile.clone(), roughness: 0.5 }), []);
   const rim = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accent, toneMapped: false }), []);
-  const orange = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.35, emissive: COLORS.accent, emissiveIntensity: 0.25 }), []);
+  const figureMat = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.35, emissive: COLORS.accent, emissiveIntensity: 0.25 }), []);
   const glass = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.22, depthWrite: false }),
@@ -88,7 +88,7 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
             <group key={i}>
               <RoundedBox args={[size, h, size]} radius={0.1} smoothness={seg} position={[0, at, 0]} material={slab} />
               {i === 0 && (
-                // Orange underglow rim (reference image 2, bottom-centre slab)
+                // Lime underglow rim (reference image 2, bottom-centre slab)
                 <mesh position={[0, 0.045, 0]} material={rim} raycast={() => null}>
                   <boxGeometry args={[size - 0.06, 0.035, size - 0.06]} />
                 </mesh>
@@ -96,24 +96,24 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
             </group>
           );
         })}
-        {/* Glass cube with the orange figure — "me" */}
+        {/* Glass cube with the lime figure — "me" */}
         <group position={[0, y + 0.75, 0]}>
           <mesh material={glass}>
             <boxGeometry args={[1.5, 1.5, 1.5]} />
           </mesh>
           <lineSegments geometry={cubeEdges} material={edge} raycast={() => null} />
           <group ref={figure}>
-            <mesh position={[0, -0.69, 0]} material={orange}>
+            <mesh position={[0, -0.69, 0]} material={figureMat}>
               <cylinderGeometry args={[0.36, 0.42, 0.08, 32]} />
             </mesh>
-            <mesh position={[0, -0.32, 0]} material={orange}>
+            <mesh position={[0, -0.32, 0]} material={figureMat}>
               <capsuleGeometry args={[0.2, 0.32, 8, 20]} />
             </mesh>
-            <mesh position={[0, 0.16, 0]} material={orange}>
+            <mesh position={[0, 0.16, 0]} material={figureMat}>
               <sphereGeometry args={[0.17, 28, 20]} />
             </mesh>
           </group>
-          <pointLight color="#ff7a2a" intensity={quality === "low" ? 0 : 1.6} distance={3} decay={2} position={[0, -0.3, 0]} />
+          <pointLight color="#8fd14f" intensity={quality === "low" ? 0 : 1.6} distance={3} decay={2} position={[0, -0.3, 0]} />
         </group>
       </group>
     </group>

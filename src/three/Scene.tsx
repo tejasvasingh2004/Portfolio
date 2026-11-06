@@ -36,14 +36,14 @@ function Lighting({ quality }: { quality: Quality }) {
         <Lightformer form="rect" intensity={2.6} position={[0, 10, 0]} rotation-x={Math.PI / 2} scale={[18, 18, 1]} />
         <Lightformer form="rect" intensity={1.2} position={[12, 3, 0]} rotation-y={-Math.PI / 2} scale={[3, 14, 1]} />
         <Lightformer form="rect" intensity={1.2} position={[-12, 3, 0]} rotation-y={Math.PI / 2} scale={[3, 14, 1]} />
-        <Lightformer form="rect" intensity={0.7} color="#ffe2cc" position={[0, 2, 12]} scale={[18, 3, 1]} />
+        <Lightformer form="rect" intensity={0.7} color="#e6f5d8" position={[0, 2, 12]} scale={[18, 3, 1]} />
         <Lightformer form="rect" intensity={0.7} position={[0, 2, -12]} rotation-y={Math.PI} scale={[18, 3, 1]} />
       </Environment>
     </>
   );
 }
 
-/** Post-processing tuned for a white product render: soft AO in the crevices, bloom only on HDR orange. */
+/** Post-processing tuned for a white product render: soft AO in the crevices, bloom only on HDR lime. */
 function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
   const effects = useMemo(() => {
     // Debug: ?fx=ao,bloom limits the stack (for tuning); default is everything the tier allows.
@@ -63,7 +63,7 @@ function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
         />,
       );
     }
-    // Threshold sits above lit white surfaces, so only the HDR orange accents bloom.
+    // Threshold sits above lit white surfaces, so only the HDR lime accents bloom.
     if (want("bloom")) list.push(<Bloom key="bloom" mipmapBlur luminanceThreshold={2.4} luminanceSmoothing={0.05} intensity={0.75} radius={0.65} />);
     // No tilt-shift / depth-of-field: they blur text, and legibility wins.
     list.push(<ToneMapping key="tm" mode={ToneMappingMode.NEUTRAL} />);

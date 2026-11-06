@@ -17,9 +17,9 @@ export const COLORS = {
   iconIdle: new THREE.Color("#6f7f74"),
   ink: new THREE.Color("#1f2a22"),
   muted: new THREE.Color("#7f8f84"),
-  accent: new THREE.Color("#ff6a13"),
-  /** HDR orange (>1) so bloom picks it up. */
-  accentHdr: new THREE.Color("#ff6a13").multiplyScalar(11),
+  accent: new THREE.Color("#6cb31f"),
+  /** HDR lime (>1) so bloom picks it up. */
+  accentHdr: new THREE.Color("#6cb31f").multiplyScalar(11),
 };
 
 export type Decal = {
@@ -27,7 +27,7 @@ export type Decal = {
   height: number;
   offset?: [number, number]; // x, z on the top face
   tone?: "icon" | "ink" | "muted";
-  /** Turn orange when the tile is active / lit (icons default true, text false). */
+  /** Turn lime when the tile is active / lit (icons default true, text false). */
   accent?: boolean;
 };
 
@@ -40,7 +40,7 @@ export type TileProps = {
   decals?: Decal[];
   interactive?: InteractiveOptions;
   active?: boolean;
-  /** On the signal path: orange icon + faint glow, no lift. */
+  /** On the signal path: lime icon + faint glow, no lift. */
   lit?: boolean;
   dimmed?: boolean;
   /** Extra lift target (e.g. dealt cards); animates from enterFrom on mount. */
@@ -98,7 +98,7 @@ export function Tile({
       }),
     [],
   );
-  // Thin glowing strip at the tile base (reference: orange underglow rim).
+  // Thin glowing strip at the tile base (reference: lime underglow rim).
   const rimMat = useMemo(
     () => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr, transparent: true, opacity: 0, depthWrite: false, toneMapped: false }),
     [],

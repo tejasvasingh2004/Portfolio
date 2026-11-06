@@ -64,7 +64,7 @@ function Lamp({ position }: { position: [number, number, number] }) {
       <mesh position={[0, 0.95, 0]} material={bulb}>
         <sphereGeometry args={[0.24, 32, 20]} />
       </mesh>
-      <pointLight color="#ff8a3d" intensity={2.2} distance={4} decay={2} position={[0, 0.95, 0]} />
+      <pointLight color="#a3dd5c" intensity={2.2} distance={4} decay={2} position={[0, 0.95, 0]} />
     </group>
   );
 }
