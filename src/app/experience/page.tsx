@@ -6,7 +6,7 @@ import { OpenSourceList } from "@/sections/OpenSource";
 export const metadata: Metadata = {
   title: "Experience",
   description:
-    "Research at NIT Bhopal on VLMs for handwritten text recognition; backend and AI automation internships at IndhanPay and E-NOTEBOOK.",
+    "Open-source fixes merged into Headlamp (Kubernetes SIGs) and more; research at NIT Bhopal on multilingual vision-language models; backend internships at IndhanPay and E-NOTEBOOK.",
   alternates: { canonical: "/experience" },
 };
 

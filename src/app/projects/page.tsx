@@ -14,7 +14,7 @@ export default function ProjectsPage() {
     <Panel
       kicker={`Projects · ${projects.length}`}
       title="Things I've built"
-      subtitle="From a database engine's B+ Tree to EEG-driven agent graphs."
+      subtitle="From a database engine's B+ Tree to a production AI agent runtime."
       back={{ href: "/", label: "Workspace" }}
     >
       <ProjectsIndex />

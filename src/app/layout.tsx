@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description,
   applicationName: `${profile.name} — Portfolio`,
   authors: [{ name: profile.name, url: links.github }],
-  keywords: ["Tejasva Singh Chouhan", "full-stack developer", "AI agents", "LangGraph", "backend engineer", "portfolio"],
+  keywords: ["Tejasva Singh Chouhan", "full-stack developer", "AI agents", "backend engineer", "TypeScript", "Node.js", "open source", "portfolio"],
   openGraph: {
     type: "website",
     title: `${profile.name} — ${profile.title}`,
@@ -52,7 +52,7 @@ const personJsonLd = {
   address: { "@type": "PostalAddress", addressLocality: "Indore", addressCountry: "IN" },
   alumniOf: { "@type": "CollegeOrUniversity", name: education.institution },
   sameAs: [links.github, links.linkedin, links.leetcode],
-  knowsAbout: ["Backend development", "AI agents", "LangGraph", "Multi-agent systems", "Database internals", "Next.js"],
+  knowsAbout: ["Backend development", "AI agents", "Multi-agent systems", "LLM infrastructure", "Job queues", "Database internals", "Open-source software"],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

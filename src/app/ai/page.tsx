@@ -6,7 +6,7 @@ import { aiSystems } from "@/data/aiSystems";
 export const metadata: Metadata = {
   title: "AI Lab",
   description:
-    "Multi-agent systems I've designed: NeuroFlow (EEG-adaptive LangGraph agents), Traycer-mini (agentic code generation) and HTR Bench (VLM research).",
+    "Agent systems I've designed: NeuroFlow (an adaptive agent runtime with an EEG-driven Cognitive Mode), Traycer-mini (agentic code generation) and HTR Bench (VLM research).",
   alternates: { canonical: "/ai" },
 };
 
