@@ -20,7 +20,7 @@ const n = experience.length;
 export function expCardPose(i: number, dealt: boolean): { position: V3; rotationY: number } {
   if (dealt) {
     const slot = n - 1 - i; // oldest on the left
-    return { position: [E[0] + (slot - (n - 1) / 2) * (EXP_CARD.w + 0.32), 0, E[2]], rotationY: 0 };
+    return { position: [E[0] + (slot - (n - 1) / 2) * (EXP_CARD.w + EXP_CARD.gap), 0, E[2]], rotationY: 0 };
   }
   const layer = n - 1 - i; // newest on top
   return { position: [E[0] + i * 0.05, layer * (EXP_CARD.h + 0.03), E[2] - i * 0.04], rotationY: (i - 1) * 0.05 };
@@ -72,8 +72,8 @@ export function ExperienceZone({ smoothness }: { smoothness: number }) {
       {focused && (
         <Trace
           points={[
-            [E[0] - (n - 1) / 2 * (EXP_CARD.w + 0.32), E[2] - EXP_CARD.d / 2 - 0.45],
-            [E[0] + (n - 1) / 2 * (EXP_CARD.w + 0.32), E[2] - EXP_CARD.d / 2 - 0.45],
+            [E[0] - (n - 1) / 2 * (EXP_CARD.w + EXP_CARD.gap), E[2] - EXP_CARD.d / 2 - 0.45],
+            [E[0] + (n - 1) / 2 * (EXP_CARD.w + EXP_CARD.gap), E[2] - EXP_CARD.d / 2 - 0.45],
           ]}
           lit
           caps="both"

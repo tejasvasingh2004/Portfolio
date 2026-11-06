@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import type { Zone } from "@/lib/view";
+import { experience } from "@/data/experience";
 
 /**
  * Radial "Systems Board": the identity hub sits at the origin and every module sits on a
@@ -59,7 +60,15 @@ export const AI_CELL = 1.12;
 export const AI_NODE = { w: 0.86, h: 0.3, d: 0.86 };
 export const AI_GRAPH_OFFSET: V3 = [0, 0, -0.45];
 export const AI_SWITCH_Z = 2.55;
-export const EXP_CARD = { w: 2.2, h: 0.18, d: 1.45 };
+export const EXP_CARD = { w: 2.2, h: 0.18, d: 1.45, gap: 0.32 };
+
+/** Width of the experience cards dealt into a row. */
+const expRowWidth = (n: number) => n * EXP_CARD.w + (n - 1) * EXP_CARD.gap;
+
+/** Moves a camera away from its target by factor k, keeping the viewing angle. */
+function pullBack({ position: p, target: t }: CameraPose, k: number): CameraPose {
+  return { position: [t[0] + (p[0] - t[0]) * k, t[1] + (p[1] - t[1]) * k, t[2] + (p[2] - t[2]) * k], target: t };
+}
 export const CONTACT_CARD = { w: 3.2, h: 0.26, d: 2.1 };
 
 // ── Camera ─────────────────────────────────────────────────────────────
@@ -74,7 +83,11 @@ export const localZonePoses: Record<ModuleId, CameraPose> = {
   projects: { position: [0.6, 7.6, 10.6], target: [0, 1.2, 0.1] },
   ai: { position: [0.4, 11.6, 7.4], target: [0, 0, 0.4] },
   skills: { position: [0.4, 10.4, 6.6], target: [0, 0.2, 0.5] },
-  experience: { position: [0.4, 8.4, 7.2], target: [0, 0.2, 0.3] },
+  // Framed for three cards; pulls back as the dealt row grows wider.
+  experience: pullBack(
+    { position: [0.4, 8.4, 7.2], target: [0, 0.2, 0.3] },
+    Math.max(1, expRowWidth(experience.length) / expRowWidth(3)),
+  ),
   contact: { position: [0.4, 8.0, 7.0], target: [0, 0.3, 0.9] },
 };
 
