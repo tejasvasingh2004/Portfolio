@@ -12,11 +12,11 @@ import { useInteractive, type InteractiveOptions } from "../interactions";
 import type { V3 } from "../layout";
 
 export const COLORS = {
-  tile: new THREE.Color("#fafaf8"),
-  bg: new THREE.Color("#f4f4f2"),
-  iconIdle: new THREE.Color("#7d7d84"),
-  ink: new THREE.Color("#2a2a2e"),
-  muted: new THREE.Color("#8a8a90"),
+  tile: new THREE.Color("#fbfdfb"),
+  bg: new THREE.Color("#ddede3"),
+  iconIdle: new THREE.Color("#6f7f74"),
+  ink: new THREE.Color("#1f2a22"),
+  muted: new THREE.Color("#7f8f84"),
   accent: new THREE.Color("#ff6a13"),
   /** HDR orange (>1) so bloom picks it up. */
   accentHdr: new THREE.Color("#ff6a13").multiplyScalar(11),

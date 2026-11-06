@@ -52,14 +52,14 @@ export function HubTraces() {
   const ringLit = view.zone !== "home" || !!hoveredModule;
   const ringGeo = useMemo(() => new THREE.TorusGeometry(RING_RADIUS, 0.06, 12, 160).rotateX(Math.PI / 2), []);
   const ringMat = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: "#f3f3f0", roughness: 0.3, emissive: COLORS.accent, emissiveIntensity: 0 }),
+    () => new THREE.MeshStandardMaterial({ color: "#eef6f0", roughness: 0.3, emissive: COLORS.accent, emissiveIntensity: 0 }),
     [],
   );
   const a = useRef({ lit: 0 });
   useFrame((_, dt) => {
     if (easing.damp(a.current, "lit", ringLit ? 1 : 0, 0.3, Math.min(dt, 0.05))) invalidate();
     ringMat.emissiveIntensity = a.current.lit * 3.5;
-    ringMat.color.set("#f3f3f0").lerp(COLORS.accent, a.current.lit * 0.35);
+    ringMat.color.set("#eef6f0").lerp(COLORS.accent, a.current.lit * 0.35);
   });
 
   return (

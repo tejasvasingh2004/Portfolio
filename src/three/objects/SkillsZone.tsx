@@ -86,11 +86,11 @@ export function SkillsZone({ smoothness }: { smoothness: number }) {
     enabled: !focused,
   });
 
-  const plateMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#f6f6f3", roughness: 0.6 }), []);
+  const plateMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#f2f8f3", roughness: 0.6 }), []);
   const anim = useRef({ dim: 0 });
   useFrame((_, dt) => {
     if (easing.damp(anim.current, "dim", dimmed ? 1 : 0, 0.3, Math.min(dt, 0.05))) invalidate();
-    plateMat.color.set("#f6f6f3").lerp(COLORS.bg, anim.current.dim * 0.5);
+    plateMat.color.set("#f2f8f3").lerp(COLORS.bg, anim.current.dim * 0.5);
   });
 
   return (

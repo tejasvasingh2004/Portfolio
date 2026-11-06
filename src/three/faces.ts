@@ -7,12 +7,12 @@ import { fontFamily, monoFamily } from "./atlas";
 /** Canvas-drawn surfaces (card faces, monitor screen). Drawn in the site's own type and colours. */
 
 export const C = {
-  face: "#fafaf8",
-  ink: "#121214",
-  ink2: "#4a4a52",
-  ink3: "#85858c",
-  line: "#e6e6e2",
-  surface2: "#f1f1ee",
+  face: "#fbfdfb",
+  ink: "#111813",
+  ink2: "#46544b",
+  ink3: "#7f8f84",
+  line: "#d4e3d9",
+  surface2: "#eef5f0",
   accent: "#ff6a13",
   accentSoft: "#ffede1",
 };
@@ -217,7 +217,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
   const W = 1280;
   const H = 746;
   const { c, ctx } = canvas(W, H);
-  ctx.fillStyle = "#fdfdfc";
+  ctx.fillStyle = "#fcfefc";
   ctx.fillRect(0, 0, W, H);
 
   // window chrome dots
@@ -274,7 +274,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
       ctx.fillStyle = C.surface2;
       ctx.fill();
       rr(ctx, X + 400, y + 26, Math.min(190, bw), 8, 4);
-      ctx.fillStyle = i === 0 ? C.accent : "#d9d9d4";
+      ctx.fillStyle = i === 0 ? C.accent : "#cfe0d4";
       ctx.fill();
     });
 
@@ -296,7 +296,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
       const bh = (p.stack.length / max) * 170;
       const bx = cx + 32 + i * slot + (slot - barW) / 2;
       rr(ctx, bx, 360 - bh, barW, bh, 10);
-      ctx.fillStyle = i === 0 ? C.accent : "#e4e4df";
+      ctx.fillStyle = i === 0 ? C.accent : "#dde9e0";
       ctx.fill();
       ctx.font = mono(600, projects.length > 4 ? 16 : 18);
       ctx.fillStyle = C.ink3;
@@ -321,7 +321,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
       const a1 = a0 + (n / total) * Math.PI * 2;
       ctx.beginPath();
       ctx.arc(cx + 120, 565, 80, a0 + 0.04, a1 - 0.04);
-      ctx.strokeStyle = [C.accent, "#ffb38a", "#d9d9d4"][i];
+      ctx.strokeStyle = [C.accent, "#ffb38a", "#cfe0d4"][i];
       ctx.lineWidth = 26;
       ctx.lineCap = "round";
       ctx.stroke();
@@ -329,7 +329,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
     });
     ctx.lineCap = "butt";
     cats.forEach((k, i) => {
-      ctx.fillStyle = [C.accent, "#ffb38a", "#d9d9d4"][i];
+      ctx.fillStyle = [C.accent, "#ffb38a", "#cfe0d4"][i];
       ctx.beginPath();
       ctx.arc(cx + 250, 520 + i * 44, 8, 0, Math.PI * 2);
       ctx.fill();

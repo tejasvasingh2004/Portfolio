@@ -97,12 +97,12 @@ export function AiLab({ smoothness }: { smoothness: number }) {
     enabled: !focused,
   });
 
-  const plateMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#f6f6f3", roughness: 0.6 }), []);
+  const plateMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#f2f8f3", roughness: 0.6 }), []);
   const invalidate = useThree((s) => s.invalidate);
   const anim = useRef({ dim: 0 });
   useFrame((_, dt) => {
     if (easing.damp(anim.current, "dim", dimmed ? 1 : 0, 0.3, Math.min(dt, 0.05))) invalidate();
-    plateMat.color.set("#f6f6f3").lerp(COLORS.bg, anim.current.dim * 0.5);
+    plateMat.color.set("#f2f8f3").lerp(COLORS.bg, anim.current.dim * 0.5);
   });
 
   const hw = AI_NODE.w / 2 / AI_CELL;
@@ -159,7 +159,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
             position={p}
             size={[AI_NODE.w, h, AI_NODE.d]}
             radius={0.09}
-            color={n.kind === "model" ? "#efefec" : undefined}
+            color={n.kind === "model" ? "#e6f1e9" : undefined}
             smoothness={smoothness}
             dimmed={dimmed}
             lit={hot.has(n.id) && !dimmed}

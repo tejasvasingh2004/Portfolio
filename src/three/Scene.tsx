@@ -24,13 +24,13 @@ import { ItemLabelTracker } from "./ItemLabels";
 
 type Quality = "high" | "medium" | "low";
 
-export const BG = "#f4f4f2";
+export const BG = "#ddede3";
 
 function Lighting({ quality }: { quality: Quality }) {
   return (
     <>
       <ambientLight intensity={0.55} />
-      <directionalLight position={[6, 16, 5]} intensity={1.35} color="#fffaf4" />
+      <directionalLight position={[6, 16, 5]} intensity={1.35} color="#fbfff8" />
       {/* Studio light from every side, so the board reads well from any orbit angle. */}
       <Environment resolution={quality === "high" ? 256 : 128} frames={1} environmentIntensity={1.1}>
         <Lightformer form="rect" intensity={2.6} position={[0, 10, 0]} rotation-x={Math.PI / 2} scale={[18, 18, 1]} />
@@ -59,7 +59,7 @@ function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
           aoRadius={1.2}
           distanceFalloff={0.8}
           intensity={2.4}
-          color="#3a3028"
+          color="#24332a"
         />,
       );
     }
@@ -186,7 +186,7 @@ export default function Scene({ tier, panelOpen }: { tier: Exclude<Tier, "none">
           blur={2.6}
           opacity={0.38}
           far={5}
-          color="#2a2420"
+          color="#1f2b23"
           frames={quality === "low" ? 1 : Infinity}
         />
         <Ready />

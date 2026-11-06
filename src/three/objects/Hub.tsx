@@ -37,7 +37,7 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
       new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.22, depthWrite: false }),
     [],
   );
-  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#d9d9d4", transparent: true, opacity: 0.9 }), []);
+  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#c9dccf", transparent: true, opacity: 0.9 }), []);
   const cubeEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(1.5, 1.5, 1.5)), []);
   const glowMat = useMemo(
     () => new THREE.MeshBasicMaterial({ color: COLORS.accent, map: glowTexture(), transparent: true, opacity: 0.35, depthWrite: false, toneMapped: false }),

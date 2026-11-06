@@ -8,7 +8,7 @@ import { useView } from "@/store/viewStore";
 import { COLORS } from "./Tile";
 import { glowTexture } from "../faces";
 
-const TRACE_COLOR = new THREE.Color("#f3f3f0");
+const TRACE_COLOR = new THREE.Color("#eef6f0");
 
 /** Polyline on the board → smooth path with rounded corners (the reference's trace language). */
 export function roundedPath(points: [number, number][], y: number, cornerRadius = 0.32) {
@@ -98,7 +98,7 @@ export function Trace({
       }),
     [dashed],
   );
-  const capMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fbfbf9", roughness: 0.4 }), []);
+  const capMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafdfb", roughness: 0.4 }), []);
   const dotMat = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.iconIdle.clone(), toneMapped: false }), []);
   const pulseMat = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr.clone().multiplyScalar(1.6), toneMapped: false }), []);
   const pulseGlowMat = useMemo(

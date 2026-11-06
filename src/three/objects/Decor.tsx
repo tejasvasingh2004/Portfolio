@@ -16,7 +16,7 @@ const at = (angleDeg: number, radius: number): [number, number, number] => {
 };
 
 function Plant({ position, scale = 1, seed = 0 }: { position: [number, number, number]; scale?: number; seed?: number }) {
-  const pot = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fbfbf9", roughness: 0.6 }), []);
+  const pot = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafdfb", roughness: 0.6 }), []);
   const leaf = useMemo(() => new THREE.MeshStandardMaterial({ color: "#f4f4f1", roughness: 0.45, side: THREE.DoubleSide }), []);
   const leaves = useMemo(() => {
     const out: { rot: [number, number, number]; pos: [number, number, number]; s: [number, number, number] }[] = [];
@@ -53,7 +53,7 @@ function Plant({ position, scale = 1, seed = 0 }: { position: [number, number, n
 }
 
 function Lamp({ position }: { position: [number, number, number] }) {
-  const body = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fbfbf9", roughness: 0.5 }), []);
+  const body = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafdfb", roughness: 0.5 }), []);
   const bulb = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr.clone().multiplyScalar(0.8), toneMapped: false }), []);
   return (
     <group position={position}>
@@ -74,7 +74,7 @@ function GlassBlock({ position }: { position: [number, number, number] }) {
     () => new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.25, depthWrite: false }),
     [],
   );
-  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#d9d9d4" }), []);
+  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#c9dccf" }), []);
   const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.8, 0.8, 0.8)), []);
   const core = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr.clone().multiplyScalar(0.6), toneMapped: false }), []);
   return (

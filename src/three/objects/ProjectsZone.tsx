@@ -57,7 +57,7 @@ export function ProjectsZone({ smoothness }: { smoothness: number }) {
   });
 
   const frame = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.tile.clone(), roughness: 0.42 }), []);
-  const bezel = useMemo(() => new THREE.MeshStandardMaterial({ color: "#ececE8", roughness: 0.5 }), []);
+  const bezel = useMemo(() => new THREE.MeshStandardMaterial({ color: "#e4eee7", roughness: 0.5 }), []);
   const screenMat = useMemo(() => new THREE.MeshBasicMaterial({ map: screen, toneMapped: false }), [screen]);
   const anim = useRef({ dim: 0 });
   useFrame((_, dt) => {
