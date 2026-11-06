@@ -28,8 +28,8 @@ An interactive 3D workspace you can orbit 360°. Each module wired to the centra
 Most developer portfolios are a list. This one is a **system diagram you can walk around**. An identity hub sits at the centre of a soft white board, and every part of my work is a physical module connected to it by glowing signal traces.
 
 - **Orbit, pan and zoom** freely around the board. Clicking a module flies the camera to it and opens the details in a side panel.
-- **The AI Lab** turns my agent projects into explorable node graphs. In **NeuroFlow**, switching the simulated EEG workload re-routes the LangGraph agent path live, the same way the real system does.
-- **Every view has its own URL** (`/projects/hybrid-db`, `/ai/neuroflow?node=verifier`, …), so it can be shared and works with the back button.
+- **The AI Lab** turns my agent projects into explorable node graphs. In **NeuroFlow**, switching the simulated EEG workload re-routes the run through a different agent strategy live, the same way the real runtime's Cognitive Mode caps it.
+- **Every view has its own URL** (`/projects/hybrid-db`, `/ai/neuroflow?node=gateway`, …), so it can be shared and works with the back button.
 - **All content is real HTML.** The 3D scene is the interface, not the container, so the site stays readable, accessible and indexable.
 
 ## Features
