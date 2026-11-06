@@ -289,17 +289,20 @@ export function monitorScreen(projects: Project[], selected?: Project) {
     ctx.fillStyle = C.ink3;
     ctx.fillText("TECHNOLOGIES PER PROJECT", cx + 24, 134);
     const max = Math.max(...projects.map((p) => p.stack.length));
+    // Bars share the card's inner width, so any number of projects stays inside the card.
+    const slot = (390 - 2 * 32) / projects.length;
+    const barW = Math.min(52, slot - 16);
     projects.forEach((p, i) => {
       const bh = (p.stack.length / max) * 170;
-      const bx = cx + 40 + i * 88;
-      rr(ctx, bx, 360 - bh, 52, bh, 10);
+      const bx = cx + 32 + i * slot + (slot - barW) / 2;
+      rr(ctx, bx, 360 - bh, barW, bh, 10);
       ctx.fillStyle = i === 0 ? C.accent : "#e4e4df";
       ctx.fill();
-      ctx.font = mono(600, 18);
+      ctx.font = mono(600, projects.length > 4 ? 16 : 18);
       ctx.fillStyle = C.ink3;
       ctx.textAlign = "center";
-      ctx.fillText(String(p.stack.length), bx + 26, 352 - bh);
-      ctx.fillText(p.title.slice(0, 5).toUpperCase(), bx + 26, 384);
+      ctx.fillText(String(p.stack.length), bx + barW / 2, 352 - bh);
+      ctx.fillText(p.title.slice(0, 5).toUpperCase(), bx + barW / 2, 384);
       ctx.textAlign = "left";
     });
 
