@@ -30,6 +30,7 @@ const INK = new THREE.Color("#1f2a22");
 const INK_SUB = new THREE.Color("#4e5c53");
 const ACCENT_INK = new THREE.Color("#3f6212");
 const GAP = 0.35; // space between title and sub, in title font sizes
+const EM_ADVANCE = 0.6; // generous average glyph width of Geist SemiBold, in ems
 
 type TroikaText = THREE.Mesh & {
   color: THREE.Color;
@@ -56,8 +57,11 @@ function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone
   const sub = useRef<TroikaText>(null);
   const titleColor = useMemo(() => new THREE.Color(), []);
   const subColor = useMemo(() => INK_SUB.clone(), []);
-  const { text, sub: subText, width, size, at = [0, 0], align = "center" } = label;
+  const { text, sub: subText, width, size: maxSize, at = [0, 0], align = "center" } = label;
   const x = align === "left" ? -width / 2 : 0;
+  // Titles wrap only between words: shrink the font until the longest word fits.
+  const longestWord = Math.max(...text.split(/\s+/).map((w) => w.length));
+  const size = Math.min(maxSize, width / (longestWord * EM_ADVANCE));
   const gap = size * GAP;
 
   // Centre title + sub as one block once both are laid out (their heights depend on wrapping).
@@ -85,7 +89,7 @@ function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone
     }
   });
 
-  const common = { anchorX: align, textAlign: align, maxWidth: width, overflowWrap: "break-word" as const, raycast: () => null };
+  const common = { anchorX: align, textAlign: align, maxWidth: width, raycast: () => null };
   return (
     // Lie flat on the face, reading towards the viewer standing in front of the module.
     <group position={[at[0], top + 0.004, at[1]]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -107,12 +111,13 @@ function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone
         <Text
           ref={sub}
           font={FONT_SUB}
-          fontSize={size * 0.72}
+          fontSize={maxSize * 0.72}
           lineHeight={1.28}
           anchorY="top"
           position={[x, 0, 0]}
           color={INK_SUB}
           onSync={layout}
+          overflowWrap="break-word"
           {...common}
         >
           {subText}
