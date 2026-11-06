@@ -73,6 +73,50 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "petrotwin",
+    title: "PetroTwin",
+    subtitle: "Digital twin for heavy-oil wells",
+    tagline:
+      "A well-to-surface digital twin that shows what limits each well, and which steam cycle, pump plan and re-steam day pay off most within safety limits.",
+    category: "Systems",
+    year: 2026,
+    featured: true,
+    problem:
+      "In a heavy-oil field, steam injection (Cyclic Steam Stimulation) and sucker-rod pumping are usually planned separately: steam from experience, pumps at a fixed speed, re-steaming on a habitual day. But steam, heat, oil viscosity and rod loads are one coupled system.",
+    solution:
+      "A coupled state model of every well. One physics chain (heat → viscosity → inflow → pump → rods) feeds the dashboard, well console, 3D well sandbox, scenario lab, optimizer and backtests, so every screen agrees on the same number. A joint optimizer picks steam volume, soak time, pump-speed plan and re-steam day together, and an independent safety gate re-checks every strategy at P90 uncertainty.",
+    features: [
+      "Bottleneck Navigator: which limit binds each well now (inflow, pump, rod float, fatigue, torque), which binds next, and the fixes ranked by net ₹/day",
+      "Rod float margin along the full rod string, with Goodman stress and fatigue per section",
+      "Re-steam timing by optimal stopping, with a P10–P90 window per well instead of one habitual day",
+      "3D well sandbox: cut-away strata, the heated zone and an animated pumpjack; pump-speed and day sliders recompute every number live",
+      "Counterfactual backtest over 120 past cycles on 31 wells, reporting forecast skill (median error 6.7%) before any gain",
+      "Evidence behind every number (function, inputs, registry and model versions) and a hash-chained audit log of decisions",
+    ],
+    decisions: [
+      "The 3D model is the visual index, not the twin: one coupled physics chain is the single source every page reads from.",
+      "The safety gate is independent of the optimizer: close calls go to human review, and failing strategies can't be approved.",
+      "Skill before gains: backtests learn on earlier cycles only and report forecast accuracy before any predicted gain.",
+      "A build check blocks KPI numbers typed into the screens, so every figure traces back to the model.",
+      "The API client switches to a twin server when one answers /api/health and otherwise runs the same engine in the browser, so the demo works offline.",
+    ],
+    challenges: [
+      "Coupling steam and pump decisions: more steam thins the oil and lets the pump run faster, but as the heated zone cools the oil in the tubing thickens and the rods can fall slower than the pump strokes. The optimizer searches 1,485 designs × 4 objective presets for plans that keep the rods from floating.",
+    ],
+    stack: ["typescript", "react", "vite", "threejs", "html-css"],
+    links: {
+      github: "https://github.com/tejasvasingh2004/indian_oil_limited_sih_2026",
+      live: "https://indian-oil-limited-sih-2026.vercel.app",
+    },
+    media: {},
+    note: "Built for Smart India Hackathon 2026 (problem statement SIH26120, Oil India Limited). The demo runs on a simulated field: nothing on screen is a field result.",
+    facts: [
+      { label: "Wells modelled", value: "33" },
+      { label: "Designs searched", value: "1,485" },
+      { label: "Backtest cycles", value: "120" },
+    ],
+  },
+  {
     slug: "traycer-mini",
     title: "Traycer-mini",
     subtitle: "AI code-generation workflow CLI",
