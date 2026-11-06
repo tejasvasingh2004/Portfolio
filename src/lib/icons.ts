@@ -2,6 +2,7 @@ import {
   Activity, Brain, Briefcase, CheckCheck, Cpu, Database, Eye, FileCode, FileDown, Filter, Gauge,
   GitBranch, Keyboard, Layers, LayoutDashboard, ListChecks, Mail, MessageSquare, Network, ScanText,
   Send, ShieldCheck, Sparkles, Terminal, User, Utensils, Waves, Check, FolderOpen, Rotate3d, LocateFixed, Search,
+  Users, Wrench, Radio,
   type IconNode,
 } from "lucide";
 import { siGithub, siLeetcode } from "simple-icons";
@@ -38,8 +39,11 @@ const stroke = {
   sparkles: Sparkles,
   terminal: Terminal,
   user: User,
+  users: Users,
   utensils: Utensils,
   waves: Waves,
+  wrench: Wrench,
+  radio: Radio,
 } satisfies Record<string, IconNode>;
 
 const LINKEDIN_PATH =

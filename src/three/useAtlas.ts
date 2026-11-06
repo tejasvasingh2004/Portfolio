@@ -8,6 +8,7 @@ const ICONS: IconName[] = [
   "activity", "brain", "briefcase", "check-check", "check", "cpu", "database", "eye", "file-code", "file-down",
   "filter", "folder", "gauge", "git-branch", "keyboard", "layers", "layout", "list-checks", "mail", "message",
   "network", "scan-text", "send", "shield-check", "sparkles", "terminal", "user", "utensils", "waves",
+  "users", "wrench", "radio",
   "github", "linkedin", "leetcode",
 ];
 
