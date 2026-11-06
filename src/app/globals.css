@@ -2,24 +2,27 @@
 
 /* ── Design tokens (spec §13) ─────────────────────────────────────────── */
 :root {
-  /* Light mint "nature" palette with a lime-green accent. */
-  --bg: #ddede3;
+  /* Light "water" palette: pale aqua page with a clear-water blue accent. */
+  --bg: #e0eff7;
   --surface: #ffffff;
-  --surface-2: #f3f8f4;
-  --line: #d4e3d9;
-  --line-strong: #bdd0c3;
-  --ink: #111813;
-  --ink-2: #4e5c53;
-  --ink-3: #85958a;
-  --accent: #65a30d;
-  --accent-ink: #3f6212;
-  --accent-soft: #e6f4d0;
+  --surface-2: #f1f7fb;
+  --line: #d3e3ee;
+  --line-strong: #b6cddc;
+  --ink: #0e1a23;
+  --ink-2: #475967;
+  --ink-3: #7f93a2;
+  --accent: #0ea5e9;
+  --accent-ink: #0369a1;
+  --accent-soft: #e0f2fe;
+  /* Deeper end of the accent: fills under white icons need the contrast. */
+  --accent-deep: #0284c7;
 
   --radius-panel: 20px;
   --radius-card: 12px;
   --radius-chip: 8px;
-  --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -8px rgb(0 0 0 / 0.1);
-  --shadow-float: 0 1px 2px rgb(0 0 0 / 0.05), 0 20px 48px -12px rgb(0 0 0 / 0.16);
+  /* Shadows carry a little of the water blue instead of neutral grey. */
+  --shadow-panel: 0 1px 2px rgb(12 52 80 / 0.05), 0 12px 32px -8px rgb(12 52 80 / 0.12);
+  --shadow-float: 0 1px 2px rgb(12 52 80 / 0.06), 0 20px 48px -12px rgb(12 52 80 / 0.2);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
 
@@ -41,6 +44,7 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-deep: var(--accent-deep);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --ease-out-soft: var(--ease-out);

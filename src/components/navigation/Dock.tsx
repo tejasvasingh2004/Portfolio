@@ -97,7 +97,7 @@ export function Dock() {
               <span
                 className={cn(
                   "grid h-7 w-7 place-items-center rounded-lg transition-colors",
-                  on ? "bg-accent text-white shadow-[0_4px_12px_-2px_rgb(101_163_13/0.55)]" : "bg-surface-2 text-ink-2 ring-1 ring-line group-hover:text-ink",
+                  on ? "bg-[linear-gradient(180deg,#38bdf8,var(--accent-deep))] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.45),0_4px_12px_-2px_rgb(2_132_199/0.5)]" : "bg-surface-2 text-ink-2 ring-1 ring-line group-hover:text-ink",
                 )}
               >
                 <Icon name={icons[it.zone]} size={15} />

@@ -81,7 +81,7 @@ export function SystemDiagram({
                 height={NH}
                 rx={7}
                 fill={isSel ? "var(--accent-soft)" : n.kind === "model" ? "var(--surface-2)" : "#fff"}
-                stroke={isSel ? "var(--accent)" : isHot ? "#b6dc85" : "var(--line)"}
+                stroke={isSel ? "var(--accent)" : isHot ? "#7dd3fc" : "var(--line)"}
                 strokeWidth={isSel ? 1.5 : 1}
                 style={{ transition: "stroke 300ms, fill 300ms" }}
               />

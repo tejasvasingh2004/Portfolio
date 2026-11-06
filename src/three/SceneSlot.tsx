@@ -26,7 +26,7 @@ export function SceneSlot() {
       <div
         aria-hidden
         className="absolute inset-0"
-        style={{ background: "radial-gradient(120% 90% at 55% 60%, #f1f1ee 0%, #f4f4f2 60%)" }}
+        style={{ background: "radial-gradient(120% 90% at 55% 60%, #e9f4fa 0%, #e0eff7 60%)" }}
       />
       {show3d && (
         <>

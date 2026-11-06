@@ -55,7 +55,7 @@ export function ZoneLabels() {
             style={{ opacity: 0 }}
           >
             <span
-              className={`grid h-6 w-6 place-items-center rounded-full transition-colors ${on ? "bg-accent text-white" : "bg-surface-2 text-ink-2 ring-1 ring-line"}`}
+              className={`grid h-6 w-6 place-items-center rounded-full transition-colors ${on ? "bg-[linear-gradient(180deg,#38bdf8,var(--accent-deep))] text-white" : "bg-surface-2 text-ink-2 ring-1 ring-line"}`}
             >
               <Icon name={l.icon} size={13} />
             </span>
