@@ -119,17 +119,38 @@ export function SurfaceText({
   );
 }
 
+/**
+ * How tall a line of flat-printed text of this font size appears on screen, in CSS pixels: the
+ * perspective scale at its distance, foreshortened by how steeply the camera looks down on it.
+ */
+function screenHeight(at: THREE.Vector3, fontSize: number, camera: THREE.Camera, viewHeight: number) {
+  const dist = at.distanceTo(camera.position);
+  const fov = (camera as THREE.PerspectiveCamera).fov ?? 30;
+  const pxPerUnit = viewHeight / (2 * dist * Math.tan((fov * Math.PI) / 360));
+  const slant = Math.abs((at.y - camera.position.y) / dist);
+  return fontSize * pxPerUnit * slant;
+}
+
+/** Detail lines fade out below this on-screen height (px), where they would only read as grey scribble. */
+const DETAIL_MIN_PX = 3.6;
+const DETAIL_FULL_PX = 5;
+
 function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone: RefObject<LabelTone> }) {
   const invalidate = useThree((s) => s.invalidate);
+  const camera = useThree((s) => s.camera);
+  const viewHeight = useThree((s) => s.size.height);
+  const group = useRef<THREE.Group>(null);
   const title = useRef<TroikaText>(null);
   const sub = useRef<TroikaText>(null);
   const titleColor = useMemo(() => new THREE.Color(), []);
   const subColor = useMemo(() => INK_SUB.clone(), []);
+  const where = useMemo(() => new THREE.Vector3(), []);
   const { text, sub: subText, width, size: maxSize, at = [0, 0], align = "center" } = label;
   const x = align === "left" ? -width / 2 : 0;
   // Titles wrap only between words: shrink the font until the longest word fits.
   const longestWord = Math.max(...text.split(/\s+/).map((w) => w.length));
   const size = Math.min(maxSize, width / (longestWord * EM_ADVANCE));
+  const subSize = maxSize * 0.72;
   const gap = size * GAP;
 
   // Centre title + sub as one block once both are laid out (their heights depend on wrapping).
@@ -153,16 +174,20 @@ function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone
       title.current.color = titleColor.copy(INK).lerp(ACCENT_INK, t.tint);
       title.current.fillOpacity = opacity;
     }
-    if (sub.current) {
+    if (sub.current && group.current) {
+      // Titles always stay printed; the smaller detail lines appear as the camera comes close enough to read them.
+      group.current.getWorldPosition(where);
+      const detail = THREE.MathUtils.smoothstep(screenHeight(where, subSize, camera, viewHeight), DETAIL_MIN_PX, DETAIL_FULL_PX);
       sub.current.color = subColor;
-      sub.current.fillOpacity = opacity;
+      sub.current.fillOpacity = opacity * detail;
+      sub.current.visible = detail > 0.01;
     }
   });
 
   const common = { anchorX: align, textAlign: align, maxWidth: width, raycast: () => null };
   return (
     // Lie flat on the face, reading towards the viewer standing in front of the module.
-    <group position={[at[0], top + 0.004, at[1]]} rotation={[-Math.PI / 2, 0, 0]}>
+    <group ref={group} position={[at[0], top + 0.004, at[1]]} rotation={[-Math.PI / 2, 0, 0]}>
       <Text
         ref={title}
         font={FONT_TITLE}
@@ -181,7 +206,7 @@ function PrintedText({ label, top, tone }: { label: TileLabel; top: number; tone
         <Text
           ref={sub}
           font={FONT_SUB}
-          fontSize={maxSize * 0.72}
+          fontSize={subSize}
           lineHeight={1.28}
           anchorY="top"
           position={[x, 0, 0]}
