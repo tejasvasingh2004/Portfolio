@@ -64,7 +64,7 @@ function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
       );
     }
     // Threshold sits above lit white surfaces, so only the HDR blue accents bloom.
-    if (want("bloom")) list.push(<Bloom key="bloom" mipmapBlur luminanceThreshold={2.4} luminanceSmoothing={0.05} intensity={0.75} radius={0.65} />);
+    if (want("bloom")) list.push(<Bloom key="bloom" mipmapBlur luminanceThreshold={3.2} luminanceSmoothing={0.05} intensity={0.75} radius={0.65} />);
     // No tilt-shift / depth-of-field: they blur text, and legibility wins.
     list.push(<ToneMapping key="tm" mode={ToneMappingMode.NEUTRAL} />);
     list.push(<SMAA key="smaa" />);

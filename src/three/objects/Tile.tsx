@@ -20,7 +20,7 @@ export const COLORS = {
   muted: new THREE.Color("#7d919f"),
   accent: new THREE.Color("#22a7ea"),
   /** HDR blue (>1) so bloom picks it up. */
-  accentHdr: new THREE.Color("#22a7ea").multiplyScalar(11),
+  accentHdr: new THREE.Color("#22a7ea").multiplyScalar(14),
 };
 
 export type Decal = {
@@ -56,6 +56,29 @@ export type TileProps = {
 
 const glowGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
 
+const WATER = new THREE.Color("#74c4ec");
+
+/**
+ * Water-glass for tiles: light passing through picks up a clear blue (so the sides read as tinted
+ * water), while the polished clearcoat mirrors the overhead studio light on the top face, which keeps
+ * printed text on a bright surface. Costs one extra opaque pass per frame (three.js renders the
+ * scene behind transmissive objects once), so the low tier keeps the plain material.
+ */
+export function waterGlass(color: THREE.Color) {
+  return new THREE.MeshPhysicalMaterial({
+    color,
+    roughness: 0.35,
+    metalness: 0,
+    transmission: 0.9,
+    thickness: 0.6,
+    ior: 1.4,
+    attenuationColor: WATER,
+    attenuationDistance: 2,
+    clearcoat: 1,
+    clearcoatRoughness: 0.3,
+  });
+}
+
 export function Tile({
   position,
   size,
@@ -81,10 +104,11 @@ export function Tile({
   const glow = useRef<THREE.Mesh>(null);
   const [w, h, d] = size;
 
+  const tier = useView((s) => s.tier);
   const base = useMemo(() => (color ? new THREE.Color(color) : COLORS.tile.clone()), [color]);
   const body = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: base, roughness: 0.55, metalness: 0 }),
-    [base],
+    () => (tier === "low" || tier === "none" ? new THREE.MeshStandardMaterial({ color: base, roughness: 0.55, metalness: 0 }) : waterGlass(base)),
+    [base, tier],
   );
   const faceMat = useMemo(
     () => (face ? new THREE.MeshStandardMaterial({ map: face, roughness: 0.6, metalness: 0 }) : null),

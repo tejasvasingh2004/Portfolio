@@ -123,7 +123,7 @@ export function Trace({
     let moving = easing.damp(a, "lit", lit ? 1 : 0, 0.25, t);
     moving = easing.damp(a, "dim", dimmed ? 1 : 0, 0.3, t) || moving;
     mat.color.copy(TRACE_COLOR).lerp(COLORS.accent, a.lit * 0.7).lerp(COLORS.bg, a.dim * 0.4);
-    mat.emissiveIntensity = a.lit * 8.5 * (1 - a.dim);
+    mat.emissiveIntensity = a.lit * 11.5 * (1 - a.dim);
     dotMat.color.copy(COLORS.iconIdle).lerp(COLORS.accentHdr, a.lit);
 
     const g = pulseRef.current;
