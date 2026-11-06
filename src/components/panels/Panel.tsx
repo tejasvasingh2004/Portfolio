@@ -96,7 +96,7 @@ export function Panel({ kicker, title, subtitle, back, pager, children }: Props)
     >
       {/* Sticky header — also the sheet's drag handle on phones */}
       <header
-        className="relative shrink-0 touch-none select-none border-b border-line bg-surface/95 px-5 pb-3 pt-3 sm:touch-auto sm:select-auto"
+        className="relative shrink-0 touch-none select-none border-b border-line/70 px-5 pb-3 pt-3 sm:touch-auto sm:select-auto"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

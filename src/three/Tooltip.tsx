@@ -18,7 +18,7 @@ export function Tooltip() {
       style={{ opacity: tip ? 1 : 0, transition: "opacity 140ms ease-out" }}
     >
       {tip && (
-        <div className="max-w-[260px] animate-[rise_200ms_var(--ease-out)] rounded-xl bg-surface/95 px-3 py-2 shadow-[var(--shadow-panel)] ring-1 ring-line backdrop-blur">
+        <div className="max-w-[260px] animate-[rise_200ms_var(--ease-out)] rounded-xl px-3 py-2 glass">
           <p className="text-[13px] font-semibold leading-tight text-ink">{tip.label}</p>
           {tip.detail && <p className="mt-0.5 text-[12px] leading-snug text-ink-2">{tip.detail}</p>}
         </div>

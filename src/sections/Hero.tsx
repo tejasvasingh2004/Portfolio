@@ -14,7 +14,7 @@ export function Hero() {
       aria-labelledby="hero-title"
       className="hero-wrap pointer-events-none relative z-10 px-3 pt-[76px] sm:px-5 sm:pt-[88px]"
     >
-      <div className="hero-card pointer-events-auto w-full max-w-[400px] animate-[rise_700ms_var(--ease-out)_both] rounded-[22px] bg-surface/85 p-5 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_44px_-18px_rgb(0_0_0/0.22)] ring-1 ring-line backdrop-blur-xl sm:p-6">
+      <div className="hero-card pointer-events-auto w-full max-w-[400px] animate-[rise_700ms_var(--ease-out)_both] rounded-[22px] p-5 glass sm:p-6">
         <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent-soft px-2.5 py-1 text-[11.5px] font-medium text-accent-ink">
           <span aria-hidden className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:hidden" />
@@ -28,7 +28,7 @@ export function Hero() {
         <p className="mt-2 text-[15px] font-medium text-ink">{profile.title}</p>
         <p className="mt-1.5 text-[14px] leading-relaxed text-ink-2">{profile.tagline}</p>
 
-        <dl className="mt-4 hidden grid-cols-3 divide-x sm:grid divide-line rounded-xl bg-surface-2 ring-1 ring-line">
+        <dl className="mt-4 hidden grid-cols-3 divide-x sm:grid divide-line rounded-xl bg-white/55 ring-1 ring-line">
           <Stat k="Projects" v={projects.length} />
           <Stat k="AI systems" v={aiSystems.length} />
           <Stat k="Roles" v={experience.length} />

@@ -51,7 +51,7 @@ export function ZoneLabels() {
               if (reg) useView.getState().setHovered(`zone:${l.zone}`, { id: `zone:${l.zone}`, label: reg.label, detail: reg.detail, anchor: anchorOf(reg.object, reg.anchorY) });
             }}
             onPointerLeave={() => useView.getState().setHovered(null)}
-            className="pointer-events-auto absolute left-0 top-0 flex items-center gap-2 whitespace-nowrap rounded-full bg-surface/90 py-1 pl-1 pr-3 shadow-[0_1px_2px_rgb(0_0_0/0.05),0_8px_24px_-8px_rgb(0_0_0/0.18)] ring-1 ring-line backdrop-blur-md transition-[opacity,box-shadow] duration-200 will-change-transform hover:ring-line-strong"
+            className="pointer-events-auto absolute left-0 top-0 flex items-center gap-2 whitespace-nowrap rounded-full py-1 pl-1 pr-3 glass transition-opacity duration-200 will-change-transform"
             style={{ opacity: 0 }}
           >
             <span

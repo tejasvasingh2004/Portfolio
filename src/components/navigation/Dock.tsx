@@ -77,7 +77,7 @@ export function Dock() {
 
       <nav
         aria-label="Primary"
-        className="pointer-events-auto flex max-w-full items-center gap-0.5 overflow-x-auto rounded-2xl bg-surface/85 p-1.5 shadow-[0_1px_2px_rgb(0_0_0/0.05),0_16px_40px_-14px_rgb(0_0_0/0.25)] ring-1 ring-line backdrop-blur-xl [scrollbar-width:none]"
+        className="pointer-events-auto flex max-w-full items-center gap-0.5 overflow-x-auto rounded-2xl p-1.5 glass [scrollbar-width:none]"
       >
         {items.map((it) => {
           const on = view.zone === it.zone;

@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { setMode, setMotion } from "@/lib/prefs";
 
 const pill =
-  "pointer-events-auto flex h-12 items-center gap-1 rounded-2xl bg-surface/85 px-1.5 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_10px_30px_-12px_rgb(0_0_0/0.18)] ring-1 ring-line backdrop-blur-xl";
+  "pointer-events-auto flex h-12 items-center gap-1 rounded-2xl px-1.5 glass";
 
 /** Two floating pills — identity on the left, actions on the right (navigation lives in the Dock). */
 export function TopBar() {
