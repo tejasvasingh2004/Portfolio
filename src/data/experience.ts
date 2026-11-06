@@ -17,6 +17,22 @@ export type Role = {
 /** Newest first. */
 export const experience: Role[] = [
   {
+    id: "open-source",
+    org: "Open source",
+    orgShort: "OSS",
+    title: "Contributor — Kubernetes SIGs, Meshery, Jitsi and more",
+    period: "Oct 2026 – Present",
+    current: true,
+    mode: "Remote · upstream pull requests",
+    summary: "Bug fixes with tests in established open-source projects, from Kubernetes tooling to browser extensions.",
+    points: [
+      "4 pull requests merged upstream in a month, including a Windows fix to Headlamp, the Kubernetes SIGs desktop app, merged the day after it was opened.",
+      "Fixed state collisions in Reticle's TanStack Query adapter, a player-readiness race in the Improve YouTube extension, and plugin scaffold docs in Tabularis.",
+      "In review: three Meshery (CNCF) server fixes for unchecked request errors, leaked HTTP connections and a startup error check, plus accessibility and UX fixes in Jitsi Meet and RUXAILAB.",
+    ],
+    stack: ["typescript", "javascript", "react", "git"],
+  },
+  {
     id: "nit-bhopal",
     org: "MANIT Bhopal (NIT Bhopal)",
     orgShort: "NIT",
