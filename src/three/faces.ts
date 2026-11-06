@@ -232,10 +232,12 @@ export function monitorScreen(projects: Project[], selected?: Project) {
   rr(ctx, 28, 76, 150, H - 104, 22);
   ctx.fillStyle = C.surface2;
   ctx.fill();
+  const sideStep = Math.min(64, (H - 140) / projects.length);
+  const sideH = Math.min(44, sideStep - 8);
   projects.forEach((p, i) => {
-    const y = 120 + i * 64;
+    const y = 120 + i * sideStep;
     const on = selected?.slug === p.slug;
-    rr(ctx, 44, y - 22, 118, 44, 12);
+    rr(ctx, 44, y - sideH / 2, 118, sideH, 12);
     ctx.fillStyle = on ? C.accent : "#fff";
     ctx.fill();
     ctx.font = sans(600, 19);
@@ -254,26 +256,30 @@ export function monitorScreen(projects: Project[], selected?: Project) {
     ctx.fillStyle = C.ink;
     ctx.fillText(`${projects.length} projects built`, X, 186);
 
-    // rows
+    // rows: shrink to fit the screen when there are many projects
+    const rowStep = Math.min(74, (H - 236 - 24) / projects.length);
+    const rowH = rowStep - 12;
     projects.forEach((p, i) => {
-      const y = 236 + i * 74;
-      rr(ctx, X, y, 610, 60, 16);
+      const y = 236 + i * rowStep;
+      rr(ctx, X, y, 610, rowH, 14);
       ctx.fillStyle = "#fff";
       ctx.fill();
       ctx.strokeStyle = C.line;
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.font = sans(600, 24);
+      ctx.textBaseline = "middle";
+      ctx.font = sans(600, Math.min(24, rowH * 0.46));
       ctx.fillStyle = C.ink;
-      ctx.fillText(p.title, X + 22, y + 39);
-      ctx.font = mono(500, 18);
+      ctx.fillText(p.title, X + 22, y + rowH / 2 + 1);
+      ctx.font = mono(500, Math.min(18, rowH * 0.36));
       ctx.fillStyle = C.ink3;
-      ctx.fillText(p.category.toUpperCase(), X + 250, y + 38);
+      ctx.fillText(p.category.toUpperCase(), X + 250, y + rowH / 2 + 1);
+      ctx.textBaseline = "alphabetic";
       const bw = 90 + p.stack.length * 14;
-      rr(ctx, X + 400, y + 26, 190, 8, 4);
+      rr(ctx, X + 400, y + rowH / 2 - 4, 190, 8, 4);
       ctx.fillStyle = C.surface2;
       ctx.fill();
-      rr(ctx, X + 400, y + 26, Math.min(190, bw), 8, 4);
+      rr(ctx, X + 400, y + rowH / 2 - 4, Math.min(190, bw), 8, 4);
       ctx.fillStyle = i === 0 ? C.accent : "#cfe0d4";
       ctx.fill();
     });
@@ -298,11 +304,12 @@ export function monitorScreen(projects: Project[], selected?: Project) {
       rr(ctx, bx, 360 - bh, barW, bh, 10);
       ctx.fillStyle = i === 0 ? C.accent : "#dde9e0";
       ctx.fill();
-      ctx.font = mono(600, projects.length > 4 ? 16 : 18);
+      const many = projects.length > 6;
+      ctx.font = mono(600, many ? 14 : projects.length > 4 ? 16 : 18);
       ctx.fillStyle = C.ink3;
       ctx.textAlign = "center";
       ctx.fillText(String(p.stack.length), bx + barW / 2, 352 - bh);
-      ctx.fillText(p.title.slice(0, 5).toUpperCase(), bx + barW / 2, 384);
+      ctx.fillText(p.title.slice(0, many ? 3 : 5).toUpperCase(), bx + barW / 2, 384);
       ctx.textAlign = "left";
     });
 
@@ -313,29 +320,34 @@ export function monitorScreen(projects: Project[], selected?: Project) {
     ctx.strokeStyle = C.line;
     ctx.lineWidth = 2;
     ctx.stroke();
-    const cats = ["AI", "Systems", "Backend"];
-    const counts = cats.map((k) => projects.filter((p) => p.category === k).length);
-    const total = counts.reduce((a, b) => a + b, 0) || 1;
+    // Categories come from the data, largest first (up to four colours).
+    const swatches = [C.accent, "#b6dc85", "#cfe0d4", "#8fbf9f"];
+    const cats = [...new Set(projects.map((p) => p.category))]
+      .map((k) => ({ k, n: projects.filter((p) => p.category === k).length }))
+      .sort((a, b) => b.n - a.n)
+      .slice(0, swatches.length);
+    const total = cats.reduce((a, b) => a + b.n, 0) || 1;
     let a0 = -Math.PI / 2;
-    counts.forEach((n, i) => {
+    cats.forEach(({ n }, i) => {
       const a1 = a0 + (n / total) * Math.PI * 2;
       ctx.beginPath();
       ctx.arc(cx + 120, 565, 80, a0 + 0.04, a1 - 0.04);
-      ctx.strokeStyle = [C.accent, "#b6dc85", "#cfe0d4"][i];
+      ctx.strokeStyle = swatches[i];
       ctx.lineWidth = 26;
       ctx.lineCap = "round";
       ctx.stroke();
       a0 = a1;
     });
     ctx.lineCap = "butt";
-    cats.forEach((k, i) => {
-      ctx.fillStyle = [C.accent, "#b6dc85", "#cfe0d4"][i];
+    const legendStep = cats.length > 3 ? 40 : 44;
+    cats.forEach(({ k, n }, i) => {
+      ctx.fillStyle = swatches[i];
       ctx.beginPath();
-      ctx.arc(cx + 250, 520 + i * 44, 8, 0, Math.PI * 2);
+      ctx.arc(cx + 250, 506 + i * legendStep, 8, 0, Math.PI * 2);
       ctx.fill();
       ctx.font = sans(600, 22);
       ctx.fillStyle = C.ink2;
-      ctx.fillText(`${k} · ${counts[i]}`, cx + 268, 528 + i * 44);
+      ctx.fillText(`${k} · ${n}`, cx + 268, 514 + i * legendStep);
     });
     return c;
   }
