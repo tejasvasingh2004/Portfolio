@@ -10,6 +10,7 @@ import { useAtlas } from "../useAtlas";
 import { glowTexture } from "../faces";
 import { useInteractive, type InteractiveOptions } from "../interactions";
 import type { V3 } from "../layout";
+import { TileText, type TileLabel } from "../TileText";
 
 export const COLORS = {
   tile: new THREE.Color("#fbfdfb"),
@@ -38,6 +39,8 @@ export type TileProps = {
   color?: string;
   face?: THREE.Texture | null;
   decals?: Decal[];
+  /** Text printed on the top face. */
+  label?: TileLabel;
   interactive?: InteractiveOptions;
   active?: boolean;
   /** On the signal path: lime icon + faint glow, no lift. */
@@ -60,6 +63,7 @@ export function Tile({
   color,
   face,
   decals = [],
+  label,
   interactive,
   active = false,
   lit = false,
@@ -215,6 +219,7 @@ export function Tile({
             renderOrder={2}
           />
         ))}
+        {label && <TileText label={label} top={h} tone={anim} />}
         {children}
       </group>
     </>
