@@ -109,24 +109,26 @@ export const projects: Project[] = [
     slug: "hybrid-db",
     title: "Hybrid-DB",
     subtitle: "Custom database engine with B+ Tree indexing",
-    tagline: "A database engine written from scratch — B+ Tree index, file persistence and a REST layer on top.",
+    tagline: "A relational database engine written from scratch — B+ Tree index, atomic transactions and a REST layer on top.",
     category: "Systems",
     year: 2025,
     featured: true,
     problem:
-      "Most developers only ever see a database through an ORM. I wanted to understand what actually happens underneath — indexing, node splits and merges, persistence — by building one.",
+      "Most developers only ever see a database through an ORM. I wanted to understand what actually happens underneath — indexing, node splits and merges, persistence and transactions — by building one.",
     solution:
-      "A Java engine whose tables are indexed by a B+ Tree supporting lookups, inserts, updates, deletes and range queries, with typed schemas, file-based persistence, caching and block storage. A Spring Boot REST API executes CRUD directly through the tree, and a lightweight web UI creates tables and runs queries.",
+      "A Java engine (about 3.3K lines with its web UI) whose tables are indexed by an order-50 B+ Tree with O(log n) lookups, inserts and deletes. Four layers — storage, schema management, query and transaction processing, and a Spring Boot REST API — keep CRUD going straight through the tree, with JSON persistence and snapshot-based rollback for atomic transactions.",
     features: [
       "Fully functional B+ Tree: lookups, inserts, deletes and range queries",
       "Node split and merge with rebalancing",
-      "Schema manager with typed columns",
-      "File-based persistence, caching and block storage",
-      "REST API and a browser UI for table management and CRUD",
+      "Schema manager with 6 typed column types (string, boolean, int, long, float, double)",
+      "Atomic multi-step transactions with snapshot-based rollback",
+      "11 REST endpoints for tables, records, conditional queries and transactions",
+      "Browser UI for CRUD, conditional queries, pagination and building multi-step transactions",
     ],
     decisions: [
       "No ORM, no external database: every REST call goes straight through the custom B+ Tree.",
       "A high-fan-out tree (order 50) keeps the tree shallow, so a lookup touches very few nodes.",
+      "A transaction snapshots the table before it runs and restores the snapshot if any step fails, so a failed transaction leaves no partial writes.",
       "Engine, schema, storage and server live in separate packages, so the storage layer can change without touching the API.",
     ],
     challenges: [
@@ -137,7 +139,8 @@ export const projects: Project[] = [
     media: {},
     facts: [
       { label: "Tree order", value: "50" },
-      { label: "Operations", value: "5" },
+      { label: "REST endpoints", value: "11" },
+      { label: "Column types", value: "6" },
     ],
   },
   {
