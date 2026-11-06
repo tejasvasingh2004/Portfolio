@@ -6,8 +6,8 @@ import { Suspense, useCallback, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 
 /** Geist, self-hosted (SIL Open Font License: public/fonts/Geist-OFL.txt). */
-const FONT_TITLE = "/fonts/Geist-SemiBold.woff2";
-const FONT_SUB = "/fonts/Geist-Medium.woff2";
+const FONT_TITLE = "/fonts/Geist-SemiBold.ttf";
+const FONT_SUB = "/fonts/Geist-Medium.ttf";
 
 /** Text printed on a tile's top face. It moves, lifts, dims and is hidden with the tile, like ink on the block. */
 export type TileLabel = {
