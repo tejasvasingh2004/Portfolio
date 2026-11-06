@@ -32,10 +32,23 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
   const slab = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.tile.clone(), roughness: 0.5 }), []);
   const rim = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accent, toneMapped: false }), []);
   const figureMat = useMemo(() => new THREE.MeshStandardMaterial({ color: COLORS.accent, roughness: 0.35, emissive: COLORS.accent, emissiveIntensity: 0.25 }), []);
+  // Above the low tier the cube is a thin-walled glass case: transmissive faces with a faint water tint
+  // and real reflections (a solid refracting block would bend the figure into several copies). The low
+  // tier keeps a cheap translucent box.
   const glass = useMemo(
     () =>
-      new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.22, depthWrite: false }),
-    [],
+      quality === "low"
+        ? new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.22, depthWrite: false })
+        : new THREE.MeshPhysicalMaterial({
+            color: "#eaf7fd",
+            roughness: 0.03,
+            transmission: 1,
+            thickness: 0,
+            ior: 1.5,
+            clearcoat: 1,
+            clearcoatRoughness: 0.04,
+          }),
+    [quality],
   );
   const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#c6dbe8", transparent: true, opacity: 0.9 }), []);
   const cubeEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(1.5, 1.5, 1.5)), []);
