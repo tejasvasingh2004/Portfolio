@@ -223,6 +223,41 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "reelhouse",
+    title: "Reelhouse",
+    subtitle: "Streaming app on PostgreSQL · team project",
+    tagline:
+      "A Netflix-style streaming app built for a DBMS course: browse, lists, ratings, resume, profiles and subscriptions — with a Home page that explains its picks.",
+    category: "Backend",
+    year: 2026,
+    featured: false,
+    problem:
+      "A database course project that had to behave like a real product: a catalogue of films and series, activity per profile, recommendations and payments, all backed by a relational database instead of mock data.",
+    solution:
+      "A Next.js app with a typed service layer over PostgreSQL (Drizzle ORM). Each domain — catalogue, activity, recommendations, billing, admin — is a service that owns its SQL, and the UI reaches it only through TanStack Query hooks.",
+    role:
+      "Team project. I built the catalogue and admin side on PostgreSQL: catalogue queries (genres, title detail, search, similar titles), the admin dashboard with a transactional TMDB import, admin content management (list, impact, delete, update) and the users and profiles services.",
+    features: [
+      "Browse films and series, keep a list, rate titles and resume where you left off",
+      "Home recommendations with a “Why these picks?” explainer",
+      "Profiles and subscriptions, with Razorpay test payments",
+      "Admin dashboard, TMDB catalogue import and content management",
+    ],
+    decisions: [
+      "The TMDB catalogue import runs in a single transaction, so a failed import never leaves a half-loaded catalogue.",
+      "Admin content management shows what a change affects before a title is deleted or updated.",
+      "Only services touch the database or the mocks, so each mock service could be replaced by a real one without changing the UI.",
+    ],
+    stack: ["typescript", "nextjs", "react", "postgresql", "sql", "schema-design", "joi", "tailwind"],
+    links: { github: "https://github.com/Sahil1337/reel-house", live: "https://reel-house-beryl.vercel.app" },
+    media: {},
+    note: "Team project for a DBMS course. The role above describes my part.",
+    facts: [
+      { label: "Services I built", value: "5" },
+      { label: "Team", value: "3" },
+    ],
+  },
+  {
     slug: "dinesphere",
     title: "Dinesphere",
     subtitle: "Restaurant management & booking API",
