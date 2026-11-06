@@ -5,11 +5,11 @@ export const profile = {
   title: "Full-Stack & AI Agent Engineer",
   tagline: "I build backend systems — and the AI agents that run on them.",
   shortBio:
-    "Computer Engineering student at SGSITS Indore who builds from the storage layer up: a B+ Tree database engine in Java, production backend APIs in Node.js, and adaptive multi-agent systems with LangGraph.",
+    "Computer Engineering student at SGSITS Indore who builds from the storage layer up: a B+ Tree database engine in Java, an AI workspace and coding-agent platform in TypeScript, and fixes merged into open-source projects like Headlamp from Kubernetes SIGs.",
   longBio: [
-    "I like working where systems get interesting: the layer underneath the product. That has meant writing a database engine with its own B+ Tree index, designing PostgreSQL schemas and REST APIs for real platforms, and building backend automations during my internships.",
-    "Lately most of my time goes into AI systems — not single prompts, but graphs of agents that plan, solve, verify and adapt. My NeuroFlow project decodes a user's cognitive workload from EEG signals and reshapes a LangGraph agent topology around it.",
-    "I'm currently a research intern at NIT Bhopal, evaluating vision-language models and OCR systems for multilingual, handwritten Indian-language documents.",
+    "I like working where systems get interesting: the layer underneath the product. That has meant writing a database engine with its own B+ Tree index and transactions, and building notification services, validation and PostgreSQL-backed APIs during my internships.",
+    "Lately most of my time goes into AI systems that behave like infrastructure. NeuroFlow, my largest project, runs an AI workspace and a coding agent on one runtime: queued runs, six execution strategies, a provider-independent model gateway, sandboxed tools and human-approved diffs — plus an optional Cognitive Mode that adapts to the user's EEG-measured workload.",
+    "This summer I was a research intern at NIT Bhopal, building multilingual image-text pipelines for vision-language models across 21 Indian languages. Since October I've been contributing fixes upstream: merged in Headlamp (Kubernetes SIGs), Reticle, Improve YouTube and Tabularis, with more in review at Meshery and Jitsi Meet.",
   ],
   location: "Indore, India",
   status: "Open to SWE, backend & AI engineering internships",
