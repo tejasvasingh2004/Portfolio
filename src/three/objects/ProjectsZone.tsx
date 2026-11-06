@@ -15,12 +15,24 @@ import { useInteractive, useZoneState } from "../interactions";
 import { MONITOR, PROJECT_CARD, modules, type V3 } from "../layout";
 import { useAtlas } from "../useAtlas";
 
-/** Local position of a project card (front row, facing outward). */
+/** Cards per row before a second row starts. */
+const PER_ROW = 5;
+/** Space between the two rows of cards. */
+const ROW_GAP = 0.34;
+
+/**
+ * Local position of a project card, facing outward. Up to five cards share one row; beyond that
+ * the first half stays in the back row and the rest form a front row offset by half a card, so
+ * each front card's trace runs through a gap in the back row.
+ */
 export function cardPosition(i: number): V3 {
   const n = projects.length;
-  const span = n * PROJECT_CARD.w + (n - 1) * PROJECT_CARD.gap;
-  const x = -span / 2 + PROJECT_CARD.w / 2 + i * (PROJECT_CARD.w + PROJECT_CARD.gap);
-  return [x, 0.1, PROJECT_CARD.z];
+  const back = n <= PER_ROW ? n : Math.ceil(n / 2);
+  const row = i < back ? 0 : 1;
+  const inRow = row === 0 ? back : n - back;
+  const k = row === 0 ? i : i - back;
+  const x = (k - (inRow - 1) / 2) * (PROJECT_CARD.w + PROJECT_CARD.gap);
+  return [x, 0.1, PROJECT_CARD.z + row * (PROJECT_CARD.d + ROW_GAP)];
 }
 
 export const MONITOR_LOCAL: V3 = [0, MONITOR.y, MONITOR.z];
@@ -68,6 +80,8 @@ export function ProjectsZone({ smoothness }: { smoothness: number }) {
   });
 
   const xs = projects.map((_, i) => cardPosition(i)[0]);
+  const busFrom = Math.min(...xs);
+  const busTo = Math.max(...xs);
   const back = modules.projects.back;
 
   return (
@@ -93,7 +107,7 @@ export function ProjectsZone({ smoothness }: { smoothness: number }) {
 
       {/* Trunk under the monitor to the hub spoke, a bus, and a stub to each card */}
       <Trace points={[[0, back], [0, BUS_Z]]} lit={!!selected || zone.hovered || !!hoveredCard} dimmed={dimmed} caps="none" />
-      <Trace points={[[xs[0], BUS_Z], [xs[xs.length - 1], BUS_Z]]} lit={!!selected || zone.hovered} dimmed={dimmed} caps="none" />
+      <Trace points={[[busFrom, BUS_Z], [busTo, BUS_Z]]} lit={!!selected || zone.hovered} dimmed={dimmed} caps="none" />
       {projects.map((p, i) => {
         const [x, , z] = cardPosition(i);
         const on = selected?.slug === p.slug || hovered === `project:${p.slug}`;
