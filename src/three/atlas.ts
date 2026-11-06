@@ -89,6 +89,10 @@ export async function buildAtlas(icons: IconName[], labels: string[]): Promise<A
     register(`text:${text}`, at.x, at.y, w, ROW);
   }
 
+  if (process.env.NODE_ENV !== "production" && y + ROW > SIZE) {
+    console.warn(`[atlas] ${SIZE}px atlas is full: icons and labels need ${y + ROW}px of rows; some will be cut off.`);
+  }
+
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.anisotropy = 8;
