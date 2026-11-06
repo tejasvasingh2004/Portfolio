@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Panel } from "@/components/panels/Panel";
 import { ExperienceTimeline } from "@/sections/Experience";
+import { OpenSourceList } from "@/sections/OpenSource";
 
 export const metadata: Metadata = {
   title: "Experience",
@@ -13,6 +14,7 @@ export default function ExperiencePage() {
   return (
     <Panel kicker="Experience" title="Where I've worked" back={{ href: "/", label: "Workspace" }}>
       <ExperienceTimeline />
+      <OpenSourceList />
     </Panel>
   );
 }

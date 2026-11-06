@@ -4,6 +4,7 @@ import { About } from "@/sections/About";
 import { ProjectsIndex } from "@/sections/Projects";
 import { AiOverview } from "@/sections/AI";
 import { ExperienceTimeline } from "@/sections/Experience";
+import { OpenSourceList } from "@/sections/OpenSource";
 import { ContactView } from "@/sections/Contact";
 import { SkillsView } from "@/sections/Skills";
 
@@ -24,6 +25,7 @@ export default function Home() {
         </Block>
         <Block id="experience" title="Experience">
           <ExperienceTimeline />
+          <OpenSourceList />
         </Block>
         <Block id="skills" title="Skills">
           <Suspense>

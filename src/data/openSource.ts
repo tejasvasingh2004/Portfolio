@@ -15,8 +15,6 @@ export type Contribution = {
   lang: string;
 };
 
-const pr = (c: Contribution) => `https://github.com/${c.repo}/pull/${c.pr}`;
-
 /** Merged first, then in review; newest first within each. */
 export const contributions: Contribution[] = [
   {
@@ -137,5 +135,5 @@ export const contributions: Contribution[] = [
   },
 ];
 
-export const prUrl = pr;
+export const prUrl = (c: Contribution) => `https://github.com/${c.repo}/pull/${c.pr}`;
 export const mergedCount = contributions.filter((c) => c.status === "merged").length;
