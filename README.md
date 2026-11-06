@@ -115,9 +115,11 @@ All content lives in **`src/data/`**. Change it there and the whole site follows
 | File | Holds |
 |---|---|
 | `profile.ts` | Name, title, bio, status, links, education |
+| `achievements.ts` | Competition results and other achievements (About page) |
 | `projects.ts` | Projects: problem, solution, decisions, stack, links, key facts |
 | `aiSystems.ts` | AI Lab graphs: nodes (grid positions), edges, adaptive states |
 | `experience.ts` | Roles, newest first |
+| `openSource.ts` | Upstream pull requests with status (merged / in review), listed on the Experience page |
 | `skills.ts` | Skills by cluster. "Where I used it" is derived automatically |
 
 Adding a project to `projects.ts` creates its 3D card, monitor screen, `/projects/<slug>` page, palette entry and sitemap entry.
