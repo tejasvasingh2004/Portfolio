@@ -26,9 +26,9 @@ export type TileLabel = {
 /** Animation state the tile drives: tint 0..1 (hover / active → green), dim 0..1. */
 export type LabelTone = { tint: number; dim: number };
 
-const INK = new THREE.Color("#1f2a22");
-const INK_SUB = new THREE.Color("#4e5c53");
-const ACCENT_INK = new THREE.Color("#3f6212");
+const INK = new THREE.Color("#182733");
+const INK_SUB = new THREE.Color("#475967");
+const ACCENT_INK = new THREE.Color("#0369a1");
 const GAP = 0.35; // space between title and sub, in title font sizes
 const EM_ADVANCE = 0.6; // generous average glyph width of Geist SemiBold, in ems
 
@@ -80,7 +80,7 @@ export function TileText({ label, top, tone }: { label: TileLabel; top: number; 
   );
 }
 
-const INK_MUTED = new THREE.Color("#7f8f84");
+const INK_MUTED = new THREE.Color("#7d919f");
 
 /** Static one-line text printed flat on a surface (plates, the board), reading towards the viewer. */
 export function SurfaceText({

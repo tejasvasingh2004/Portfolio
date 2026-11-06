@@ -3,7 +3,7 @@ import { iconSvg, type IconName } from "@/lib/icons";
 
 /**
  * One runtime texture atlas for every icon and short label drawn on 3D tiles.
- * Glyphs are white on transparent; materials tint them (grey idle → lime active).
+ * Glyphs are white on transparent; materials tint them (grey idle → blue active).
  * A single GPU upload serves the whole scene (cloned textures share the image source).
  */
 

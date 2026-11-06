@@ -7,14 +7,14 @@ import { fontFamily, monoFamily } from "./atlas";
 /** Canvas-drawn surfaces (card faces, monitor screen). Drawn in the site's own type and colours. */
 
 export const C = {
-  face: "#fbfdfb",
-  ink: "#111813",
-  ink2: "#46544b",
-  ink3: "#7f8f84",
-  line: "#d4e3d9",
-  surface2: "#eef5f0",
-  accent: "#65a30d",
-  accentSoft: "#e6f4d0",
+  face: "#fbfdff",
+  ink: "#0e1a23",
+  ink2: "#435665",
+  ink3: "#7d919f",
+  line: "#d3e3ee",
+  surface2: "#eef5fa",
+  accent: "#0ea5e9",
+  accentSoft: "#e0f2fe",
 };
 
 function canvas(w: number, h: number) {
@@ -116,7 +116,7 @@ export async function experienceCardFace(r: Role) {
     ctx.textAlign = "left";
   }
 
-  // "Present" marker: a single lime dot (dates live in the printed role and the panel).
+  // "Present" marker: a single blue dot (dates live in the printed role and the panel).
   if (r.current) {
     ctx.beginPath();
     ctx.arc(W - 52, 64, 11, 0, Math.PI * 2);
@@ -173,7 +173,7 @@ export async function contactCardFace(photo: string) {
 
   // Name and email are printed on the card as SDF text (see TileText).
 
-  // step dots → lime check (reference image language)
+  // step dots → blue check (reference image language)
   const y = 288;
   const xs = [76, 196, 316];
   ctx.strokeStyle = C.line;
@@ -217,11 +217,11 @@ export function monitorScreen(projects: Project[], selected?: Project) {
   const W = 1280;
   const H = 746;
   const { c, ctx } = canvas(W, H);
-  ctx.fillStyle = "#fcfefc";
+  ctx.fillStyle = "#fcfeff";
   ctx.fillRect(0, 0, W, H);
 
   // window chrome dots
-  [C.accent, "#b6dc85", C.line].forEach((col, i) => {
+  [C.accent, "#7dd3fc", C.line].forEach((col, i) => {
     ctx.beginPath();
     ctx.arc(44 + i * 26, 40, 8, 0, Math.PI * 2);
     ctx.fillStyle = col;
@@ -280,7 +280,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
       ctx.fillStyle = C.surface2;
       ctx.fill();
       rr(ctx, X + 400, y + rowH / 2 - 4, Math.min(190, bw), 8, 4);
-      ctx.fillStyle = i === 0 ? C.accent : "#cfe0d4";
+      ctx.fillStyle = i === 0 ? C.accent : "#cde0ec";
       ctx.fill();
     });
 
@@ -302,7 +302,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
       const bh = (p.stack.length / max) * 170;
       const bx = cx + 32 + i * slot + (slot - barW) / 2;
       rr(ctx, bx, 360 - bh, barW, bh, 10);
-      ctx.fillStyle = i === 0 ? C.accent : "#dde9e0";
+      ctx.fillStyle = i === 0 ? C.accent : "#dce9f2";
       ctx.fill();
       const many = projects.length > 6;
       ctx.font = mono(600, many ? 14 : projects.length > 4 ? 16 : 18);
@@ -321,7 +321,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
     ctx.lineWidth = 2;
     ctx.stroke();
     // Categories come from the data, largest first (up to four colours).
-    const swatches = [C.accent, "#b6dc85", "#cfe0d4", "#8fbf9f"];
+    const swatches = [C.accent, "#7dd3fc", "#cde0ec", "#93c5e0"];
     const cats = [...new Set(projects.map((p) => p.category))]
       .map((k) => ({ k, n: projects.filter((p) => p.category === k).length }))
       .sort((a, b) => b.n - a.n)
@@ -354,7 +354,7 @@ export function monitorScreen(projects: Project[], selected?: Project) {
 
   const p = selected;
   ctx.font = mono(600, 20);
-  ctx.fillStyle = "#3f6212";
+  ctx.fillStyle = "#0369a1";
   ctx.fillText(`${p.category.toUpperCase()} · ${p.year}`, X, 120);
   ctx.font = sans(650, 64);
   ctx.fillStyle = C.ink;

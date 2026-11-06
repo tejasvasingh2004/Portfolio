@@ -14,9 +14,9 @@ export function Floor() {
       new THREE.ShaderMaterial({
         toneMapped: false,
         uniforms: {
-          uBg: { value: new THREE.Color("#ddede3") },
-          uBoard: { value: new THREE.Color("#d5e7db") },
-          uGrid: { value: new THREE.Color("#c8dccf") },
+          uBg: { value: new THREE.Color("#e0eff7") },
+          uBoard: { value: new THREE.Color("#d4e8f3") },
+          uGrid: { value: new THREE.Color("#c3dbea") },
         },
         vertexShader: /* glsl */ `
           varying vec2 vXZ;

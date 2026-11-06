@@ -16,8 +16,8 @@ const at = (angleDeg: number, radius: number): [number, number, number] => {
 };
 
 function Plant({ position, scale = 1, seed = 0 }: { position: [number, number, number]; scale?: number; seed?: number }) {
-  const pot = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafdfb", roughness: 0.6 }), []);
-  const leaf = useMemo(() => new THREE.MeshStandardMaterial({ color: "#8cc46a", roughness: 0.45, side: THREE.DoubleSide }), []);
+  const pot = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafcfe", roughness: 0.6 }), []);
+  const leaf = useMemo(() => new THREE.MeshStandardMaterial({ color: "#79b4a3", roughness: 0.45, side: THREE.DoubleSide }), []);
   const leaves = useMemo(() => {
     const out: { rot: [number, number, number]; pos: [number, number, number]; s: [number, number, number] }[] = [];
     const n = 9;
@@ -53,7 +53,7 @@ function Plant({ position, scale = 1, seed = 0 }: { position: [number, number, n
 }
 
 function Lamp({ position }: { position: [number, number, number] }) {
-  const body = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafdfb", roughness: 0.5 }), []);
+  const body = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafcfe", roughness: 0.5 }), []);
   const bulb = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr.clone().multiplyScalar(0.8), toneMapped: false }), []);
   return (
     <group position={position}>
@@ -64,7 +64,7 @@ function Lamp({ position }: { position: [number, number, number] }) {
       <mesh position={[0, 0.95, 0]} material={bulb}>
         <sphereGeometry args={[0.24, 32, 20]} />
       </mesh>
-      <pointLight color="#a3dd5c" intensity={2.2} distance={4} decay={2} position={[0, 0.95, 0]} />
+      <pointLight color="#7dd3fc" intensity={2.2} distance={4} decay={2} position={[0, 0.95, 0]} />
     </group>
   );
 }
@@ -74,7 +74,7 @@ function GlassBlock({ position }: { position: [number, number, number] }) {
     () => new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.25, depthWrite: false }),
     [],
   );
-  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#c9dccf" }), []);
+  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#c6dbe8" }), []);
   const edges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(0.8, 0.8, 0.8)), []);
   const core = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr.clone().multiplyScalar(0.6), toneMapped: false }), []);
   return (

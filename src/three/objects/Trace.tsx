@@ -8,7 +8,7 @@ import { useView } from "@/store/viewStore";
 import { COLORS } from "./Tile";
 import { glowTexture } from "../faces";
 
-const TRACE_COLOR = new THREE.Color("#eef6f0");
+const TRACE_COLOR = new THREE.Color("#eef5fa");
 
 /** Polyline on the board → smooth path with rounded corners (the reference's trace language). */
 export function roundedPath(points: [number, number][], y: number, cornerRadius = 0.32) {
@@ -58,7 +58,7 @@ const pulseGeo = new THREE.SphereGeometry(0.085, 16, 12);
 const pulseGlowGeo = new THREE.PlaneGeometry(0.9, 0.9).rotateX(-Math.PI / 2);
 
 /**
- * A raised white "light pipe". Lit, its emissive core turns lime above 1.0 so the
+ * A raised white "light pipe". Lit, its emissive core turns blue above 1.0 so the
  * bloom pass makes it glow (reference image 2); pulses are bright HDR beads.
  */
 export function Trace({
@@ -98,7 +98,7 @@ export function Trace({
       }),
     [dashed],
   );
-  const capMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafdfb", roughness: 0.4 }), []);
+  const capMat = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafcfe", roughness: 0.4 }), []);
   const dotMat = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.iconIdle.clone(), toneMapped: false }), []);
   const pulseMat = useMemo(() => new THREE.MeshBasicMaterial({ color: COLORS.accentHdr.clone().multiplyScalar(1.6), toneMapped: false }), []);
   const pulseGlowMat = useMemo(

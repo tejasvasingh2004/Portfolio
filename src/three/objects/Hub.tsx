@@ -12,7 +12,7 @@ import { glowTexture } from "../faces";
 import { useInteractive, useZoneState } from "../interactions";
 import { HUB_SIZE } from "../layout";
 
-/** Identity Hub — stacked slabs, glass cube, lime figure (reference image 1). Opens About. */
+/** Identity Hub — stacked slabs, glass cube, blue figure (reference image 1). Opens About. */
 export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
   const invalidate = useThree((s) => s.invalidate);
   const reduced = useView((s) => s.reducedMotion);
@@ -37,7 +37,7 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
       new THREE.MeshPhysicalMaterial({ color: "#ffffff", roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.22, depthWrite: false }),
     [],
   );
-  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#c9dccf", transparent: true, opacity: 0.9 }), []);
+  const edge = useMemo(() => new THREE.LineBasicMaterial({ color: "#c6dbe8", transparent: true, opacity: 0.9 }), []);
   const cubeEdges = useMemo(() => new THREE.EdgesGeometry(new THREE.BoxGeometry(1.5, 1.5, 1.5)), []);
   const glowMat = useMemo(
     () => new THREE.MeshBasicMaterial({ color: COLORS.accent, map: glowTexture(), transparent: true, opacity: 0.35, depthWrite: false, toneMapped: false }),
@@ -88,7 +88,7 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
             <group key={i}>
               <RoundedBox args={[size, h, size]} radius={0.1} smoothness={seg} position={[0, at, 0]} material={slab} />
               {i === 0 && (
-                // Lime underglow rim (reference image 2, bottom-centre slab)
+                // Blue underglow rim (reference image 2, bottom-centre slab)
                 <mesh position={[0, 0.045, 0]} material={rim} raycast={() => null}>
                   <boxGeometry args={[size - 0.06, 0.035, size - 0.06]} />
                 </mesh>
@@ -96,7 +96,7 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
             </group>
           );
         })}
-        {/* Glass cube with the lime figure — "me" */}
+        {/* Glass cube with the blue figure — "me" */}
         <group position={[0, y + 0.75, 0]}>
           <mesh material={glass}>
             <boxGeometry args={[1.5, 1.5, 1.5]} />
@@ -113,7 +113,7 @@ export function Hub({ quality }: { quality: "high" | "medium" | "low" }) {
               <sphereGeometry args={[0.17, 28, 20]} />
             </mesh>
           </group>
-          <pointLight color="#8fd14f" intensity={quality === "low" ? 0 : 1.6} distance={3} decay={2} position={[0, -0.3, 0]} />
+          <pointLight color="#5cc8f5" intensity={quality === "low" ? 0 : 1.6} distance={3} decay={2} position={[0, -0.3, 0]} />
         </group>
       </group>
     </group>

@@ -24,26 +24,26 @@ import { EDGE_GAMMA } from "./TileText";
 
 type Quality = "high" | "medium" | "low";
 
-export const BG = "#ddede3";
+export const BG = "#e0eff7";
 
 function Lighting({ quality }: { quality: Quality }) {
   return (
     <>
       <ambientLight intensity={0.55} />
-      <directionalLight position={[6, 16, 5]} intensity={1.35} color="#fbfff8" />
+      <directionalLight position={[6, 16, 5]} intensity={1.35} color="#f8fcff" />
       {/* Studio light from every side, so the board reads well from any orbit angle. */}
       <Environment resolution={quality === "high" ? 256 : 128} frames={1} environmentIntensity={1.1}>
         <Lightformer form="rect" intensity={2.6} position={[0, 10, 0]} rotation-x={Math.PI / 2} scale={[18, 18, 1]} />
         <Lightformer form="rect" intensity={1.2} position={[12, 3, 0]} rotation-y={-Math.PI / 2} scale={[3, 14, 1]} />
         <Lightformer form="rect" intensity={1.2} position={[-12, 3, 0]} rotation-y={Math.PI / 2} scale={[3, 14, 1]} />
-        <Lightformer form="rect" intensity={0.7} color="#e6f5d8" position={[0, 2, 12]} scale={[18, 3, 1]} />
+        <Lightformer form="rect" intensity={0.7} color="#dff1fb" position={[0, 2, 12]} scale={[18, 3, 1]} />
         <Lightformer form="rect" intensity={0.7} position={[0, 2, -12]} rotation-y={Math.PI} scale={[18, 3, 1]} />
       </Environment>
     </>
   );
 }
 
-/** Post-processing tuned for a white product render: soft AO in the crevices, bloom only on HDR lime. */
+/** Post-processing tuned for a white product render: soft AO in the crevices, bloom only on HDR blue. */
 function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
   const effects = useMemo(() => {
     // Debug: ?fx=ao,bloom limits the stack (for tuning); default is everything the tier allows.
@@ -59,11 +59,11 @@ function Effects({ quality, aoOn }: { quality: Quality; aoOn: boolean }) {
           aoRadius={1.2}
           distanceFalloff={0.8}
           intensity={2.4}
-          color="#24332a"
+          color="#1d3344"
         />,
       );
     }
-    // Threshold sits above lit white surfaces, so only the HDR lime accents bloom.
+    // Threshold sits above lit white surfaces, so only the HDR blue accents bloom.
     if (want("bloom")) list.push(<Bloom key="bloom" mipmapBlur luminanceThreshold={2.4} luminanceSmoothing={0.05} intensity={0.75} radius={0.65} />);
     // No tilt-shift / depth-of-field: they blur text, and legibility wins.
     list.push(<ToneMapping key="tm" mode={ToneMappingMode.NEUTRAL} />);
@@ -191,7 +191,7 @@ export default function Scene({ tier, panelOpen }: { tier: Exclude<Tier, "none">
           blur={2.6}
           opacity={0.38}
           far={5}
-          color="#1f2b23"
+          color="#1a2f40"
           frames={quality === "low" ? 1 : Infinity}
         />
         <Ready />
