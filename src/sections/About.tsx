@@ -51,6 +51,13 @@ export function About() {
             Coursework: {education.coursework.join(" · ")}
           </p>
         </div>
+        <div className="mt-2 rounded-xl bg-surface-2 p-4 ring-1 ring-line">
+          <p className="font-medium text-ink">{education.school.name}</p>
+          <p className="mt-0.5 text-[14px] text-ink-2">
+            {education.school.location} · {education.school.year}
+          </p>
+          <p className="mt-0.5 text-[14px] text-ink-2">{education.school.results}</p>
+        </div>
       </Section>
 
       <Section title="Elsewhere" id="about-links">

@@ -30,14 +30,20 @@ export const education = {
   location: "Indore, India",
   degree: "B.Tech in Computer Engineering",
   period: "2024 – 2028",
-  cgpa: "8.22",
+  cgpa: "8.17 / 10",
   coursework: [
-    "Structured Programming",
-    "Data Structures",
-    "Design & Analysis of Algorithms",
+    "Data Structures & Algorithms",
+    "Object-Oriented Programming",
     "Database Management Systems",
-    "Microprocessors",
+    "Operating Systems",
+    "Computer Networks",
   ],
+  school: {
+    name: "St. Joseph's Convent Senior Secondary School",
+    location: "Sagar, India",
+    year: "2023",
+    results: "CBSE Class XII 90.2% · Class X 93.8%",
+  },
 } as const;
 
 /**
