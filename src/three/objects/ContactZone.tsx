@@ -75,7 +75,7 @@ export function ContactZone({ smoothness }: { smoothness: number }) {
           text: profile.name,
           sub: links.email,
           width: CONTACT_CARD.w * 0.6,
-          size: 0.2,
+          size: 0.17,
           at: [CONTACT_CARD.w * 0.08, -CONTACT_CARD.d * 0.24],
           align: "left",
         }}
