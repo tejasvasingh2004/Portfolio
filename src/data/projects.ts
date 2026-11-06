@@ -188,6 +188,41 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "codeguardian",
+    title: "CodeGuardian",
+    subtitle: "Code-review environment for AI agents",
+    tagline:
+      "An environment that scores AI agents on spotting bugs and security issues, rating their risk and proposing a fix — with partial credit for each step.",
+    category: "AI",
+    year: 2026,
+    featured: false,
+    problem:
+      "Checks for code agents usually ask only whether a fix runs, not whether the agent understood the problem. A good reviewer has to spot the issue, judge how risky it is and propose a correct fix — three different skills.",
+    solution:
+      "A Gymnasium-style environment (OpenEnv spec) where every task takes the agent through three steps — detect issues, assess risk, suggest a fix — and returns a continuous reward between 0 and 1. Tasks range from an off-by-one error to SQL injection, XSS and an async race condition. It is served over an HTTP API with a Gradio UI, packaged as a Docker Space.",
+    features: [
+      "6 review tasks from easy to hard: off-by-one, None handling, a logic bug, SQL injection, XSS and an async race condition",
+      "Three graded steps per task — detect, assess risk, suggest a fix — each earning partial credit",
+      "OpenEnv / TRL-style HTTP API (POST /reset, POST /step, GET /state) next to an interactive Gradio UI",
+      "Inference agent for any OpenAI-compatible endpoint, with structured prompts and safe JSON parsing",
+      "Benchmark script that runs repeated episodes and reports results per task",
+    ],
+    decisions: [
+      "Issue detection is scored with token-overlap F1, so a partly right answer earns partial credit instead of a plain pass or fail.",
+      "Risk is ordinal: the exact level scores 1.0 and an adjacent level 0.5.",
+      "A fix is compared with a canonical fix by edit distance, and step rewards are weighted 0.3 detect, 0.2 risk and 0.5 fix, because the fix matters most.",
+      "The API routes are registered on FastAPI before Gradio is mounted at /, so the agent API and the UI share one container.",
+    ],
+    stack: ["python", "fastapi", "llm-apis", "docker"],
+    links: { github: "https://github.com/tejasvasingh2004/Code_man" },
+    media: {},
+    facts: [
+      { label: "Review tasks", value: "6" },
+      { label: "Steps per task", value: "3" },
+      { label: "Reward", value: "0–1" },
+    ],
+  },
+  {
     slug: "dinesphere",
     title: "Dinesphere",
     subtitle: "Restaurant management & booking API",
