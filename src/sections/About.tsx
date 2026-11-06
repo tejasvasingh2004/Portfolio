@@ -1,4 +1,5 @@
 import { profile, education, links } from "@/data/profile";
+import { achievements } from "@/data/achievements";
 import { ButtonLink, Section } from "@/components/ui/primitives";
 
 export function About() {
@@ -37,6 +38,21 @@ export function About() {
           </p>
         ))}
       </div>
+
+      <Section title="Achievements" id="about-achievements">
+        <ul className="space-y-2">
+          {achievements.map((a) => (
+            <li key={a.id} className="rounded-xl bg-surface-2 p-4 ring-1 ring-line">
+              <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-ink-3">
+                {a.event}
+                {a.year && ` · ${a.year}`}
+              </p>
+              <p className="mt-1 text-[16px] font-semibold tracking-[-0.01em] text-ink">{a.result}</p>
+              {a.detail && <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{a.detail}</p>}
+            </li>
+          ))}
+        </ul>
+      </Section>
 
       <Section title="Education" id="about-edu">
         <div className="rounded-xl bg-surface-2 p-4 ring-1 ring-line">
