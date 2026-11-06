@@ -166,7 +166,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
             active={selectedNode === n.id}
             enterFrom={-0.4 - i * 0.04}
             decals={[{ key: `icon:${n.icon}`, height: 0.38, offset: [0, -0.14] }]}
-            label={{ text: n.label, width: AI_NODE.w - 0.1, size: 0.11, at: [0, 0.22] }}
+            label={{ text: n.label, width: AI_NODE.w - 0.1, size: 0.12, at: [0, 0.22] }}
             interactive={{
               id: `node:${system.id}:${n.id}`,
               label: n.label,

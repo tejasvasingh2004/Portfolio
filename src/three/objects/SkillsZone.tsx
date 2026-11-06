@@ -117,7 +117,7 @@ export function SkillsZone({ smoothness }: { smoothness: number }) {
                   dimmed={dimmed}
                   active={focused && skillFocus === s.id}
                   lit={isOn && !focused}
-                  label={{ text: s.label, width: KEY.w - 0.1, size: 0.105 }}
+                  label={{ text: s.label, width: KEY.w - 0.1, size: 0.11 }}
                   interactive={{
                     id: `skill:${s.id}`,
                     label: s.label,
