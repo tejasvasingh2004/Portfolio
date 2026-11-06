@@ -16,7 +16,7 @@ An interactive 3D workspace you can orbit 360°. Each module wired to the centra
 ![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)
 
 <a href="https://portfolio-iex3.vercel.app/">
-  <img src="src/app/opengraph-image.png" alt="Portfolio overview: a light mint-green 3D workspace with an identity hub connected to Projects, AI Lab, Experience, Skills and Contact modules" width="100%" />
+  <img src="src/app/opengraph-image.png" alt="Portfolio overview: a light water-blue 3D workspace of glass tiles with an identity hub connected to Projects, AI Lab, Experience, Skills and Contact modules" width="100%" />
 </a>
 
 </div>
@@ -25,7 +25,7 @@ An interactive 3D workspace you can orbit 360°. Each module wired to the centra
 
 ## Overview
 
-Most developer portfolios are a list. This one is a **system diagram you can walk around**. An identity hub sits at the centre of a soft mint-green board, and every part of my work is a physical module connected to it by glowing lime signal traces.
+Most developer portfolios are a list. This one is a **system diagram you can walk around**. An identity hub sits at the centre of a pale water-blue board, and every part of my work is a module of glass tiles connected to it by glowing blue signal traces.
 
 - **Orbit, pan and zoom** freely around the board. Clicking a module flies the camera to it and opens the details in a side panel.
 - **The AI Lab** turns my agent projects into explorable node graphs. In **NeuroFlow**, switching the simulated EEG workload re-routes the run through a different agent strategy live, the same way the real runtime's Cognitive Mode caps it.
@@ -38,7 +38,8 @@ Most developer portfolios are a list. This one is a **system diagram you can wal
 |---|---|
 | **360° workspace** | Modules on a ring around the hub, each facing outward. Camera flights take the shortest route and avoid abrupt jumps. |
 | **AI Lab** | Data-driven agent graphs for NeuroFlow, Traycer-mini and HTR Bench. Click any node to see its role, inputs/outputs and implementation. |
-| **Printed labels** | Names are SDF text printed on each tile's surface: they turn with the board, lift and dim with their tile, are hidden behind other objects and stay sharp at any zoom. |
+| **Water-glass look** | Tiles are tinted transmissive glass and the UI is frosted glass, over a board lit by still water caustics. Low-end devices get a lighter opaque version. |
+| **Printed labels** | Names are SDF text printed on each tile's surface: they turn with the board, lift and dim with their tile, are hidden behind other objects and stay sharp at any zoom. Smaller detail lines fade in once you are close enough to read them. |
 | **Panels & sheet** | A side panel on desktop and a draggable bottom sheet on phones hold the full write-ups. |
 | **Command palette** | `⌘K` / `Ctrl+K` jumps to any project, AI system, skill or link. |
 | **Keyboard first** | `1`–`6` jump to zones, `←/→` cycle items, `Esc` goes back. Tab reaches every 3D object through an accessible proxy list. |
