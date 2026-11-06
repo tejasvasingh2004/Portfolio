@@ -34,7 +34,7 @@ export const experience: Role[] = [
   },
   {
     id: "nit-bhopal",
-    org: "MANIT Bhopal (NIT Bhopal)",
+    org: "NIT Bhopal (MANIT)",
     orgShort: "NIT",
     title: "Research Intern — BharatGen Vision-Language Models",
     period: "May – Jul 2026",
