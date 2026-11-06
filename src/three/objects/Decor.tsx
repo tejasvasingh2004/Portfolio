@@ -17,7 +17,7 @@ const at = (angleDeg: number, radius: number): [number, number, number] => {
 
 function Plant({ position, scale = 1, seed = 0 }: { position: [number, number, number]; scale?: number; seed?: number }) {
   const pot = useMemo(() => new THREE.MeshStandardMaterial({ color: "#fafdfb", roughness: 0.6 }), []);
-  const leaf = useMemo(() => new THREE.MeshStandardMaterial({ color: "#f4f4f1", roughness: 0.45, side: THREE.DoubleSide }), []);
+  const leaf = useMemo(() => new THREE.MeshStandardMaterial({ color: "#8cc46a", roughness: 0.45, side: THREE.DoubleSide }), []);
   const leaves = useMemo(() => {
     const out: { rot: [number, number, number]; pos: [number, number, number]; s: [number, number, number] }[] = [];
     const n = 9;
