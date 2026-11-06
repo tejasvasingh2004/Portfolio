@@ -16,7 +16,7 @@ An interactive 3D workspace you can orbit 360°. Each module wired to the centra
 ![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)
 
 <a href="https://portfolio-iex3.vercel.app/">
-  <img src="src/app/opengraph-image.png" alt="Portfolio overview: a white 3D workspace with an identity hub connected to Projects, AI Lab, Experience, Skills and Contact modules" width="100%" />
+  <img src="src/app/opengraph-image.png" alt="Portfolio overview: a light mint-green 3D workspace with an identity hub connected to Projects, AI Lab, Experience, Skills and Contact modules" width="100%" />
 </a>
 
 </div>
@@ -25,7 +25,7 @@ An interactive 3D workspace you can orbit 360°. Each module wired to the centra
 
 ## Overview
 
-Most developer portfolios are a list. This one is a **system diagram you can walk around**. An identity hub sits at the centre of a soft white board, and every part of my work is a physical module connected to it by glowing signal traces.
+Most developer portfolios are a list. This one is a **system diagram you can walk around**. An identity hub sits at the centre of a soft mint-green board, and every part of my work is a physical module connected to it by glowing lime signal traces.
 
 - **Orbit, pan and zoom** freely around the board. Clicking a module flies the camera to it and opens the details in a side panel.
 - **The AI Lab** turns my agent projects into explorable node graphs. In **NeuroFlow**, switching the simulated EEG workload re-routes the run through a different agent strategy live, the same way the real runtime's Cognitive Mode caps it.
@@ -38,7 +38,7 @@ Most developer portfolios are a list. This one is a **system diagram you can wal
 |---|---|
 | **360° workspace** | Modules on a ring around the hub, each facing outward. Camera flights take the shortest route and avoid abrupt jumps. |
 | **AI Lab** | Data-driven agent graphs for NeuroFlow, Traycer-mini and HTR Bench. Click any node to see its role, inputs/outputs and implementation. |
-| **Crisp labels** | Text on 3D tiles is HTML pinned to each surface every frame, sized to the tile and hidden when it's too small to read or facing away. |
+| **Printed labels** | Names are SDF text printed on each tile's surface: they turn with the board, lift and dim with their tile, are hidden behind other objects and stay sharp at any zoom. |
 | **Panels & sheet** | A side panel on desktop and a draggable bottom sheet on phones hold the full write-ups. |
 | **Command palette** | `⌘K` / `Ctrl+K` jumps to any project, AI system, skill or link. |
 | **Keyboard first** | `1`–`6` jump to zones, `←/→` cycle items, `Esc` goes back. Tab reaches every 3D object through an accessible proxy list. |
@@ -52,7 +52,7 @@ Most developer portfolios are a list. This one is a **system diagram you can wal
 | Area | Tools |
 |---|---|
 | Framework | Next.js 16 (App Router, static generation), React 19, TypeScript (strict) |
-| 3D | three.js, React Three Fiber, Drei, camera-controls, maath |
+| 3D | three.js, React Three Fiber, Drei (incl. troika SDF text), camera-controls, maath |
 | Post-processing | `@react-three/postprocessing`: N8AO ambient occlusion, selective bloom, SMAA |
 | UI | Tailwind CSS 4, Geist / Geist Mono, cmdk, Lucide & Simple Icons |
 | State | Zustand (one store shared by the DOM and the canvas) |
