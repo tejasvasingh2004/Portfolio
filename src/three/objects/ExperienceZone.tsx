@@ -95,6 +95,14 @@ export function ExperienceZone({ smoothness }: { smoothness: number }) {
             dimmed={dimmed}
             lit={r.current && !dimmed}
             active={focused && hovered === `role:${r.id}`}
+            label={{
+              text: r.org,
+              sub: r.current ? `${r.title} · Present` : r.title,
+              width: EXP_CARD.w * 0.86,
+              size: 0.2,
+              at: [0, EXP_CARD.d * 0.16],
+              align: "left",
+            }}
             interactive={{
               id: `role:${r.id}`,
               label: r.org,

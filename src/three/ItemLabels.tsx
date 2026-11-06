@@ -4,19 +4,16 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo } from "react";
 import * as THREE from "three";
 import { useView } from "@/store/viewStore";
-import { experience } from "@/data/experience";
 import { links, profile } from "@/data/profile";
 import type { View } from "@/lib/view";
 import { cn } from "@/components/ui/primitives";
 import {
   CONTACT_CARD,
-  EXP_CARD,
   moduleFrame,
   toWorld,
   type ModuleId,
   type V3,
 } from "./layout";
-import { expCardPose } from "./objects/ExperienceZone";
 import { contactLinks, linkTileX, LINK_ROW_Z, LINK_TILE } from "./objects/ContactZone";
 
 /**
@@ -44,22 +41,6 @@ type ItemLabel = {
 
 export function itemLabelsFor(view: View): ItemLabel[] {
   const out: ItemLabel[] = [];
-
-  // Experience — cards (dealt into a timeline when the module is open)
-  experience.forEach((r, i) => {
-    const pose = expCardPose(i, view.zone === "experience");
-    if (view.zone !== "experience" && i !== 0) return; // stacked: only the top card is visible
-    out.push({
-      id: `role:${r.id}`,
-      text: r.org,
-      sub: r.current ? `${r.title} · Present` : r.title,
-      module: "experience",
-      local: [pose.position[0], pose.position[1] + EXP_CARD.h + 0.01, pose.position[2] + EXP_CARD.d * 0.14],
-      width: EXP_CARD.w * 0.86,
-      kind: "card",
-      target: `role:${r.id}`,
-    });
-  });
 
   // Contact — the card and the link tiles
   out.push({
