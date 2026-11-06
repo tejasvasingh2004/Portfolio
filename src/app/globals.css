@@ -2,17 +2,18 @@
 
 /* ── Design tokens (spec §13) ─────────────────────────────────────────── */
 :root {
-  --bg: #f4f4f2;
+  /* Light mint "nature" palette with a lime-green accent. */
+  --bg: #ddede3;
   --surface: #ffffff;
-  --surface-2: #f8f8f6;
-  --line: #e6e6e2;
-  --line-strong: #d6d6d1;
-  --ink: #121214;
-  --ink-2: #5c5c63;
-  --ink-3: #9a9aa0;
-  --accent: #ff6a13;
-  --accent-ink: #c2410c;
-  --accent-soft: #ffede1;
+  --surface-2: #f3f8f4;
+  --line: #d4e3d9;
+  --line-strong: #bdd0c3;
+  --ink: #111813;
+  --ink-2: #4e5c53;
+  --ink-3: #85958a;
+  --accent: #65a30d;
+  --accent-ink: #3f6212;
+  --accent-soft: #e6f4d0;
 
   --radius-panel: 20px;
   --radius-card: 12px;
