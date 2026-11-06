@@ -20,7 +20,6 @@ import { Decor } from "./objects/Decor";
 import { useAtlas } from "./useAtlas";
 import { tooltipElement } from "./Tooltip";
 import { ZoneLabelTracker } from "./ZoneLabels";
-import { ItemLabelTracker } from "./ItemLabels";
 
 type Quality = "high" | "medium" | "low";
 
@@ -194,7 +193,6 @@ export default function Scene({ tier, panelOpen }: { tier: Exclude<Tier, "none">
       <CameraRig panelOpen={panelOpen} />
       <TooltipTracker />
       <ZoneLabelTracker />
-      <ItemLabelTracker />
       <OverlayInvalidator />
       <Effects quality={quality} aoOn={aoOn} />
     </Canvas>

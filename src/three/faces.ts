@@ -74,7 +74,7 @@ export function projectCardFace(p: Project) {
   ctx.scale(2, 2);
   ctx.fillStyle = C.face;
   ctx.fillRect(0, 0, W, H);
-  // Title, subtitle and category are crisp HTML labels (see ItemLabels); the face stays quiet.
+  // Title, subtitle and category are printed on the tile as SDF text (see TileText); the face stays quiet.
   ctx.beginPath();
   ctx.arc(54, 54, 11, 0, Math.PI * 2);
   ctx.fillStyle = p.featured ? C.accent : C.line;
@@ -116,7 +116,7 @@ export async function experienceCardFace(r: Role) {
     ctx.textAlign = "left";
   }
 
-  // "Present" marker: a single lime dot (dates live in the HTML label/panel).
+  // "Present" marker: a single lime dot (dates live in the printed role and the panel).
   if (r.current) {
     ctx.beginPath();
     ctx.arc(W - 52, 64, 11, 0, Math.PI * 2);
@@ -124,7 +124,7 @@ export async function experienceCardFace(r: Role) {
     ctx.fill();
   }
 
-  // Organisation and role are crisp HTML labels pinned to the card (see ItemLabels).
+  // Organisation and role are printed on the card as SDF text (see TileText).
   return c;
 }
 
@@ -171,7 +171,7 @@ export async function contactCardFace(photo: string) {
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // Name and email are crisp HTML labels pinned to the card (see ItemLabels).
+  // Name and email are printed on the card as SDF text (see TileText).
 
   // step dots → lime check (reference image language)
   const y = 288;

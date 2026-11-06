@@ -1,7 +1,6 @@
 "use client";
 
 import { ZoneLabels } from "./ZoneLabels";
-import { ItemLabels } from "./ItemLabels";
 import { ObjectProxyNav } from "./ObjectProxyNav";
 
 /**
@@ -12,7 +11,6 @@ export default function Overlays() {
   return (
     <>
       <ZoneLabels />
-      <ItemLabels />
       <ObjectProxyNav />
     </>
   );

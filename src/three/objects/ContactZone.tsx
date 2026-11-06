@@ -71,6 +71,14 @@ export function ContactZone({ smoothness }: { smoothness: number }) {
         smoothness={smoothness}
         dimmed={dimmed}
         active={focused}
+        label={{
+          text: profile.name,
+          sub: links.email,
+          width: CONTACT_CARD.w * 0.6,
+          size: 0.2,
+          at: [CONTACT_CARD.w * 0.08, -CONTACT_CARD.d * 0.24],
+          align: "left",
+        }}
         interactive={{
           id: "zone:contact",
           label: "Contact",
@@ -88,7 +96,8 @@ export function ContactZone({ smoothness }: { smoothness: number }) {
           radius={0.1}
           smoothness={smoothness}
           dimmed={dimmed}
-          decals={[{ key: `icon:${l.icon}`, height: 0.4 }]}
+          decals={[{ key: `icon:${l.icon}`, height: 0.32, offset: [0, -0.09] }]}
+          label={{ text: l.label, width: TILE - 0.1, size: 0.105, at: [0, 0.22] }}
           interactive={{ id: `link:${l.id}`, label: l.label, detail: l.detail, href: l.href, anchorY: 0.5 }}
         />
       ))}
