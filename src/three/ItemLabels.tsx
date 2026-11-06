@@ -4,16 +4,12 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo } from "react";
 import * as THREE from "three";
 import { useView } from "@/store/viewStore";
-import { aiSystemById, aiSystems } from "@/data/aiSystems";
 import { projects } from "@/data/projects";
 import { experience } from "@/data/experience";
 import { links, profile } from "@/data/profile";
 import type { View } from "@/lib/view";
 import { cn } from "@/components/ui/primitives";
 import {
-  AI_NODE,
-  AI_PLATE,
-  AI_SWITCH_Z,
   CONTACT_CARD,
   EXP_CARD,
   PROJECT_CARD,
@@ -22,7 +18,6 @@ import {
   type ModuleId,
   type V3,
 } from "./layout";
-import { KEY_W, nodeHeight, nodePosition, systemKeyX, workloadKeyX } from "./objects/AiLab";
 import { keycapPositions } from "./objects/SkillsZone";
 import { cardPosition } from "./objects/ProjectsZone";
 import { expCardPose } from "./objects/ExperienceZone";
@@ -51,48 +46,8 @@ type ItemLabel = {
   current?: boolean;
 };
 
-export function itemLabelsFor(view: View, workload: string, skillFocus: string | null): ItemLabel[] {
+export function itemLabelsFor(view: View, skillFocus: string | null): ItemLabel[] {
   const out: ItemLabel[] = [];
-
-  // AI Lab — node names, system keys, workload keys
-  const sys = (view.zone === "ai" && view.item && aiSystemById(view.item)) || aiSystems[0];
-  for (const n of sys.nodes) {
-    const p = nodePosition(sys, n.id);
-    out.push({
-      id: `node:${sys.id}:${n.id}`,
-      text: n.label,
-      module: "ai",
-      local: [p[0], AI_PLATE.h + nodeHeight(n.kind) + 0.01, p[2] + 0.23],
-      width: AI_NODE.w,
-      kind: "tile",
-      target: `node:${sys.id}:${n.id}`,
-      current: view.zone === "ai" && view.node === n.id,
-    });
-  }
-  aiSystems.forEach((x, i) =>
-    out.push({
-      id: `system:${x.id}`,
-      text: x.title,
-      module: "ai",
-      local: [systemKeyX(i), AI_PLATE.h + 0.17, AI_SWITCH_Z],
-      width: KEY_W,
-      kind: "tile",
-      target: `system:${x.id}`,
-      current: x.id === sys.id,
-    }),
-  );
-  (sys.states ?? []).forEach((st, i, all) =>
-    out.push({
-      id: `workload:${st.id}`,
-      text: st.label,
-      module: "ai",
-      local: [workloadKeyX(i, all.length), AI_PLATE.h + 0.17, AI_SWITCH_Z],
-      width: 0.78,
-      kind: "tile",
-      target: `workload:${st.id}`,
-      current: st.id === workload,
-    }),
-  );
 
   // Skills — keycaps
   for (const k of keycapPositions()) {
@@ -161,10 +116,9 @@ export const itemLabelElements = new Map<string, HTMLElement>();
 
 export function ItemLabels() {
   const view = useView((s) => s.view);
-  const workload = useView((s) => s.workload);
   const skillFocus = useView((s) => s.skillFocus);
   const hovered = useView((s) => s.hovered);
-  const labels = itemLabelsFor(view, workload, skillFocus);
+  const labels = itemLabelsFor(view, skillFocus);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden" aria-hidden="true">
@@ -207,12 +161,12 @@ export function ItemLabelTracker() {
 
   useFrame(() => {
     if (itemLabelElements.size === 0) return;
-    const { view, workload, skillFocus } = useView.getState();
+    const { view, skillFocus } = useView.getState();
     camera.getWorldPosition(cam);
     const sx = (p: THREE.Vector3) => (p.x * 0.5 + 0.5) * size.width;
     const sy = (p: THREE.Vector3) => (-p.y * 0.5 + 0.5) * size.height;
 
-    for (const l of itemLabelsFor(view, workload, skillFocus)) {
+    for (const l of itemLabelsFor(view, skillFocus)) {
       const el = itemLabelElements.get(l.id);
       if (!el) continue;
 

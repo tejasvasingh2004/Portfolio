@@ -165,8 +165,8 @@ export function AiLab({ smoothness }: { smoothness: number }) {
             lit={hot.has(n.id) && !dimmed}
             active={selectedNode === n.id}
             enterFrom={-0.4 - i * 0.04}
-            // Icon only — the name is a crisp HTML label (see ItemLabels).
-            decals={[{ key: `icon:${n.icon}`, height: 0.42, offset: [0, -0.1] }]}
+            decals={[{ key: `icon:${n.icon}`, height: 0.38, offset: [0, -0.14] }]}
+            label={{ text: n.label, width: AI_NODE.w - 0.1, size: 0.11, at: [0, 0.22] }}
             interactive={{
               id: `node:${system.id}:${n.id}`,
               label: n.label,
@@ -191,6 +191,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
             dimmed={dimmed}
             active={focused && s.id === system.id}
             lit={!focused && s.id === system.id}
+            label={{ text: s.title, width: KEY_W - 0.16, size: 0.15 }}
             interactive={{
               id: `system:${s.id}`,
               label: s.title,
@@ -217,6 +218,7 @@ export function AiLab({ smoothness }: { smoothness: number }) {
                 dimmed={dimmed}
                 active={workload === st.id && focused}
                 lit={workload === st.id && !focused}
+                label={{ text: st.label, width: 0.66, size: 0.13 }}
                 interactive={{
                   id: `workload:${st.id}`,
                   label: `${st.label} workload`,
